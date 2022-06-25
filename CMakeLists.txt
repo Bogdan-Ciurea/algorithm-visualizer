@@ -10,14 +10,20 @@ cmake_minimum_required(VERSION 3.16.3)
 
 # Set a default C++ compile flag
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
+SET (CMAKE_C_COMPILER_WORKS 1)
+SET (CMAKE_CXX_COMPILER_WORKS 1)
 
 # Set the project name
 project(visualizer)
 
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES 
-    src/algorithms.cpp
     src/main.cpp
+    src/algorithm.cpp
+    src/buttons.cpp
+    src/interface.cpp
+    src/pillar.cpp
+    src/sorter.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 
@@ -28,7 +34,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include
 
 # Libraries
 include(FetchContent)
-FetchContent_Declare(raylib GIT_REPOSITORY https://github.com/raysan5/raylib.git GIT_TAG master)
+FetchContent_Declare(raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG master
+)
 FetchContent_MakeAvailable(raylib)
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
