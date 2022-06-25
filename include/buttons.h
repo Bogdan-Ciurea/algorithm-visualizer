@@ -6,6 +6,7 @@
 class Buttons
 {
 public:
+
   Buttons();
   ~Buttons();
 
@@ -31,7 +32,20 @@ public:
   algorithm_options get_algorithm();
 
 private:
-  /* data */
+  Texture2D plus_texture;
+  Texture2D minus_texture;
+  algorithm_options current_algorithm;
+  char* current_algorithm_text;
+
+
+  input_options draw_buttons(int x, int y, char* text, float font_size, input_options option);
+  input_options draw_buttons_with_image(int x, int y, int size, input_options option, Texture2D texture);
+
+  bool button_start_pressed  = false;
+  bool button_random_pressed = false;
+  bool button_add_pressed    = false;
+  bool button_remove_pressed = false;
+  bool button_chose_algorithm_pressed = false;
 };
 
 #endif

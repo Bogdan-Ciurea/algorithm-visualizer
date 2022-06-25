@@ -1,14 +1,29 @@
 #include "interface.h"
 
+#include <iostream>
+
 Interface::Interface() {
   
 }
 
 Interface::~Interface() {
-  
+  control.~Buttons();
 }
 
 void Interface::draw() {
+  // TODO: Implement a way we don't make the topbar bigger from a certain point
+  int topbar_height = GetScreenHeight() * 0.15;
+  if (topbar_height > 80)
+    topbar_height = 80;
+
+  control.draw(topbar_height);
+
+  if (int x = control.get_input()) {
+    std::cout<<x<<"\n";
+  }
+
+  sorter.draw(topbar_height + 1);
+
   
 }
 

@@ -4,10 +4,12 @@ int main()
 {
   // Initialization
   //--------------------------------------------------------------------------------------
-  const int screenWidth = 800;
-  const int screenHeight = 450;
+  const int screenWidth = 1000;
+  const int screenHeight = 550;
 
+  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
   InitWindow(screenWidth, screenHeight, "Sorting Algorithms");
+  SetWindowMinSize(500, 300);
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -27,11 +29,10 @@ int main()
     //----------------------------------------------------------------------------------
     BeginDrawing();
 
-    ClearBackground(BACKGROUND_COLOR);
-
     current_interface.draw();
 
-    DrawText("Congrats! You created your first window!", 190, 200, 20, MOVED_COLOR);
+    // TODO: If the window has a certain ration, the buttons will overlap
+    // Try to resolve this using "void SetWindowSize(int width, int height);"
 
     EndDrawing();
     //----------------------------------------------------------------------------------

@@ -32,6 +32,10 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 # when running g++ these will be included as -I/directory/path/
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
+# Copy the assets
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # Libraries
 include(FetchContent)
 FetchContent_Declare(raylib

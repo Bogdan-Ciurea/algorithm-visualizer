@@ -10,7 +10,7 @@ Sorter::~Sorter() {
 }
 
 void Sorter::draw(int start_height) {
-  
+  DrawRectangle(0, start_height, GetScreenWidth(), GetScreenHeight() - start_height, BACKGROUND_COLOR);
 }
 
 void Sorter::add_pillar() {
