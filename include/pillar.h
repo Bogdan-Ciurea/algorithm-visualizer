@@ -5,7 +5,6 @@
 
 class Pillar {
 public:
-  // Pillar();
   Pillar(int value);
   ~Pillar();
 

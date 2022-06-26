@@ -46,6 +46,7 @@ public:
 private:
   std::vector<Pillar> pillars;
   int pillar_width;
+  bool is_running;
 
 };
 

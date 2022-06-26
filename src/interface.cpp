@@ -18,24 +18,24 @@ void Interface::draw() {
 
   control.draw(topbar_height);
 
-  if (int x = control.get_input()) {
-    std::cout<<x<<"\n";
-  }
+  check_for_input();
 
-  sorter.draw(topbar_height + 1);
-
-  
+  sorter.draw(topbar_height + 1);  
 }
 
 void Interface::check_for_input() {
   switch (control.get_input())
   {
   case ADD_PILLAR_BTN:
-    sorter.add_pillar();
+    if (sorter.get_number_pillars() <= MAX_PILLARS) {
+      sorter.add_pillar();
+    }
     break;
   
   case REMOVE_PILLAR_BTN:
-    sorter.remove_pillar();
+    if (sorter.get_number_pillars() >= MIN_PILLARS) {
+      sorter.remove_pillar();
+    }
     break;
 
   case RANDOMIZE_BTN:

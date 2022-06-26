@@ -30,7 +30,7 @@ void Buttons::draw(int max_height) {
   // The distance between two buttons
   float border_space = max_height / 4;
 
-  DrawText("Algorithm visualizer", 5, 10, font_size / 1.5, TEXT_COLOR);
+  DrawText("Algorithm visualizer", border_space, (max_height - font_size) / 2, font_size, NORMAL_COLOR);
 
   // Width of the text we are going to display
   float start_text_width   = MeasureText("Start", font_size);
@@ -75,19 +75,87 @@ void Buttons::draw(int max_height) {
       (max_height - font_size) / 2, font_size,  REMOVE_PILLAR_BTN, minus_texture)) {
     button_remove_pressed = true;
   }
-  
-  // TODO: Draw a button on the left of the canvas
-  // It should contain the name of the current algorithm
 
-  if (draw_buttons(MeasureText("Algorithm visualizer", font_size / 1.5) + 5 + border_space, (max_height - font_size) / 2, 
+  // Select the algorithm
+  if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, (max_height - font_size) / 2, 
   current_algorithm_text, font_size, SELECT_ALGORITHM)) {
-    button_chose_algorithm_pressed = true;
+    button_chose_algorithm_pressed = !button_chose_algorithm_pressed;
   }
 
 
   if (button_chose_algorithm_pressed) {
     // Draw every algorithm in order, one under the other like a drop down menu
+    
+    // Draw the background of the drop down menu
+    DrawRectangle(MeasureText("Algorithm visualizer", font_size) + border_space, 
+    0,  MeasureText("Selection sort", font_size) + 2 * border_space , max_height * 4, TOPBAR_COLOR);
+    // Selection sort is the largest string
+
+    int top_distance = max_height;
+
+    if (current_algorithm != INSERTION) {
+      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      "Insertion sort", font_size, SELECT_ALGORITHM)) {
+        button_chose_algorithm_pressed = false;
+        current_algorithm = INSERTION;
+        current_algorithm_text = "Insertion sort";
+      }
+      top_distance += font_size + (max_height - font_size) / 2;
+    }
+
+    if (current_algorithm != HEAP) {
+      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      "Heap sort", font_size, SELECT_ALGORITHM)) {
+        button_chose_algorithm_pressed = false;
+        current_algorithm = HEAP;
+        current_algorithm_text = "Heap sort";
+      }
+      top_distance += font_size + (max_height - font_size) / 2;
+    }
+
+    if (current_algorithm != SELECTION) {
+      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      "Selection sort", font_size, SELECT_ALGORITHM)) {
+        button_chose_algorithm_pressed = false;
+        current_algorithm = SELECTION;
+        current_algorithm_text = "Selection sort";
+      }
+      top_distance += font_size + (max_height - font_size) / 2;
+    }
+
+    if (current_algorithm != MERGE) {
+      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      "Merge sort", font_size, SELECT_ALGORITHM)) {
+        button_chose_algorithm_pressed = false;
+        current_algorithm = MERGE;
+        current_algorithm_text = "Merge sort";
+      }
+      top_distance += font_size + (max_height - font_size) / 2;
+    }
+
+    if (current_algorithm != QUICK) {
+      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      "Quick sort", font_size, SELECT_ALGORITHM)) {
+        button_chose_algorithm_pressed = false;
+        current_algorithm = QUICK;
+        current_algorithm_text = "Quick sort";
+      }
+      top_distance += font_size + (max_height - font_size) / 2;
+    }
+
+    if (current_algorithm != BUBBLE) {
+      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      "Bubble sort", font_size, SELECT_ALGORITHM)) {
+        button_chose_algorithm_pressed = false;
+        current_algorithm = BUBBLE;
+        current_algorithm_text = "Bubble sort";
+      }
+      top_distance += font_size + (max_height - font_size) / 2;
+    }
   }
+  else {
+  }
+
 }
 
 input_options Buttons::get_input() {
@@ -117,6 +185,8 @@ algorithm_options Buttons::get_algorithm() {
 
 input_options Buttons::draw_buttons(int x, int y, char* text, float font_size, input_options option) {
   Rectangle r1 = { (float) x, (float) y, (float) MeasureText(text, font_size), (float) font_size };
+
+  DrawRectangleRoundedLines(r1, 10.0f, 10, 10, BLACK);
 
   if (CheckCollisionPointRec(GetMousePosition(), r1)) {
     DrawText(text, x, y, font_size, HOVER_TEXT_COLOR); // On hover
