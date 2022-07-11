@@ -40,7 +40,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
 include(FetchContent)
 FetchContent_Declare(raylib
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
-    GIT_TAG master
+    GIT_TAG 4.0.0
 )
 FetchContent_MakeAvailable(raylib)
 
