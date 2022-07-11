@@ -101,8 +101,38 @@ void Sorter::randomize(int size) {
   }
 }
 
+bool Sorter::sorted_pillars() {
+  for (int i = 0; i < pillars.size() - 1; i++) {
+    if (pillars.at(i)._value > pillars.at(i + 1)._value) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 void Sorter::get_animation_algorithm(algorithm_options algorithm) {
   if (is_running) {
+    return;
+  }
+
+  animation.clear();
+
+  // Check if the pillars are ordered. In this case we will draw a special animation
+  if (sorted_pillars()) {
+
+    for (int i = 0 ; i < pillars.size(); i++) {
+      animation.push_back(pillars);
+      for (int j = 0; j <= i; j++)
+        animation.at(animation.size() - 1).at(j).change_state(MOVED);
+    }
+
+    animation.push_back(pillars);
+
+    is_running = true;
+    last_draw_time = std::chrono::system_clock::now().time_since_epoch() / 
+      std::chrono::milliseconds(1);
+
     return;
   }
 

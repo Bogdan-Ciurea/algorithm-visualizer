@@ -44,6 +44,14 @@ public:
   }
 
   /**
+   * @brief Will say if the array is sorted or not
+   * 
+   * @return true   if the array is sorted
+   * @return false  if the array is NOT sorted
+   */
+  bool sorted_pillars();
+
+  /**
    * @brief Will initialise the algorithm
    * 
    * @param algorithm the selected algorithm 
