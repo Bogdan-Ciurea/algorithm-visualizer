@@ -1,13 +1,12 @@
 #include "interface.h"
 
-#include <iostream>
-
 Interface::Interface() {
   
 }
 
 Interface::~Interface() {
   control.~Buttons();
+  sorter.~Sorter();
 }
 
 void Interface::draw() {
@@ -16,16 +15,15 @@ void Interface::draw() {
   if (topbar_height > 80)
     topbar_height = 80;
 
-  control.draw(topbar_height);
-
   check_for_input();
 
-  sorter.draw(topbar_height + 1);  
+  sorter.draw(topbar_height + 1);
+
+  control.draw(topbar_height);
 }
 
 void Interface::check_for_input() {
-  switch (control.get_input())
-  {
+  switch (control.get_input()) {
   case ADD_PILLAR_BTN:
     if (sorter.get_number_pillars() <= MAX_PILLARS) {
       sorter.add_pillar();
@@ -43,30 +41,29 @@ void Interface::check_for_input() {
     break;
 
   case START_BTN:
-    switch (control.get_algorithm())
-    {
+    switch (control.get_algorithm()) {
     case INSERTION:
-      /* code */
+      sorter.get_animation_algorithm(INSERTION);
       break;
     
     case HEAP:
-      /* code */
+      sorter.get_animation_algorithm(HEAP);
       break;
     
     case SELECTION:
-      /* code */
+      sorter.get_animation_algorithm(SELECTION);
       break;
     
     case MERGE:
-      /* code */
+      sorter.get_animation_algorithm(MERGE);
       break;
     
     case QUICK:
-      /* code */
+      sorter.get_animation_algorithm(QUICK);
       break;
 
     case BUBBLE:
-      /* code */
+      sorter.get_animation_algorithm(BUBBLE);
       break;
     
     default:

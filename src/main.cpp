@@ -8,7 +8,7 @@ int main()
   const int screenHeight = 550;
 
   SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-  InitWindow(screenWidth, screenHeight, "Sorting Algorithms");
+  InitWindow(screenWidth, screenHeight, "Algorithm visualizer");
   SetWindowMinSize(500, 300);
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second

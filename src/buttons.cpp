@@ -1,7 +1,5 @@
 #include "buttons.h"
 
-#include <iostream>
-
 Buttons::Buttons() {
   Image minus = LoadImage("assets/minus.png");
   Image plus  = LoadImage("assets/plus.png");
@@ -30,7 +28,7 @@ void Buttons::draw(int max_height) {
   // The distance between two buttons
   float border_space = max_height / 4;
 
-  DrawText("Algorithm visualizer", border_space, (max_height - font_size) / 2, font_size, NORMAL_COLOR);
+  DrawText("Sorting algorithms", border_space, (max_height - font_size) / 2, font_size, NORMAL_COLOR);
 
   // Width of the text we are going to display
   float start_text_width   = MeasureText("Start", font_size);
@@ -77,7 +75,7 @@ void Buttons::draw(int max_height) {
   }
 
   // Select the algorithm
-  if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, (max_height - font_size) / 2, 
+  if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, (max_height - font_size) / 2, 
   current_algorithm_text, font_size, SELECT_ALGORITHM)) {
     button_chose_algorithm_pressed = !button_chose_algorithm_pressed;
   }
@@ -87,14 +85,14 @@ void Buttons::draw(int max_height) {
     // Draw every algorithm in order, one under the other like a drop down menu
     
     // Draw the background of the drop down menu
-    DrawRectangle(MeasureText("Algorithm visualizer", font_size) + border_space, 
+    DrawRectangle(MeasureText("Sorting algorithms", font_size) + border_space, 
     0,  MeasureText("Selection sort", font_size) + 2 * border_space , max_height * 4, TOPBAR_COLOR);
     // Selection sort is the largest string
 
     int top_distance = max_height;
 
     if (current_algorithm != INSERTION) {
-      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, top_distance, 
       "Insertion sort", font_size, SELECT_ALGORITHM)) {
         button_chose_algorithm_pressed = false;
         current_algorithm = INSERTION;
@@ -104,7 +102,7 @@ void Buttons::draw(int max_height) {
     }
 
     if (current_algorithm != HEAP) {
-      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, top_distance, 
       "Heap sort", font_size, SELECT_ALGORITHM)) {
         button_chose_algorithm_pressed = false;
         current_algorithm = HEAP;
@@ -114,7 +112,7 @@ void Buttons::draw(int max_height) {
     }
 
     if (current_algorithm != SELECTION) {
-      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, top_distance, 
       "Selection sort", font_size, SELECT_ALGORITHM)) {
         button_chose_algorithm_pressed = false;
         current_algorithm = SELECTION;
@@ -124,7 +122,7 @@ void Buttons::draw(int max_height) {
     }
 
     if (current_algorithm != MERGE) {
-      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, top_distance, 
       "Merge sort", font_size, SELECT_ALGORITHM)) {
         button_chose_algorithm_pressed = false;
         current_algorithm = MERGE;
@@ -134,7 +132,7 @@ void Buttons::draw(int max_height) {
     }
 
     if (current_algorithm != QUICK) {
-      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, top_distance, 
       "Quick sort", font_size, SELECT_ALGORITHM)) {
         button_chose_algorithm_pressed = false;
         current_algorithm = QUICK;
@@ -144,7 +142,7 @@ void Buttons::draw(int max_height) {
     }
 
     if (current_algorithm != BUBBLE) {
-      if (draw_buttons(MeasureText("Algorithm visualizer", font_size) + 2 * border_space, top_distance, 
+      if (draw_buttons(MeasureText("Sorting algorithms", font_size) + 2 * border_space, top_distance, 
       "Bubble sort", font_size, SELECT_ALGORITHM)) {
         button_chose_algorithm_pressed = false;
         current_algorithm = BUBBLE;

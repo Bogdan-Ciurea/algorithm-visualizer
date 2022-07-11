@@ -6,21 +6,22 @@
 #include <time.h>
 #include <raylib.h>
 #include <vector>
+#include <chrono>
+#include <iostream>
 
-#define MAX_PILLARS 100
-#define MIN_PILLARS 20
+#define MAX_PILLARS      100
+#define MIN_PILLARS      20
 #define STARTING_PILLARS 40
+#define ANIMATION_FPS    30
 
-#define BACKGROUND_COLOR Color{241, 250, 238, 100}
-#define TOPBAR_COLOR     Color{ 29,  53,  87, 100}
-#define TEXT_COLOR       Color{168, 218, 220, 100}
-#define HOVER_TEXT_COLOR Color{ 69, 123, 157, 100}
-#define NORMAL_COLOR     Color{152, 193, 217, 100}
-#define SELECTED_COLOR   Color{ 69, 123, 157, 100}
-#define MOVED_COLOR      Color{238, 108,  77, 100}
-#define BORDER_COLOR     Color{ 41,  50,  65, 100}
-
-
+#define BACKGROUND_COLOR Color{241, 250, 238, 100} // The color of the background
+#define TOPBAR_COLOR     Color{ 29,  53,  87, 100} // The background color of the topbar
+#define TEXT_COLOR       Color{168, 218, 220, 100} // The color of the text
+#define HOVER_TEXT_COLOR Color{ 69, 123, 157, 100} // The color of the text when hovered over
+#define NORMAL_COLOR     Color{152, 193, 217, 100} // The color of a pillar in the normal state
+#define SELECTED_COLOR   Color{ 69, 123, 157, 100} // The color of a pillar in the selected state
+#define MOVED_COLOR      Color{238, 108,  77, 100} // The color of a pillar in the moved state
+#define BORDER_COLOR     Color{ 41,  50,  65, 100} // The color of the border of the pillars
 
 typedef enum color_state {BACKGROUND, NORMAL, SELECTED, MOVED, BORDER};
 typedef enum input_options {NONE, ADD_PILLAR_BTN, REMOVE_PILLAR_BTN, RANDOMIZE_BTN, START_BTN, SELECT_ALGORITHM};

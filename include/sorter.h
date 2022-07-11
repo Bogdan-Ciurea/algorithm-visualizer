@@ -43,10 +43,22 @@ public:
     return pillars.size();
   }
 
+  /**
+   * @brief Will initialise the algorithm
+   * 
+   * @param algorithm the selected algorithm 
+   */
+  void get_animation_algorithm(algorithm_options algorithm);
+
 private:
+  // 'pillars' will act as a state of the currently displayed pillars
   std::vector<Pillar> pillars;
+
+  // 'animation' will act as an array of frames, thus creating an animation
+  std::vector<std::vector<Pillar>> animation;
   int pillar_width;
   bool is_running;
+  unsigned long last_draw_time;
 
 };
 
