@@ -10,7 +10,6 @@ Interface::~Interface() {
 }
 
 void Interface::draw() {
-  // TODO: Implement a way we don't make the topbar bigger from a certain point
   int topbar_height = GetScreenHeight() * 0.15;
   if (topbar_height > 80)
     topbar_height = 80;
