@@ -10,8 +10,6 @@ cmake_minimum_required(VERSION 3.16.3)
 
 # Set a default C++ compile flag
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
-SET (CMAKE_C_COMPILER_WORKS 1)
-SET (CMAKE_CXX_COMPILER_WORKS 1)
 
 # Set the project name
 project(visualizer)
