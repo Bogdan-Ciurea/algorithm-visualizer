@@ -15,7 +15,7 @@ Sorter::~Sorter() {
 }
 
 void Sorter::draw(int start_height) {
-  DrawRectangle(0, start_height, GetScreenWidth(), GetScreenHeight() - start_height, BACKGROUND_COLOR);
+  DrawRectangle(0, start_height, GetScreenWidth(), GetScreenHeight() - start_height, MY_BACKGROUND_COLOR);
   
   float current_x = 2;
   float pillar_width = (float) GetScreenWidth() / (float) pillars.size() - 3.0f;
