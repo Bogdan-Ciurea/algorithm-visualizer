@@ -22,6 +22,7 @@ set(SOURCES
     src/interface.cpp
     src/pillar.cpp
     src/sorter.cpp
+    src/raygui.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 

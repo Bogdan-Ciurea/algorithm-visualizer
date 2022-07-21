@@ -8,14 +8,8 @@
 #include <chrono>
 
 #include "raylib.h"
-
-// Copy the next 2 lines and put them in the .cpp files
-// If you put them in the header, this will result in an error ... I don't know why
-/*
-// #define RAYGUI_STATIC 
-#define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
-*/
+
 
 // Global values
 // --------------------------
