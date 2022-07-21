@@ -111,7 +111,7 @@ bool Sorter::sorted_pillars() {
   return true;
 }
 
-void Sorter::get_animation_algorithm(algorithm_options algorithm) {
+void Sorter::get_animation_algorithm(sort_algorithm_options algorithm) {
   if (is_running) {
     return;
   }

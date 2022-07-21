@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_H
-#define ALGORITHM_H
+#ifndef SORTING_ALGORITHMS_H
+#define SORTING_ALGORITHMS_H
 
 #include "pillar.h"
 

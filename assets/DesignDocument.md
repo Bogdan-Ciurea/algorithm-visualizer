@@ -32,6 +32,7 @@ The main components of this project are:
  - The Trees, Sorting and Search Structures have the same description the the Graph Structure one
 
 ## Utils.h
+This file will be responsible for defining all the Colors that we are going to use in the project, all the enumerators and the libraries.
 
 ## Node Class
 
@@ -50,5 +51,3 @@ The main components of this project are:
 ## Search Class
 
 ## Interface Class
-
-

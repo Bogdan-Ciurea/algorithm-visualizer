@@ -2,6 +2,9 @@
 #define INTERFACE_H
 
 #include "sorter.h"
+#include "graph.h"
+#include "trees.h"
+#include "searcher.h"
 #include "buttons.h"
 
 class Interface{

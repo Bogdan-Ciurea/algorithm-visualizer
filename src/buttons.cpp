@@ -156,32 +156,32 @@ void Buttons::draw(int max_height) {
 
 }
 
-input_options Buttons::get_input() {
+sort_search_input_options Buttons::get_input() {
   if (button_start_pressed) {
     button_start_pressed = false;
-    return input_options::START_BTN;
+    return sort_search_input_options::START_BTN;
   }
   if (button_random_pressed) {
     button_random_pressed = false;
-    return input_options::RANDOMIZE_BTN;
+    return sort_search_input_options::RANDOMIZE_BTN;
   }
   if (button_add_pressed) {
     button_add_pressed = false;
-    return input_options::ADD_PILLAR_BTN;
+    return sort_search_input_options::ADD_PILLAR_BTN;
   }
   if (button_remove_pressed) {
     button_remove_pressed = false;
-    return input_options::REMOVE_PILLAR_BTN;
+    return sort_search_input_options::REMOVE_PILLAR_BTN;
   }
 
-  return input_options::NONE;
+  return sort_search_input_options::NONE;
 }
 
-algorithm_options Buttons::get_algorithm() {
+sort_algorithm_options Buttons::get_algorithm() {
   return current_algorithm;
 }
 
-input_options Buttons::draw_buttons(int x, int y, char* text, float font_size, input_options option) {
+sort_search_input_options Buttons::draw_buttons(int x, int y, char* text, float font_size, sort_search_input_options option) {
   Rectangle r1 = { (float) x, (float) y, (float) MeasureText(text, font_size), (float) font_size };
 
   DrawRectangleRoundedLines(r1, 10.0f, 10, 10, BLACK);
@@ -196,10 +196,10 @@ input_options Buttons::draw_buttons(int x, int y, char* text, float font_size, i
     DrawText(text, x, y, font_size, TEXT_COLOR);
   }
 
-  return input_options::NONE;
+  return sort_search_input_options::NONE;
 }
 
-input_options Buttons::draw_buttons_with_image(int x, int y, int size, input_options option, Texture2D texture) {
+sort_search_input_options Buttons::draw_buttons_with_image(int x, int y, int size, sort_search_input_options option, Texture2D texture) {
   DrawTextureEx(texture, Vector2{(float) x, (float) y}, 0.0f, (float) size / 300, WHITE);
   Rectangle r1 = { (float) x, (float) y, (float) texture.width * size / 300, (float) texture.width * size / 300};
 
@@ -207,5 +207,5 @@ input_options Buttons::draw_buttons_with_image(int x, int y, int size, input_opt
     return option;
   }
 
-  return input_options::NONE;
+  return sort_search_input_options::NONE;
 }

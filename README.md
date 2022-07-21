@@ -17,7 +17,7 @@ The second one contains more algorithms that the first one and will incorporate 
 |Sorting | Search | Graph | Trees |
 |--|--|--|--|
 | Insertion Sort | Linear Search | Dijkstra's algorithm  | Binary Trees |
-| Heap Sort | Binary Search | Floyd Warshall's algorithm  | Rad Black Trees |
+| Heap Sort | Binary Search | Floyd Warshall's algorithm  | Red Black Trees |
 | Selection Sort | Jump Search | BFS && DFS |  |
 | Merge Sort | Interpolation Search | A* |  |
 | Quick Sort | Exponential Search | Prim’s algorithm |  |

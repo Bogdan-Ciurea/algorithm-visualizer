@@ -1,7 +1,7 @@
 #ifndef SORTER_H
 #define SORTER_H
 
-#include "algorithm.h"
+#include "standalone-functions/sorting-algorithms.h"
 
 class Sorter{
 public:
@@ -56,7 +56,7 @@ public:
    * 
    * @param algorithm the selected algorithm 
    */
-  void get_animation_algorithm(algorithm_options algorithm);
+  void get_animation_algorithm(sort_algorithm_options algorithm);
 
 private:
   // 'pillars' will act as a state of the currently displayed pillars

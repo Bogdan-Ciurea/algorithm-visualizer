@@ -12,10 +12,10 @@ public:
   
   void draw(int x, int y, int width, int height);
 
-  Color _color;
-  int   _value;
+  int  _value;
 
 private:
+  Color _color;
   color_state _state;
 };
 

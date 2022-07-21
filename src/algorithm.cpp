@@ -1,4 +1,5 @@
-#include "algorithm.h"
+#include "standalone-functions/sorting-algorithms.h"
+
 
 std::vector<std::vector<Pillar>> insertion_sort_algorithm (std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
