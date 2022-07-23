@@ -4,7 +4,7 @@
 #include "standalone-functions/trees-algorithms.h"
 
 class Trees {
-public:
+ public:
   Trees();
   ~Trees();
 

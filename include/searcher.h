@@ -4,7 +4,7 @@
 #include "standalone-functions/search-algorithms.h"
 
 class Searcher {
-public:
+ public:
   Searcher();
   ~Searcher();
 

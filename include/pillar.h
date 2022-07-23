@@ -4,17 +4,17 @@
 #include "utils.h"
 
 class Pillar {
-public:
+ public:
   Pillar(int value);
   ~Pillar();
 
   void change_state(color_state);
-  
+
   void draw(int x, int y, int width, int height);
 
-  int  _value;
+  int _value;
 
-private:
+ private:
   Color _color;
   color_state _state;
 };

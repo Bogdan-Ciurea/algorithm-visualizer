@@ -1,7 +1,7 @@
 #include "standalone-functions/sorting-algorithms.h"
 
-
-std::vector<std::vector<Pillar>> insertion_sort_algorithm (std::vector<Pillar> array) {
+std::vector<std::vector<Pillar>> insertion_sort_algorithm(
+    std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -9,7 +9,7 @@ std::vector<std::vector<Pillar>> insertion_sort_algorithm (std::vector<Pillar> a
   for (int i = 1ul; i < array.size(); i++) {
     temp = array.at(i)._value;
     j = i - 1;
- 
+
     // Move elements of arr[0..i-1], that are greater than key, to one
     // position ahead of their current position
     while (j >= 0 && array.at(j)._value > temp) {
@@ -36,7 +36,8 @@ std::vector<std::vector<Pillar>> insertion_sort_algorithm (std::vector<Pillar> a
   return animation;
 }
 
-void heapify(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &animation, int size, int root) {
+void heapify(std::vector<Pillar> &array,
+             std::vector<std::vector<Pillar>> &animation, int size, int root) {
   int largest = root;
   int left = 2 * root + 1;
   int right = 2 * root + 2;
@@ -62,11 +63,12 @@ void heapify(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &anima
   }
 }
 
-std::vector<std::vector<Pillar>> heap_sort_algorithm (std::vector<Pillar> array) {
+std::vector<std::vector<Pillar>> heap_sort_algorithm(
+    std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
-  for (int i = array.size() / 2 - 1; i >= 0 ; i--) {
+  for (int i = array.size() / 2 - 1; i >= 0; i--) {
     heapify(array, animation, array.size(), i);
   }
 
@@ -92,7 +94,8 @@ std::vector<std::vector<Pillar>> heap_sort_algorithm (std::vector<Pillar> array)
   return animation;
 }
 
-std::vector<std::vector<Pillar>> selection_sort_algorithm (std::vector<Pillar> array) {
+std::vector<std::vector<Pillar>> selection_sort_algorithm(
+    std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -109,8 +112,7 @@ std::vector<std::vector<Pillar>> selection_sort_algorithm (std::vector<Pillar> a
         // Change the colors
         animation.at(animation.size() - 1).at(i).change_state(SELECTED);
         animation.at(animation.size() - 1).at(j).change_state(MOVED);
-      }
-      else {
+      } else {
         // Add the frame to the animation
         animation.push_back(array);
         // Change the colors
@@ -126,7 +128,6 @@ std::vector<std::vector<Pillar>> selection_sort_algorithm (std::vector<Pillar> a
     // Change the colors
     animation.at(animation.size() - 1).at(i).change_state(MOVED);
     animation.at(animation.size() - 1).at(min_index).change_state(MOVED);
-
   }
 
   animation.push_back(array);
@@ -134,19 +135,19 @@ std::vector<std::vector<Pillar>> selection_sort_algorithm (std::vector<Pillar> a
   return animation;
 }
 
-void merge_vectors(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &animation,
-                   int const left, int const mid, int const right) {
+void merge_vectors(std::vector<Pillar> &array,
+                   std::vector<std::vector<Pillar>> &animation, int const left,
+                   int const mid, int const right) {
   int const subArrayOne = mid - left + 1;
   int const subArrayTwo = right - mid;
- 
+
   // Create temp arrays of Pillar pointers
-  int *leftArray = new int[subArrayOne],
-      *rightArray = new int[subArrayTwo];
+  int *leftArray = new int[subArrayOne], *rightArray = new int[subArrayTwo];
 
   // Copy data to the temp arrays leftArray[] and rightArray[]
   for (int i = 0ul; i < subArrayOne; i++) {
     leftArray[i] = array[left + i]._value;
-  
+
     // Add the frame to the animation
     animation.push_back(array);
     // Change the colors
@@ -160,33 +161,40 @@ void merge_vectors(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> 
     // Change the colors
     animation.at(animation.size() - 1).at(mid + 1 + i).change_state(SELECTED);
   }
- 
-  int indexOfSubArrayOne = 0,    // Initial index of first sub-array
-         indexOfSubArrayTwo = 0,    // Initial index of second sub-array
-         indexOfMergedArray = left; // Initial index of merged array
- 
+
+  int indexOfSubArrayOne = 0,     // Initial index of first sub-array
+      indexOfSubArrayTwo = 0,     // Initial index of second sub-array
+      indexOfMergedArray = left;  // Initial index of merged array
+
   // Merge the temp arrays back into array[left..right]
   while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
     if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
       array[indexOfMergedArray]._value = leftArray[indexOfSubArrayOne];
-      
+
       // Add the frame to the animation
       animation.push_back(array);
       // Change the colors
-      animation.at(animation.size() - 1).at(indexOfMergedArray).change_state(MOVED);
-      animation.at(animation.size() - 1).at(indexOfSubArrayOne + left).change_state(MOVED);
-      
-      indexOfSubArrayOne++;      
-    }
-    else {
+      animation.at(animation.size() - 1)
+          .at(indexOfMergedArray)
+          .change_state(MOVED);
+      animation.at(animation.size() - 1)
+          .at(indexOfSubArrayOne + left)
+          .change_state(MOVED);
+
+      indexOfSubArrayOne++;
+    } else {
       array[indexOfMergedArray]._value = rightArray[indexOfSubArrayTwo];
-      
+
       // Add the frame to the animation
       animation.push_back(array);
       // Change the colors
-      animation.at(animation.size() - 1).at(indexOfMergedArray).change_state(MOVED);
-      animation.at(animation.size() - 1).at(indexOfSubArrayTwo + mid + 1).change_state(MOVED);
-      
+      animation.at(animation.size() - 1)
+          .at(indexOfMergedArray)
+          .change_state(MOVED);
+      animation.at(animation.size() - 1)
+          .at(indexOfSubArrayTwo + mid + 1)
+          .change_state(MOVED);
+
       indexOfSubArrayTwo++;
     }
     indexOfMergedArray++;
@@ -199,7 +207,9 @@ void merge_vectors(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> 
     // Add the frame to the animation
     animation.push_back(array);
     // Change the colors
-    animation.at(animation.size() - 1).at(indexOfMergedArray).change_state(MOVED);
+    animation.at(animation.size() - 1)
+        .at(indexOfMergedArray)
+        .change_state(MOVED);
 
     indexOfSubArrayOne++;
     indexOfMergedArray++;
@@ -212,24 +222,28 @@ void merge_vectors(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> 
     // Add the frame to the animation
     animation.push_back(array);
     // Change the colors
-    animation.at(animation.size() - 1).at(indexOfMergedArray).change_state(MOVED);
+    animation.at(animation.size() - 1)
+        .at(indexOfMergedArray)
+        .change_state(MOVED);
 
     indexOfSubArrayTwo++;
     indexOfMergedArray++;
   }
 }
 
-void merge_recursive(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &animation, int const begin, int const end) {
-  if (begin >= end)
-    return; // Returns recursively
- 
+void merge_recursive(std::vector<Pillar> &array,
+                     std::vector<std::vector<Pillar>> &animation,
+                     int const begin, int const end) {
+  if (begin >= end) return;  // Returns recursively
+
   int mid = begin + (end - begin) / 2;
-  merge_recursive(array, animation,begin, mid);
+  merge_recursive(array, animation, begin, mid);
   merge_recursive(array, animation, mid + 1, end);
-  merge_vectors(array, animation,begin, mid, end);
+  merge_vectors(array, animation, begin, mid, end);
 }
 
-std::vector<std::vector<Pillar>> merge_sort_algorithm (std::vector<Pillar> array) {
+std::vector<std::vector<Pillar>> merge_sort_algorithm(
+    std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -240,15 +254,16 @@ std::vector<std::vector<Pillar>> merge_sort_algorithm (std::vector<Pillar> array
   return animation;
 }
 
-int partition(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &animation,
-                   int low, int high) {
-  int pivot = array[high]._value; // pivot
-  int i = low - 1; // Index of smaller element and indicates the right position of pivot found so far
- 
+int partition(std::vector<Pillar> &array,
+              std::vector<std::vector<Pillar>> &animation, int low, int high) {
+  int pivot = array[high]._value;  // pivot
+  int i = low - 1;  // Index of smaller element and indicates the right position
+                    // of pivot found so far
+
   for (int j = low; j <= high - 1; j++) {
     // If current element is smaller than the pivot
     if (array[j]._value < pivot) {
-      i++; // increment index of smaller element
+      i++;  // increment index of smaller element
       std::swap(array[i]._value, array[j]._value);
 
       // Add the frame to the animation
@@ -271,16 +286,19 @@ int partition(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &anim
   return i + 1;
 }
 
-void quick_recursive(std::vector<Pillar> &array, std::vector<std::vector<Pillar>> &animation, int low, int high) {
+void quick_recursive(std::vector<Pillar> &array,
+                     std::vector<std::vector<Pillar>> &animation, int low,
+                     int high) {
   if (low < high) {
     int pivot = partition(array, animation, low, high);
- 
+
     quick_recursive(array, animation, low, pivot - 1);
     quick_recursive(array, animation, pivot + 1, high);
   }
 }
 
-std::vector<std::vector<Pillar>> quick_sort_algorithm (std::vector<Pillar> array) {
+std::vector<std::vector<Pillar>> quick_sort_algorithm(
+    std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -291,7 +309,8 @@ std::vector<std::vector<Pillar>> quick_sort_algorithm (std::vector<Pillar> array
   return animation;
 }
 
-std::vector<std::vector<Pillar>> bubble_sort_algorithm (std::vector<Pillar> array) {
+std::vector<std::vector<Pillar>> bubble_sort_algorithm(
+    std::vector<Pillar> array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -299,19 +318,22 @@ std::vector<std::vector<Pillar>> bubble_sort_algorithm (std::vector<Pillar> arra
     for (int j = 0; j < array.size() - 1 - i; j++) {
       if (array.at(j)._value > array.at(j + 1)._value) {
         std::swap(array.at(j)._value, array.at(j + 1)._value);
-      
+
         // Add the frame to the animation
         animation.push_back(array);
         // Change the colors
-        animation.at(animation.size() - 1).at(array.size() - 1 - i).change_state(SELECTED);
+        animation.at(animation.size() - 1)
+            .at(array.size() - 1 - i)
+            .change_state(SELECTED);
         animation.at(animation.size() - 1).at(j).change_state(MOVED);
         animation.at(animation.size() - 1).at(j + 1).change_state(MOVED);
-      }
-      else {
+      } else {
         // Add the frame to the animation
         animation.push_back(array);
         // Change the colors
-        animation.at(animation.size() - 1).at(array.size() - 1 - i).change_state(SELECTED);
+        animation.at(animation.size() - 1)
+            .at(array.size() - 1 - i)
+            .change_state(SELECTED);
         animation.at(animation.size() - 1).at(j).change_state(SELECTED);
         animation.at(animation.size() - 1).at(j + 1).change_state(SELECTED);
       }

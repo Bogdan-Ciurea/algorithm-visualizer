@@ -4,13 +4,13 @@
 #include "standalone-functions/graph-algorithms.h"
 
 class Graph {
-public:
+ public:
   Graph();
   ~Graph();
-  
+
   void draw();
 
-private:
+ private:
   bool directed;
 };
 
