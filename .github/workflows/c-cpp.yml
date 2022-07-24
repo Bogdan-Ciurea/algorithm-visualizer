@@ -1,0 +1,22 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: build
+      run: mkdir build && cd build && cmake && make
+    - name: cpp-style
+      run: clang-format --dry-run --Werror src/*.cpp
+    - name: h-style
+      run: clang-format --dry-run --Werror include/*.h
+    
