@@ -1,0 +1,6 @@
+[submodule "modules/raylib"]
+	path = modules/raylib
+	url = https://github.com/raysan5/raylib.git
+[submodule "modules/googletest"]
+	path = modules/googletest
+	url = https://github.com/google/googletest.git

@@ -10,6 +10,11 @@ cmake_minimum_required(VERSION 3.16.3)
 
 # Set a default C++ compile flag
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
+set (CMAKE_C_STANDARD 99)
+set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+enable_testing()
 
 # Set the project name
 project(visualizer)
@@ -36,6 +41,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Libraries
+# Add Raylib
 include(FetchContent)
 FetchContent_Declare(raylib
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
@@ -43,5 +49,16 @@ FetchContent_Declare(raylib
 )
 FetchContent_MakeAvailable(raylib)
 
+# Add Google Tests
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+
+add_subdirectory(src/tests)
