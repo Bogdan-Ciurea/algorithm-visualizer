@@ -8,13 +8,26 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CFLAGS: -Werror
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+          sudo apt update
+          sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
     - name: build
       run: mkdir build && cd build && cmake .. && make
+  
+  style:
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CFLAGS: -Werror
+    steps:
     - name: cpp-style
       run: clang-format --dry-run --Werror src/*.cpp
     - name: h-style
