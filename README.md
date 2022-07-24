@@ -11,6 +11,8 @@ For this project I have decided to use the following technologies:
  
  This is, at the time of developing the code, my biggest project. 😁
 
+For more details that also cover code, please read the the [Design Document](DesignDocument.md).
+
 Keep in mind that the project has two versions.
 The first one contains a visualizer of some of the most important sorting algorithms and did not have all the features of a fully fleshed program.
 The second one contains more algorithms that the first one and will incorporate algorithms from 4 fields.
@@ -109,19 +111,31 @@ The repo folder will contain some important files:
  - `assets/DesignDocument.md` -> a design document that will go into more detain over everything
 
 ├── assets
-│   ├── DesignDocument.md
-│   └── diagram.png
-├── CMakeLists.txt
-├── include
-│   ├── raygui.h
-│   └── raylib.h
-├── libs
-│   └── libraylib.so.400
-├── README.md
-└── src
-    └── main.cpp
 
-For more details that also cover code, please read the the [Design Document](/assets/DesignDocument.md).
+
+│   └── diagram.png
+
+├── CMakeLists.txt
+
+├── include
+
+│   ├── raygui.h
+
+│   └── raylib.h
+
+├── libs
+
+│   └── libraylib.so.400
+
+├── README.md
+
+├── DesignDocument.md
+
+└── src
+
+|    └── main.cpp
+
+For more details that also cover code, please read the the [Design Document](DesignDocument.md).
 
 
 ## Included Tests

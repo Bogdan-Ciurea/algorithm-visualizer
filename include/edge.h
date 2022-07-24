@@ -10,13 +10,13 @@ class Edge {
 
   void change_state(color_state);
 
-  void draw(int x, int y, float radius);
+  void draw(float thickness);
 
-  int _value;
+  int weight;
 
  private:
-  Color _color;
-  color_state _state;
+  Color color;
+  color_state state;
   Node *node1;
   Node *node2;
   bool directed;

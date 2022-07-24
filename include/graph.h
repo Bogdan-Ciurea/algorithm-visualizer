@@ -11,7 +11,11 @@ class Graph {
   void draw();
 
  private:
-  bool directed;
+  std::vector<std::vector<float>> adj_matrix;
+  std::vector<Node> node_list;
+
+  void add_node();
+  void add_edge();
 };
 
 #endif

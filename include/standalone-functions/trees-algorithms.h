@@ -1,6 +1,6 @@
 #ifndef TREES_ALGORITHMS_H
 #define TREES_ALGORITHMS_H
 
-#include "edge.h"
+#include "node.h"
 
 #endif

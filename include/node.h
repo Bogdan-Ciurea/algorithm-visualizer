@@ -5,19 +5,21 @@
 
 class Node {
  public:
-  Node(int value, int id = -1);
+  Node(int value, int x, int y, int id = -1);
   ~Node();
 
-  void change_state(color_state);
+  void draw(float r);
 
-  void draw(int x, int y, float radius);
+  bool is_selected(int x, int y);
 
-  int _value;
-  int _id;
+  int value;
+  int id;
 
  private:
-  Color _color;
-  color_state _state;
+  int coord_x, coord_y;
+  float radius;
+  Color color;
+  color_state state;
 };
 
 #endif
