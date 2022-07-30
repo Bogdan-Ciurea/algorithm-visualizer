@@ -6,36 +6,48 @@
 # Set the minimum version of CMake that can be used
 # To find the cmake version run
 # $ cmake --version
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.2)
 
 # Set a default C++ compile flag
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
+set (CMAKE_C_STANDARD 99)
+set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Set the project name
 project(visualizer)
 
-# Create a sources variable with a link to all cpp files to compile
-set(SOURCES 
-    src/main.cpp
-    src/algorithm.cpp
-    src/buttons.cpp
-    src/interface.cpp
-    src/pillar.cpp
-    src/sorter.cpp
-    src/raygui.cpp
-)
-add_executable(${PROJECT_NAME} ${SOURCES})
+# Add the headers in the /include directory
+include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
+# -------------------
+# Download submodules and check if they exist
 
-# Set the directories that should be included in the build command for this target
-# when running g++ these will be included as -I/directory/path/
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include)
+  # find_package(Git QUIET)
+  # if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+  #   # Update submodules as needed
+  #   option(GIT_SUBMODULE "Check submodules during build" ON)
+  #   if(GIT_SUBMODULE)
+  #     message(STATUS "Submodule update")
+  #     execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+  #                     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  #                     RESULT_VARIABLE GIT_SUBMOD_RESULT)
+  #     if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+  #       message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+  #     endif()
+  #   endif()
+  # endif()
 
-# Copy the assets
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+  # if(NOT EXISTS "${PROJECT_SOURCE_DIR}/modules/googletest/CMakeLists.txt" OR 
+  #    NOT EXISTS "${PROJECT_SOURCE_DIR}/modules/raylib/CMakeLists.txt")
+  #   message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+  # endif()
 
+# -------------------
+
+# -------------------
 # Libraries
+# Add Raylib
 include(FetchContent)
 FetchContent_Declare(raylib
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
@@ -43,5 +55,37 @@ FetchContent_Declare(raylib
 )
 FetchContent_MakeAvailable(raylib)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+# Add Google Tests
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
+link_libraries(raylib)
+# -------------------
+
+# -------------------
+# Add the main project
+set(PROJECT_LIBS project_libs)
+
+# Copy the assets
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+add_subdirectory(src)
+# -------------------
+
+# -------------------
+# Add testing
+
+option(PACKAGE_TESTS "Build the tests" ON)
+if(PACKAGE_TESTS)
+    enable_testing()
+    set(TEST_EXEC_NAME unit_tests)
+    add_subdirectory(tests)
+endif()
+# -------------------
