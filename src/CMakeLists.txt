@@ -1,6 +1,3 @@
-
-# Create a sources variable with a link to all cpp files to compile
-
 set(SOURCES
     algorithm.cpp
     buttons.cpp
