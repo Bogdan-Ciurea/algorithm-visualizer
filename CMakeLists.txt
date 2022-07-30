@@ -6,7 +6,7 @@
 # Set the minimum version of CMake that can be used
 # To find the cmake version run
 # $ cmake --version
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.2)
 
 # Set a default C++ compile flag
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
@@ -14,32 +14,13 @@ set (CMAKE_C_STANDARD 99)
 set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-enable_testing()
-
 # Set the project name
 project(visualizer)
 
-# Create a sources variable with a link to all cpp files to compile
-set(SOURCES 
-    src/main.cpp
-    src/algorithm.cpp
-    src/buttons.cpp
-    src/interface.cpp
-    src/pillar.cpp
-    src/sorter.cpp
-    src/raygui.cpp
-)
-add_executable(${PROJECT_NAME} ${SOURCES})
+# Add the headers in the /include directory
+include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-
-# Set the directories that should be included in the build command for this target
-# when running g++ these will be included as -I/directory/path/
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include)
-
-# Copy the assets
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
+# -------------------
 # Libraries
 # Add Raylib
 include(FetchContent)
@@ -58,7 +39,26 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
+link_libraries(raylib)
+# -------------------
 
-add_subdirectory(src/tests)
+# -------------------
+# Add the main project
+set(PROJECT_LIBS project_libs)
+
+# Copy the assets
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+add_subdirectory(src)
+# -------------------
+
+# -------------------
+# Add testing
+
+enable_testing()
+set(TEST_EXEC_NAME unit_tests)
+add_subdirectory(tests)
+
+# -------------------
