@@ -3,6 +3,4 @@
 
 TEST(ExampleTests, FirstExample) {
     EXPECT_TRUE(true);
-    Interface inter = Interface();
-    inter.~Interface();
 }

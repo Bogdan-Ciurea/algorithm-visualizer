@@ -6,8 +6,10 @@ For this project I have decided to use the following technologies:
  2. [**Raylib 4.0.0**](https://github.com/raysan5/raylib/tree/4.0.0) as the graphics library + [**RayGui 3.1**](https://github.com/raysan5/raygui/tree/3.1) 
  3. **CMake** to compile everything
  4. **Visual Studio Code** as the code editor
- 5. [**StackEdit**](https://stackedit.io/) for creating the `.md` files
- 6. [**Draw.io**](https://www.draw.io/) for creating the diagrams
+ 5. **Clang-Format** in order to properly format the code
+ 6. **Github Actions** for the pipelines
+ 7. [**StackEdit**](https://stackedit.io/) for creating the `.md` files
+ 8. [**Draw.io**](https://www.draw.io/) for creating the diagrams
  
  This is, at the time of developing the code, my biggest project. 😁
 

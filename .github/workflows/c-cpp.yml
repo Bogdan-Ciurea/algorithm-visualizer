@@ -16,10 +16,16 @@ jobs:
       run: |
           sudo apt update
           sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl1-mesa-dev
+    # This test is intended to check if the program builds without returning any errors
     - name: build
-      run: mkdir build && cd build && cmake .. && make
+      run: mkdir build && cmake -S . -B build/ && make -C build/
+    # This test will check if the coding standards for the cpp are met
     - name: cpp-style
       run: clang-format --dry-run --Werror src/*.cpp
+    # This test will check if the coding standards for the header files are met
     - name: h-style
       run: clang-format --dry-run --Werror include/*.h && clang-format --dry-run --Werror include/standalone-functions/*.h
+    # This test will check if the unit tests are running correctly
+    - name: tests
+      run: ./build/unit_tests
     
