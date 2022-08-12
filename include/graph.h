@@ -6,8 +6,12 @@
 
 class Graph : public AlgorithmInterface {
  public:
-  Graph() {}
-  ~Graph() {}
+  Graph() {
+    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+  }
+  ~Graph() {
+    UnloadFont(inter_regular);
+  }
 
   bool draw();
 
@@ -17,6 +21,8 @@ class Graph : public AlgorithmInterface {
 
   void add_node();
   void add_edge();
+
+  void draw_header();
 };
 
 #endif

@@ -6,8 +6,12 @@
 
 class Searcher : public AlgorithmInterface {
  public:
-  Searcher() {}
-  ~Searcher() {}
+  Searcher() {
+    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+  }
+  ~Searcher() {
+    UnloadFont(inter_regular);
+  }
 
   bool draw();
 };

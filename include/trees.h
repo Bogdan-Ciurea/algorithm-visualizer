@@ -6,8 +6,12 @@
 
 class Trees : public AlgorithmInterface {
  public:
-  Trees() {}
-  ~Trees() {}
+  Trees() {
+    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+  }
+  ~Trees() {
+    UnloadFont(inter_regular);
+  }
 
   bool draw();
 };

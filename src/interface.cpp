@@ -28,6 +28,7 @@ void Interface::draw() {
     float button_width = GetScreenWidth() / 4;
     float button_height = 100;
     if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
+    if (button_height > 130) button_height = 130;
 
     // Check if the user selected the Sorting Algorithms
     if (GuiButtonWithColor((Rectangle){0, 0, button_width, button_height},
@@ -51,6 +52,12 @@ void Interface::draw() {
             (Rectangle){button_width * 3, 0, button_width, button_height},
             "Trees Algorithms", TREES_BACKGROUND_COLOR))
       current_interface = new Trees();
+
+    // Draw some margins between the buttons
+    DrawRectangle(0, button_height, GetScreenWidth(), 3, BLACK);
+    DrawRectangle(button_width - 1, 0, 3, button_height, BLACK);
+    DrawRectangle(button_width * 2 - 1, 0, 3, button_height, BLACK);
+    DrawRectangle(button_width * 3 - 1, 0, 3, button_height, BLACK);
 
     // Draw the text. unfortunately there is no better way of drawing centered text so...
     DrawTextEx(inter_regular, "Welcome to my \"Algorithms Visualizer\"", 

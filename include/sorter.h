@@ -6,15 +6,18 @@
 
 class Sorter : public AlgorithmInterface {
  public:
-  Sorter();
-  ~Sorter();
+  Sorter() {
+    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+  }
+  ~Sorter() {
+    UnloadFont(inter_regular);
+  }
 
   /**
    * @brief Will draw everything to the screen
    *
-   * @param start_height represents the starting height on which we can draw
    */
-  bool draw(int start_height);
+  bool draw();
 
   /**
    * @brief Will add one pillar to the list

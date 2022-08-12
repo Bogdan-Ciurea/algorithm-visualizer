@@ -1,70 +1,43 @@
 #include "sorter.h"
 
-Sorter::Sorter() : AlgorithmInterface() {
-  srand(time(NULL));
-  randomize(STARTING_PILLARS);
-  is_running = false;
-}
+bool Sorter::draw() {
+  // Build the header
+  float button_height = 100;
+  if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
+  if (button_height > 130) button_height = 130;
 
-Sorter::~Sorter() {
-  pillars.clear();
-  for (std::vector<Pillar> frame : animation) {
-    frame.clear();
-  }
-  animation.clear();
-}
+  // Draw the header background
+  DrawRectangle(0, 0, GetScreenWidth(), button_height, SORTER_BACKGROUND_COLOR);
+  DrawRectangle(0, button_height, GetScreenWidth(), 3, BLACK);
 
-bool Sorter::draw(int start_height) {
-  DrawRectangle(0, start_height, GetScreenWidth(),
-                GetScreenHeight() - start_height, MY_BACKGROUND_COLOR);
+  // Draw the back button
+  Rectangle back_button_rect = (Rectangle){10, button_height / 2 - 20, 40, 40};
+  if (GuiButton(back_button_rect, GuiIconText(RAYGUI_ICON_ARROW_LEFT_FILL, ""))) return true;
 
-  float current_x = 2;
-  float pillar_width = (float)GetScreenWidth() / (float)pillars.size() - 3.0f;
-  float height_multiplier = (float)(GetScreenHeight() - start_height) / 100.0f;
+  // Draw the "Sorting Algorithms" text
+  DrawTextEx(inter_regular, "Sorting Algorithms", (Vector2){65, button_height / 2 - 10}, 20, 0, DARKGRAY);
 
-  if (!is_running) {
-    for (Pillar cur_pil : pillars) {
-      cur_pil.draw(current_x,
-                   GetScreenHeight() - height_multiplier * cur_pil._value,
-                   pillar_width, height_multiplier * cur_pil._value);
-      current_x += pillar_width + 3;
+  // Draw all the algorithm options
+  if (GuiDropdownBox((Rectangle){ (float)(80 + MeasureText("Sorting Algorithms", 16)), button_height / 2 - 20, 135, 40},
+      "INSERTION;HEAP;SELECTION;MERGE;QUICK;BUBBLE", 
+      &dropdown_option, dropdown_enabled)) dropdown_enabled = !dropdown_enabled;
+
+
+  // Draw the algorithm dropdown buttons
+  Rectangle randomize_rect = (Rectangle){(float)(GetScreenWidth() - 260), button_height / 2 - 20, 130, 40};
+  GuiButton(randomize_rect, GuiIconText(RAYGUI_ICON_SHUFFLE, "Randomize"));
+
+
+  // Draw the start/end button
+  Rectangle start_end_button_rect = (Rectangle){(float)(GetScreenWidth() - 115), button_height / 2 - 20, 100, 40};
+  if (!running) {
+    if (GuiButton(start_end_button_rect, GuiIconText(RAYGUI_ICON_PLAYER_PLAY, "Start"))) {
+      running = true;
     }
-  } else {
-    if (!animation.empty()) {
-      if (std::chrono::system_clock::now().time_since_epoch() /
-                  std::chrono::milliseconds(1) -
-              last_draw_time >
-          1000 / ANIMATION_FPS) {
-        // Update the display time of the last frame
-        last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
-                         std::chrono::milliseconds(1);
-
-        // Display the state of the algorithm
-        for (Pillar cur_pil : animation.at(0)) {
-          cur_pil.draw(current_x,
-                       GetScreenHeight() - height_multiplier * cur_pil._value,
-                       pillar_width, height_multiplier * cur_pil._value);
-          current_x += pillar_width + 3;
-        }
-
-        // Save the last frame with the sorted pillars
-        if (animation.size() == 1) {
-          pillars = animation.at(0);
-        }
-
-        // Delete the first frame
-        animation.erase(animation.begin());
-      } else {
-        // Display the state of the algorithm
-        for (Pillar cur_pil : animation.at(0)) {
-          cur_pil.draw(current_x,
-                       GetScreenHeight() - height_multiplier * cur_pil._value,
-                       pillar_width, height_multiplier * cur_pil._value);
-          current_x += pillar_width + 3;
-        }
-      }
-    } else {
-      is_running = false;
+  }
+  else {
+    if (GuiButton(start_end_button_rect, GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop"))) {
+      running = false;
     }
   }
 
