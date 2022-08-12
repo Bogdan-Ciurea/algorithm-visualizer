@@ -1,6 +1,7 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include "algirithm_interface.h"
 #include "buttons.h"
 #include "graph.h"
 #include "searcher.h"
@@ -19,14 +20,8 @@ class Interface {
   void draw();
 
  private:
-  /**
-   * @brief Will get the input from the user through the controller
-   *
-   */
-  void check_for_input();
-
-  Buttons control;
-  Sorter sorter;
+  AlgorithmInterface *current_interface = nullptr;
+  Font inter_regular, inter_light;
 };
 
 #endif

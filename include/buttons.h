@@ -13,7 +13,7 @@ class Buttons {
    *
    * @param max_width represents the maximum allocated width of the buttons
    */
-  void draw(int max_width);
+  bool draw(int max_width);
 
   /**
    * @brief Will check on what option the user pressed on

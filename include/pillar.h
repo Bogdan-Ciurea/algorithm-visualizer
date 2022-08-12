@@ -10,7 +10,7 @@ class Pillar {
 
   void change_state(color_state);
 
-  void draw(int x, int y, int width, int height);
+  bool draw(int x, int y, int width, int height);
 
   int _value;
 

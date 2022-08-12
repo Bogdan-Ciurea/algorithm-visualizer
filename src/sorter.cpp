@@ -1,6 +1,6 @@
 #include "sorter.h"
 
-Sorter::Sorter() {
+Sorter::Sorter() : AlgorithmInterface() {
   srand(time(NULL));
   randomize(STARTING_PILLARS);
   is_running = false;
@@ -14,7 +14,7 @@ Sorter::~Sorter() {
   animation.clear();
 }
 
-void Sorter::draw(int start_height) {
+bool Sorter::draw(int start_height) {
   DrawRectangle(0, start_height, GetScreenWidth(),
                 GetScreenHeight() - start_height, MY_BACKGROUND_COLOR);
 
@@ -67,6 +67,8 @@ void Sorter::draw(int start_height) {
       is_running = false;
     }
   }
+
+  return false;
 }
 
 void Sorter::add_pillar() {

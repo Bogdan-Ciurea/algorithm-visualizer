@@ -1,14 +1,15 @@
 #ifndef SEARCHER_H
 #define SEARCHER_H
 
+#include "algirithm_interface.h"
 #include "standalone-functions/search-algorithms.h"
 
-class Searcher {
+class Searcher : public AlgorithmInterface {
  public:
-  Searcher();
-  ~Searcher();
+  Searcher() {}
+  ~Searcher() {}
 
-  void draw();
+  bool draw();
 };
 
 #endif

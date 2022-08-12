@@ -1,14 +1,15 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include "algirithm_interface.h"
 #include "standalone-functions/graph-algorithms.h"
 
-class Graph {
+class Graph : public AlgorithmInterface {
  public:
-  Graph();
-  ~Graph();
+  Graph() {}
+  ~Graph() {}
 
-  void draw();
+  bool draw();
 
  private:
   std::vector<std::vector<float>> adj_matrix;

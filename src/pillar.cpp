@@ -28,9 +28,11 @@ void Pillar::change_state(color_state state_change) {
   }
 }
 
-void Pillar::draw(int x, int y, int width, int height) {
+bool Pillar::draw(int x, int y, int width, int height) {
   Rectangle r = {(float)x, (float)y, (float)width, (float)height};
 
   DrawRectangleLines(x, y, width, height, BORDER_COLOR);
   DrawRectangle(x, y, width, height, _color);
+
+  return false;
 }

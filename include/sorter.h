@@ -1,9 +1,10 @@
 #ifndef SORTER_H
 #define SORTER_H
 
+#include "algirithm_interface.h"
 #include "standalone-functions/sorting-algorithms.h"
 
-class Sorter {
+class Sorter : public AlgorithmInterface {
  public:
   Sorter();
   ~Sorter();
@@ -13,7 +14,7 @@ class Sorter {
    *
    * @param start_height represents the starting height on which we can draw
    */
-  void draw(int start_height);
+  bool draw(int start_height);
 
   /**
    * @brief Will add one pillar to the list

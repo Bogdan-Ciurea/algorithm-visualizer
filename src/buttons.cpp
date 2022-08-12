@@ -19,7 +19,7 @@ Buttons::~Buttons() {
   UnloadTexture(minus_texture);
 }
 
-void Buttons::draw(int max_height) {
+bool Buttons::draw(int max_height) {
   // Draw the top bar
   DrawRectangle(0, 0, GetScreenWidth(), max_height, TOPBAR_COLOR);
 
@@ -168,6 +168,8 @@ void Buttons::draw(int max_height) {
     }
   } else {
   }
+
+  return false;
 }
 
 sort_search_input_options Buttons::get_input() {
