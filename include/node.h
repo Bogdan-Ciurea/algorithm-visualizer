@@ -6,9 +6,9 @@
 class Node {
  public:
   Node(int value, int x, int y, int id = -1);
-  ~Node();
+  ~Node() {}
 
-  void draw(float r);
+  bool draw(float r);
 
   bool is_selected(int x, int y);
 

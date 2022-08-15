@@ -1,99 +1,88 @@
 #include "sorter.h"
 
-Sorter::Sorter() {
-  srand(time(NULL));
-  randomize(STARTING_PILLARS);
-  is_running = false;
+bool Sorter::draw() {
+  // Build the header
+  if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
+  if (button_height > 130) button_height = 130;
+
+  // Draw the header background
+  DrawRectangle(0, 0, GetScreenWidth(), button_height, SORTER_BACKGROUND_COLOR);
+  DrawRectangle(0, button_height, GetScreenWidth(), 3, DARKGRAY);
+
+  // Draw the back button
+  Rectangle back_button_rect = (Rectangle){10, button_height / 2 - 20, 40, 40};
+  if (GuiButton(back_button_rect, GuiIconText(RAYGUI_ICON_ARROW_LEFT_FILL, "")))
+    return true;
+
+  draw_header();
+
+  return false;
 }
 
-Sorter::~Sorter() {
-  pillars.clear();
-  for (std::vector<Pillar> frame : animation) {
-    frame.clear();
+void Sorter::draw_header() {
+  // Draw the "Sorting Algorithms" text
+  DrawTextEx(inter_regular, "Sorting Algorithms",
+             (Vector2){65, button_height / 2 - 10}, 20, 0, DARKGRAY);
+
+  // Draw all the algorithm options
+  if (GuiDropdownBox(
+          (Rectangle){(float)(80 + MeasureText("Sorting Algorithms", 16)),
+                      button_height / 2 - 20, 135, 40},
+          "INSERTION;HEAP;SELECTION;MERGE;QUICK;BUBBLE", &dropdown_option,
+          dropdown_enabled && !running))
+    dropdown_enabled = !dropdown_enabled;
+
+  // Draw the randomize button
+  Rectangle randomize_rect = (Rectangle){(float)(GetScreenWidth() - 260),
+                                         button_height / 2 - 20, 130, 40};
+  if (GuiButton(randomize_rect,
+                GuiIconText(RAYGUI_ICON_SHUFFLE, "Randomize")) &&
+      !running) {
+    shuffle_pillars();
   }
-  animation.clear();
-}
 
-void Sorter::draw(int start_height) {
-  DrawRectangle(0, start_height, GetScreenWidth(),
-                GetScreenHeight() - start_height, MY_BACKGROUND_COLOR);
-
-  float current_x = 2;
-  float pillar_width = (float)GetScreenWidth() / (float)pillars.size() - 3.0f;
-  float height_multiplier = (float)(GetScreenHeight() - start_height) / 100.0f;
-
-  if (!is_running) {
-    for (Pillar cur_pil : pillars) {
-      cur_pil.draw(current_x,
-                   GetScreenHeight() - height_multiplier * cur_pil._value,
-                   pillar_width, height_multiplier * cur_pil._value);
-      current_x += pillar_width + 3;
+  // Draw the start/end button
+  Rectangle start_end_button_rect = (Rectangle){
+      (float)(GetScreenWidth() - 115), button_height / 2 - 20, 100, 40};
+  if (!running) {
+    if (GuiButton(start_end_button_rect,
+                  GuiIconText(RAYGUI_ICON_PLAYER_PLAY, "Start"))) {
+      running = true;
     }
   } else {
-    if (!animation.empty()) {
-      if (std::chrono::system_clock::now().time_since_epoch() /
-                  std::chrono::milliseconds(1) -
-              last_draw_time >
-          1000 / ANIMATION_FPS) {
-        // Update the display time of the last frame
-        last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
-                         std::chrono::milliseconds(1);
-
-        // Display the state of the algorithm
-        for (Pillar cur_pil : animation.at(0)) {
-          cur_pil.draw(current_x,
-                       GetScreenHeight() - height_multiplier * cur_pil._value,
-                       pillar_width, height_multiplier * cur_pil._value);
-          current_x += pillar_width + 3;
-        }
-
-        // Save the last frame with the sorted pillars
-        if (animation.size() == 1) {
-          pillars = animation.at(0);
-        }
-
-        // Delete the first frame
-        animation.erase(animation.begin());
-      } else {
-        // Display the state of the algorithm
-        for (Pillar cur_pil : animation.at(0)) {
-          cur_pil.draw(current_x,
-                       GetScreenHeight() - height_multiplier * cur_pil._value,
-                       pillar_width, height_multiplier * cur_pil._value);
-          current_x += pillar_width + 3;
-        }
-      }
-    } else {
-      is_running = false;
+    if (GuiButton(start_end_button_rect,
+                  GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop"))) {
+      running = false;
     }
   }
+
+  // Draw the add/remove pillar buttons
+  Rectangle add_rect = (Rectangle){(float)(GetScreenWidth() - 315),
+                                   button_height / 2 - 20, 40, 40};
+  if (GuiButton(add_rect, GuiIconText(RAYGUI_ICON_PLUS, "")) && !running)
+    add_pillar();
+
+  Rectangle remove_rect = (Rectangle){(float)(GetScreenWidth() - 370),
+                                      button_height / 2 - 20, 40, 40};
+  if (GuiButton(remove_rect, GuiIconText(RAYGUI_ICON_MINUS, "")) && !running)
+    remove_pillar();
+
+  DrawTextEx(inter_regular, "Pillar count",
+             (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25},
+             20, 0, GRAY);
 }
 
 void Sorter::add_pillar() {
-  if (is_running) {
-    return;
-  }
-
   int number = rand() % 100 + 1;
   Pillar new_pill(number);
   pillars.push_back(new_pill);
 }
 
-void Sorter::remove_pillar() {
-  if (is_running) {
-    return;
-  }
+void Sorter::remove_pillar() { pillars.pop_back(); }
 
-  pillars.pop_back();
-}
-
-void Sorter::randomize(int size) {
-  if (is_running) {
-    return;
-  }
-
+void Sorter::shuffle_pillars() {
   // Empty the array
-  if (!pillars.empty()) {
+  /*if (!pillars.empty()) {
     for (Pillar cur_pill : pillars) {
       cur_pill.~Pillar();
     }
@@ -103,7 +92,7 @@ void Sorter::randomize(int size) {
   for (int i = 0; i < size; i++) {
     Pillar new_pill(rand() % 100 + 1);
     pillars.push_back(new_pill);
-  }
+  }*/
 }
 
 bool Sorter::sorted_pillars() {
@@ -117,7 +106,7 @@ bool Sorter::sorted_pillars() {
 }
 
 void Sorter::get_animation_algorithm(sort_algorithm_options algorithm) {
-  if (is_running) {
+  if (running) {
     return;
   }
 
@@ -134,7 +123,7 @@ void Sorter::get_animation_algorithm(sort_algorithm_options algorithm) {
 
     animation.push_back(pillars);
 
-    is_running = true;
+    running = true;
     last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
                      std::chrono::milliseconds(1);
 
@@ -170,7 +159,7 @@ void Sorter::get_animation_algorithm(sort_algorithm_options algorithm) {
       break;
   }
 
-  is_running = true;
+  running = true;
   last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
                    std::chrono::milliseconds(1);
 }

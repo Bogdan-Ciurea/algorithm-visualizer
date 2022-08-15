@@ -6,6 +6,7 @@
 #include <time.h>
 
 #include <chrono>
+#include <iostream>
 #include <vector>
 
 #include "raygui.h"
@@ -16,14 +17,31 @@
 
 #define ANIMATION_FPS 30
 
-#define MY_BACKGROUND_COLOR \
-  Color { 241, 250, 238, 100 }  // The color of the background
+// For more colors go to
+// https://coolors.co/palette/f94144-f3722c-f8961e-f9c74f-90be6d-43aa8b-577590
+
 #define TOPBAR_COLOR \
-  Color { 29, 53, 87, 100 }  // The background color of the topbar
+  Color { 29, 53, 87, 100 }  // The background color of the top bar
 #define TEXT_COLOR \
   Color { 168, 218, 220, 100 }  // The color of the text
 #define HOVER_TEXT_COLOR \
   Color { 69, 123, 157, 100 }  // The color of the text when hovered over
+
+// Fonts
+// Font inter_regular, inter_light;
+
+// Main menu colors
+
+#define SORTER_BACKGROUND_COLOR \
+  Color { 25, 130, 196, 255 }
+#define SEARCHER_BACKGROUND_COLOR \
+  Color { 243, 114, 44, 255 }
+#define GRAPH_BACKGROUND_COLOR \
+  Color { 144, 190, 109, 255 }
+#define TREES_BACKGROUND_COLOR \
+  Color { 67, 170, 139, 255 }
+#define MY_BACKGROUND_COLOR \
+  Color { 237, 242, 244, 255 }  // The color of the background
 
 // Element color related
 #define NORMAL_COLOR \
@@ -37,7 +55,8 @@
 
 // In order to animate everything we will need to have more states
 enum color_state { NORMAL, SELECTED, MOVED };
-enum current_interface { MAIN_MENU, GRAPH, TREES, SORTER, SEARCH };
+
+// Used to represent the flow of the program
 
 // Graph and Trees Related
 // --------------------------

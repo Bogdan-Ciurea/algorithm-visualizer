@@ -1,19 +1,21 @@
 #ifndef SORTER_H
 #define SORTER_H
 
+#include "algirithm_interface.h"
 #include "standalone-functions/sorting-algorithms.h"
 
-class Sorter {
+class Sorter : public AlgorithmInterface {
  public:
-  Sorter();
-  ~Sorter();
+  Sorter() { inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0); }
+  ~Sorter() {}
 
   /**
    * @brief Will draw everything to the screen
    *
-   * @param start_height represents the starting height on which we can draw
    */
-  void draw(int start_height);
+  bool draw();
+
+  void draw_header();
 
   /**
    * @brief Will add one pillar to the list
@@ -30,9 +32,8 @@ class Sorter {
   /**
    * @brief Will randomize the array
    *
-   * @param size represents the size of the desired array
    */
-  void randomize(int size);
+  void shuffle_pillars();
 
   /**
    * @brief Will get the number of pillars in the list
