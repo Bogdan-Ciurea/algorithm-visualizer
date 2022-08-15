@@ -7,12 +7,19 @@
 class Trees : public AlgorithmInterface {
  public:
   Trees() { inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0); }
-  ~Trees() { }
+  ~Trees() {}
 
   bool draw();
 
-private:
+ private:
+  Node *selected_node;
+  bool textBoxEditMode = false;
+  char textBoxText[64] = "Node's value";
+
   void draw_header();
+
+  void delete_node();
+  void add_node();
 };
 
 #endif

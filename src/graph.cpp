@@ -46,17 +46,27 @@ void Graph::draw_header() {
       running = false;
   }
 
-  // Draw the directed/undirected toggle button
-  Rectangle directed_rect = (Rectangle){ (float)(GetScreenWidth() - 240), button_height / 2 - 10, 20, 20};
-  directed = GuiCheckBox(directed_rect, "Directed", directed);
-
   // Draw the import button
-  Rectangle import_rect = (Rectangle){ (float)(GetScreenWidth() - 295), button_height / 2 - 20, 40, 40};
+  Rectangle import_rect = (Rectangle){(float)(GetScreenWidth() - 170),
+                                      button_height / 2 - 20, 40, 40};
   if (GuiButton(import_rect, GuiIconText(RAYGUI_ICON_FILE_OPEN, ""))) {
     import_graph();
   }
+
+  if (dropdown_option !=
+      7) {  // We need two nodes only if we don't want the topological sorting
+    // Draw the "from" input button
+    Rectangle input_rect1 = (Rectangle){(float)(GetScreenWidth() - 285),
+                                        button_height / 2 - 20, 100, 40};
+    if (GuiTextBox(input_rect1, textBoxText1, 64, textBoxEditMode1))
+      textBoxEditMode1 = !textBoxEditMode1;
+
+    // Draw the "to" input button
+    Rectangle input_rect2 = (Rectangle){(float)(GetScreenWidth() - 400),
+                                        button_height / 2 - 20, 100, 40};
+    if (GuiTextBox(input_rect2, textBoxText2, 64, textBoxEditMode2))
+      textBoxEditMode2 = !textBoxEditMode2;
+  }
 }
 
-bool Graph::import_graph() {
-  return true;
-}
+bool Graph::import_graph() { return true; }

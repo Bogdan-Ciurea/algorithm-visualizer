@@ -9,17 +9,19 @@ class Searcher : public AlgorithmInterface {
   Searcher() {
     inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
   }
-  ~Searcher() { }
+  ~Searcher() {}
 
   bool draw();
 
  private:
-  // Variables that are used for flow control 
+  // Variables that are used for flow control
   bool sorted = true;
   bool textBoxEditMode = false;
   char textBoxText[64] = "Input";
-  bool valid_input = false; // This valid be used as an indicator of the fact that we processed the input and it was valid
-                            // Will also work as a toggle that we want to start showing the animation
+  bool valid_input =
+      false;  // This valid be used as an indicator of the fact that we
+              // processed the input and it was valid Will also work as a toggle
+              // that we want to start showing the animation
 
   // Variables that represent the processed input
   int value_searched = -1;
@@ -28,7 +30,7 @@ class Searcher : public AlgorithmInterface {
 
   /**
    * @brief The main function that will process the input
-   * 
+   *
    */
   void run_program();
 
@@ -39,14 +41,15 @@ class Searcher : public AlgorithmInterface {
   void draw_pillars();
 
   /**
-   * @brief The function that will draw the header and will take the input from that user
-   * 
+   * @brief The function that will draw the header and will take the input from
+   * that user
+   *
    */
   void draw_header();
 
   /**
    * @brief The function that will draw the animation that we want to get
-   * 
+   *
    */
   void draw_animation();
 
@@ -66,9 +69,11 @@ class Searcher : public AlgorithmInterface {
   void remove_pillar();
 
   /**
-   * @brief This function is responsible for checking the input number from the user
-   * 
-   * @return bool false for an error input. True if we can start running the program
+   * @brief This function is responsible for checking the input number from the
+   * user
+   *
+   * @return bool false for an error input. True if we can start running the
+   * program
    */
   bool check_input();
 };

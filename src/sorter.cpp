@@ -20,7 +20,7 @@ bool Sorter::draw() {
 }
 
 void Sorter::draw_header() {
-    // Draw the "Sorting Algorithms" text
+  // Draw the "Sorting Algorithms" text
   DrawTextEx(inter_regular, "Sorting Algorithms",
              (Vector2){65, button_height / 2 - 10}, 20, 0, DARKGRAY);
 
@@ -35,7 +35,9 @@ void Sorter::draw_header() {
   // Draw the randomize button
   Rectangle randomize_rect = (Rectangle){(float)(GetScreenWidth() - 260),
                                          button_height / 2 - 20, 130, 40};
-  if (GuiButton(randomize_rect, GuiIconText(RAYGUI_ICON_SHUFFLE, "Randomize")) && !running) {
+  if (GuiButton(randomize_rect,
+                GuiIconText(RAYGUI_ICON_SHUFFLE, "Randomize")) &&
+      !running) {
     shuffle_pillars();
   }
 
@@ -56,17 +58,18 @@ void Sorter::draw_header() {
 
   // Draw the add/remove pillar buttons
   Rectangle add_rect = (Rectangle){(float)(GetScreenWidth() - 315),
-                                         button_height / 2 - 20, 40, 40};
+                                   button_height / 2 - 20, 40, 40};
   if (GuiButton(add_rect, GuiIconText(RAYGUI_ICON_PLUS, "")) && !running)
     add_pillar();
-  
+
   Rectangle remove_rect = (Rectangle){(float)(GetScreenWidth() - 370),
-                                         button_height / 2 - 20, 40, 40};
+                                      button_height / 2 - 20, 40, 40};
   if (GuiButton(remove_rect, GuiIconText(RAYGUI_ICON_MINUS, "")) && !running)
     remove_pillar();
-  
+
   DrawTextEx(inter_regular, "Pillar count",
-             (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25}, 20, 0, GRAY);
+             (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25},
+             20, 0, GRAY);
 }
 
 void Sorter::add_pillar() {
@@ -75,9 +78,7 @@ void Sorter::add_pillar() {
   pillars.push_back(new_pill);
 }
 
-void Sorter::remove_pillar() {
-  pillars.pop_back();
-}
+void Sorter::remove_pillar() { pillars.pop_back(); }
 
 void Sorter::shuffle_pillars() {
   // Empty the array

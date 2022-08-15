@@ -58,7 +58,6 @@ enum color_state { NORMAL, SELECTED, MOVED };
 
 // Used to represent the flow of the program
 
-
 // Graph and Trees Related
 // --------------------------
 enum graph_tree_input_options {

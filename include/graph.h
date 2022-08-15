@@ -16,6 +16,10 @@ class Graph : public AlgorithmInterface {
   std::vector<Node> node_list;
 
   bool directed = false;
+  bool textBoxEditMode1 = false;
+  char textBoxText1[64] = "From";
+  bool textBoxEditMode2 = false;
+  char textBoxText2[64] = "To";
 
   void add_node();
   void add_edge();

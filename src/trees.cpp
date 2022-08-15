@@ -13,7 +13,7 @@ bool Trees::draw() {
   Rectangle back_button_rect = (Rectangle){10, button_height / 2 - 20, 40, 40};
   if (GuiButton(back_button_rect, GuiIconText(RAYGUI_ICON_ARROW_LEFT_FILL, "")))
     return true;
-  
+
   draw_header();
 
   return false;
@@ -45,4 +45,26 @@ void Trees::draw_header() {
       running = false;
     }
   }
+
+  // Draw the "Delete" button
+  Rectangle delete_rect = (Rectangle){(float)(GetScreenWidth() - 170),
+                                      button_height / 2 - 20, 40, 40};
+  if (GuiButton(delete_rect, GuiIconText(RAYGUI_ICON_MINUS, ""))) {
+    delete_node();
+  }
+
+  // Draw the "Add" text box and button
+  Rectangle add_rect = (Rectangle){(float)(GetScreenWidth() - 225),
+                                   button_height / 2 - 20, 40, 40};
+  if (GuiButton(add_rect, GuiIconText(RAYGUI_ICON_PLUS, ""))) {
+    add_node();
+  }
+  Rectangle input_rect = (Rectangle){(float)(GetScreenWidth() - 365),
+                                     button_height / 2 - 20, 130, 40};
+  if (GuiTextBox(input_rect, textBoxText, 64, textBoxEditMode))
+    textBoxEditMode = !textBoxEditMode;
 }
+
+void Trees::delete_node() {}
+
+void Trees::add_node() {}

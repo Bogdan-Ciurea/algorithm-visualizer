@@ -13,8 +13,9 @@ class AlgorithmInterface {
   virtual bool draw() { return true; }
 
   /**
-   * @brief The function that will draw the header and will take the input from that user
-   * 
+   * @brief The function that will draw the header and will take the input from
+   * that user
+   *
    */
   virtual void draw_header() {}
 

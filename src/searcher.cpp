@@ -46,9 +46,9 @@ void Searcher::draw_header() {
     if (GuiButton(start_end_button_rect,
                   GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop")))
       running = false;
-    
+
     // Process the input
-    if(!valid_input || check_input()) {
+    if (!valid_input || check_input()) {
       draw_animation();
     }
   }
@@ -58,12 +58,14 @@ void Searcher::draw_header() {
                                          button_height / 2 - 20, 130, 40};
   if (sorted) {
     if (GuiButton(randomize_rect,
-                  GuiIconText(RAYGUI_ICON_SHUFFLE, "Randomize")) && !running) {
+                  GuiIconText(RAYGUI_ICON_SHUFFLE, "Randomize")) &&
+        !running) {
       sorted = false;
       shuffle_pillars();
     }
   } else {
-    if (GuiButton(randomize_rect, GuiIconText(RAYGUI_ICON_SORT, "Sort")) && !running) {
+    if (GuiButton(randomize_rect, GuiIconText(RAYGUI_ICON_SORT, "Sort")) &&
+        !running) {
       sorted = true;
       sort_pillars();
     }
@@ -71,28 +73,28 @@ void Searcher::draw_header() {
 
   // Draw the add/remove pillar buttons
   Rectangle add_rect = (Rectangle){(float)(GetScreenWidth() - 315),
-                                         button_height / 2 - 20, 40, 40};
+                                   button_height / 2 - 20, 40, 40};
   if (GuiButton(add_rect, GuiIconText(RAYGUI_ICON_PLUS, "")) && !running)
     add_pillar();
-  
+
   Rectangle remove_rect = (Rectangle){(float)(GetScreenWidth() - 370),
-                                         button_height / 2 - 20, 40, 40};
+                                      button_height / 2 - 20, 40, 40};
   if (GuiButton(remove_rect, GuiIconText(RAYGUI_ICON_MINUS, "")) && !running)
     remove_pillar();
-  
+
   DrawTextEx(inter_regular, "Pillar count",
-             (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25}, 20, 0, GRAY);
+             (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25},
+             20, 0, GRAY);
 
   // Draw the "take input" button
   Rectangle input_rect = (Rectangle){(float)(GetScreenWidth() - 485),
-                                         button_height / 2 - 20, 100, 40};
-  if (GuiTextBox(input_rect, textBoxText, 64, textBoxEditMode)) textBoxEditMode = !textBoxEditMode;
+                                     button_height / 2 - 20, 100, 40};
+  if (GuiTextBox(input_rect, textBoxText, 64, textBoxEditMode))
+    textBoxEditMode = !textBoxEditMode;
 
   // Draw the "Valid input" label to indicate if the input is valid
   if (!valid_input) {
-
   }
-
 }
 
 void Searcher::draw_pillars() {}
