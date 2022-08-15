@@ -4,7 +4,7 @@
 
 Interface::Interface() {
   inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
-  inter_light   = LoadFontEx("assets/inter-light.ttf",   20, 0, 0);
+  inter_light = LoadFontEx("assets/inter-light.ttf", 20, 0, 0);
 }
 
 Interface::~Interface() {
@@ -18,13 +18,15 @@ void Interface::draw() {
     if (current_interface->draw()) {
       // If we want to return from the draw() function, we delete the current
       // interface to free the memory
+      UnloadFont(current_interface->inter_regular);
       delete current_interface;
       current_interface = nullptr;
     }
   } else {
     // Draw the main menu
 
-    // Get the sizes for the header (which will contain the buttons for the algorithms)
+    // Get the sizes for the header (which will contain the buttons for the
+    // algorithms)
     float button_width = GetScreenWidth() / 4;
     float button_height = 100;
     if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
@@ -54,23 +56,35 @@ void Interface::draw() {
       current_interface = new Trees();
 
     // Draw some margins between the buttons
-    DrawRectangle(0, button_height, GetScreenWidth(), 3, BLACK);
-    DrawRectangle(button_width - 1, 0, 3, button_height, BLACK);
-    DrawRectangle(button_width * 2 - 1, 0, 3, button_height, BLACK);
-    DrawRectangle(button_width * 3 - 1, 0, 3, button_height, BLACK);
+    DrawRectangle(0, button_height, GetScreenWidth(), 3, DARKGRAY);
+    DrawRectangle(button_width - 1, 0, 3, button_height, DARKGRAY);
+    DrawRectangle(button_width * 2 - 1, 0, 3, button_height, DARKGRAY);
+    DrawRectangle(button_width * 3 - 1, 0, 3, button_height, DARKGRAY);
 
-    // Draw the text. unfortunately there is no better way of drawing centered text so...
-    DrawTextEx(inter_regular, "Welcome to my \"Algorithms Visualizer\"", 
-               (Vector2){ (float)((GetScreenWidth() - MeasureText("Welcome to my \"Algorithms Visualizer\"", 20) * 0.8f) / 2),
-                          (float)((GetScreenHeight() + button_height) / 2 - 20)},
+    // Draw the text. unfortunately there is no better way of drawing centered
+    // text so...
+    DrawTextEx(
+        inter_regular, "Welcome to my \"Algorithms Visualizer\"",
+        (Vector2){(float)((GetScreenWidth() -
+                           MeasureText(
+                               "Welcome to my \"Algorithms Visualizer\"", 20) *
+                               0.8f) /
+                          2),
+                  (float)((GetScreenHeight() + button_height) / 2 - 20)},
+        20.0f, 0.0f, BLACK);
+    DrawTextEx(inter_regular, "personal project",
+               (Vector2){(float)((GetScreenWidth() -
+                                  MeasureText("personal project", 20) * 0.8f) /
+                                 2),
+                         (float)((GetScreenHeight() + button_height) / 2)},
                20.0f, 0.0f, BLACK);
-    DrawTextEx(inter_regular, "personal project", 
-               (Vector2){ (float)((GetScreenWidth() - MeasureText("personal project", 20) * 0.8f) / 2),
-                          (float)((GetScreenHeight() + button_height) / 2)}, 
-               20.0f, 0.0f, BLACK);
-    DrawTextEx(inter_light, "Made with love by Bogdan Ciurea", 
-               (Vector2){ (float)((GetScreenWidth() - MeasureText("Made with love by Bogdan Ciurea", 20) * 0.8f) / 2),
-                          (float)((GetScreenHeight() + button_height) / 2 + 20)},
-               20.0f, 0.0f, BLACK);
+    DrawTextEx(
+        inter_light, "Made with love by Bogdan Ciurea",
+        (Vector2){(float)((GetScreenWidth() -
+                           MeasureText("Made with love by Bogdan Ciurea", 20) *
+                               0.8f) /
+                          2),
+                  (float)((GetScreenHeight() + button_height) / 2 + 20)},
+        20.0f, 0.0f, BLACK);
   }
 }

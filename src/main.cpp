@@ -8,7 +8,7 @@ int main() {
 
   SetConfigFlags(FLAG_WINDOW_RESIZABLE);
   InitWindow(screenWidth, screenHeight, "Algorithm visualizer");
-  SetWindowMinSize(750, 400);
+  SetWindowMinSize(1000, 550);
 
   SetTargetFPS(60);  // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------

@@ -55,7 +55,9 @@
 
 // In order to animate everything we will need to have more states
 enum color_state { NORMAL, SELECTED, MOVED };
-enum current_interface { MAIN_MENU, SEARCH, SORTING, GRAPHS, TREES };
+
+// Used to represent the flow of the program
+
 
 // Graph and Trees Related
 // --------------------------

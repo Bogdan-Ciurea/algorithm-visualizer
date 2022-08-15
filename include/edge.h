@@ -10,7 +10,7 @@ class Edge {
 
   void change_state(color_state);
 
-  bool draw(float thickness);
+  void draw(float thickness);
 
   int weight;
 

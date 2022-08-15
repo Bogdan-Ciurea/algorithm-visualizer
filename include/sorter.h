@@ -6,18 +6,16 @@
 
 class Sorter : public AlgorithmInterface {
  public:
-  Sorter() {
-    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
-  }
-  ~Sorter() {
-    UnloadFont(inter_regular);
-  }
+  Sorter() { inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0); }
+  ~Sorter() { }
 
   /**
    * @brief Will draw everything to the screen
    *
    */
   bool draw();
+
+  void draw_header();
 
   /**
    * @brief Will add one pillar to the list
@@ -34,9 +32,8 @@ class Sorter : public AlgorithmInterface {
   /**
    * @brief Will randomize the array
    *
-   * @param size represents the size of the desired array
    */
-  void randomize(int size);
+  void shuffle_pillars();
 
   /**
    * @brief Will get the number of pillars in the list

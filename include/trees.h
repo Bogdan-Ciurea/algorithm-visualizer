@@ -6,14 +6,13 @@
 
 class Trees : public AlgorithmInterface {
  public:
-  Trees() {
-    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
-  }
-  ~Trees() {
-    UnloadFont(inter_regular);
-  }
+  Trees() { inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0); }
+  ~Trees() { }
 
   bool draw();
+
+private:
+  void draw_header();
 };
 
 #endif
