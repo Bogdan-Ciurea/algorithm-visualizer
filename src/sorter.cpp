@@ -2,6 +2,13 @@
 
 Sorter::Sorter() {
   inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+
+  int number;
+  for (size_t i = 0; i < STARTING_PILLARS; i++) {
+    number = rand() % 100 + 1;
+    Pillar new_pill(number);
+    pillars.push_back(new_pill);
+  }
 }
 
 bool Sorter::draw() {
@@ -19,6 +26,8 @@ bool Sorter::draw() {
     return true;
 
   draw_header();
+
+  if (!running) draw_pillars(pillars);
 
   return false;
 }
@@ -54,9 +63,19 @@ void Sorter::draw_header() {
       running = true;
     }
   } else {
+    if (!sorted) {
+      if (animation.size() == 0) get_animation();
+      draw_animation();
+    } else {
+      // TODO: Draw Message "already sorted! randomize first"
+      running = false;
+    }
+
     if (GuiButton(start_end_button_rect,
                   GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop"))) {
       running = false;
+
+      if (animation.size() != 0) pillars = animation.at(0);
     }
   }
 
@@ -76,86 +95,90 @@ void Sorter::draw_header() {
              20, 0, GRAY);
 }
 
+void Sorter::draw_pillars(std::vector<Pillar> state) {
+  float current_x = 2;
+  float pillar_width = (float)GetScreenWidth() / (float)state.size() - 3.0f;
+  float height_multiplier =
+      (float)(GetScreenHeight() - button_height - 10) / 100.0f;
+
+  for (auto pillar : state) {
+    pillar.draw(current_x,
+                GetScreenHeight() - height_multiplier * pillar._value,
+                pillar_width, height_multiplier * pillar._value);
+    current_x += pillar_width + 3;
+  }
+}
+
+void Sorter::draw_animation() {
+  if (std::chrono::system_clock::now().time_since_epoch() /
+              std::chrono::milliseconds(1) -
+          last_draw_time >
+      1000 / ANIMATION_FPS) {
+    // Update the display time of the last frame
+    last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+                     std::chrono::milliseconds(1);
+
+    // Display the state of the algorithm
+    draw_pillars(animation.at(0));
+
+    // Save the last frame with the sorted pillars
+    if (animation.size() == 1) {
+      std::cout << "Animation finished!\n";
+      running = false;
+      sorted = true;
+      pillars = animation.at(0);
+    }
+
+    // Delete the first frame
+    animation.erase(animation.begin());
+  } else {
+    draw_pillars(animation.at(0));
+  }
+}
+
+void Sorter::shuffle_pillars() {
+  for (auto& cur_pillar : pillars) cur_pillar._value = rand() % 100 + 1;
+  sorted = false;
+}
+
 void Sorter::add_pillar() {
+  if (pillars.size() >= MAX_PILLARS) return;
+
   int number = rand() % 100 + 1;
   Pillar new_pill(number);
   pillars.push_back(new_pill);
 }
 
-void Sorter::remove_pillar() { pillars.pop_back(); }
+void Sorter::remove_pillar() {
+  if (pillars.size() <= MIN_PILLARS) return;
 
-void Sorter::shuffle_pillars() {
-  // Empty the array
-  /*if (!pillars.empty()) {
-    for (Pillar cur_pill : pillars) {
-      cur_pill.~Pillar();
-    }
-    pillars.clear();
-  }
-
-  for (int i = 0; i < size; i++) {
-    Pillar new_pill(rand() % 100 + 1);
-    pillars.push_back(new_pill);
-  }*/
+  int pillar_index = rand() % pillars.size();
+  pillars.erase(pillars.begin() + pillar_index);
 }
 
-bool Sorter::sorted_pillars() {
-  for (int i = 0; i < pillars.size() - 1; i++) {
-    if (pillars.at(i)._value > pillars.at(i + 1)._value) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-void Sorter::get_animation_algorithm(sort_algorithm_options algorithm) {
-  if (running) {
-    return;
-  }
-
-  animation.clear();
-
-  // Check if the pillars are ordered. In this case we will draw a special
-  // animation
-  if (sorted_pillars()) {
-    for (int i = 0; i < pillars.size(); i++) {
-      animation.push_back(pillars);
-      for (int j = 0; j <= i; j++)
-        animation.at(animation.size() - 1).at(j).change_state(MOVED);
-    }
-
-    animation.push_back(pillars);
-
-    running = true;
-    last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
-                     std::chrono::milliseconds(1);
-
-    return;
-  }
-
-  switch (algorithm) {
-    case INSERTION:
+void Sorter::get_animation() {
+  switch (dropdown_option) {
+    case 0:
       animation = insertion_sort_algorithm(pillars);
       break;
 
-    case HEAP:
+    case 1:
       animation = heap_sort_algorithm(pillars);
       break;
 
-    case SELECTION:
+    case 2:
       animation = selection_sort_algorithm(pillars);
       break;
 
-    case MERGE:
+    case 3:
       animation = merge_sort_algorithm(pillars);
       break;
 
-    case QUICK:
+    case 4:
       animation = quick_sort_algorithm(pillars);
       break;
 
-    case BUBBLE:
+    case 5:
       animation = bubble_sort_algorithm(pillars);
       break;
 
@@ -163,7 +186,6 @@ void Sorter::get_animation_algorithm(sort_algorithm_options algorithm) {
       break;
   }
 
-  running = true;
   last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
                    std::chrono::milliseconds(1);
 }
