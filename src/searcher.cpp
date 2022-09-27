@@ -29,7 +29,7 @@ bool Searcher::draw() {
 
   draw_header();
 
-  draw_pillars(pillars);
+  if (!running) draw_pillars(pillars);
 
   return false;
 }
@@ -120,7 +120,8 @@ void Searcher::draw_header() {
 void Searcher::draw_pillars(std::vector<Pillar> state) {
   float current_x = 2;
   float pillar_width = (float)GetScreenWidth() / (float)state.size() - 3.0f;
-  float height_multiplier = (float)(GetScreenHeight() - button_height) / 100.0f;
+  float height_multiplier =
+      (float)(GetScreenHeight() - button_height - 10) / 100.0f;
 
   for (auto pillar : state) {
     pillar.draw(current_x,

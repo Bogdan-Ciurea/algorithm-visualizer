@@ -15,57 +15,57 @@ class Sorter : public AlgorithmInterface {
    */
   bool draw();
 
+ private:
+  bool sorted = false;
+  unsigned long last_draw_time;
+  std::vector<Pillar> pillars;
+  // 'animation' will act as an array of frames, thus creating an animation
+  std::vector<std::vector<Pillar>> animation;
+
+  /**
+   * @brief The main function that will process the input
+   *
+   */
+  void run_program();
+
+  /**
+   * @brief The function responsible for drawing the pillars
+   *
+   */
+  void draw_pillars(std::vector<Pillar> state);
+
+  /**
+   * @brief The function that will draw the header and will take the input from
+   * that user
+   *
+   */
   void draw_header();
 
   /**
-   * @brief Will add one pillar to the list
+   * @brief The function that will draw the animation that we want to get
    *
    */
-  void add_pillar();
+  void draw_animation();
 
   /**
-   * @brief Will remove the last pillar of the list
-   *
-   */
-  void remove_pillar();
-
-  /**
-   * @brief Will randomize the array
+   * @brief These are the functions responsible for sorting/shuffling the
+   * pillars
    *
    */
   void shuffle_pillars();
 
   /**
-   * @brief Will get the number of pillars in the list
+   * @brief These will be te functions responsible for adding/removing a pillar
    *
-   * @return int the number of pillars in the list
    */
-  int get_number_pillars() { return pillars.size(); }
+  void add_pillar();
+  void remove_pillar();
 
   /**
-   * @brief Will say if the array is sorted or not
+   * @brief Get the animation object
    *
-   * @return true   if the array is sorted
-   * @return false  if the array is NOT sorted
    */
-  bool sorted_pillars();
-
-  /**
-   * @brief Will initialise the algorithm
-   *
-   * @param algorithm the selected algorithm
-   */
-  void get_animation_algorithm(sort_algorithm_options algorithm);
-
- private:
-  // 'pillars' will act as a state of the currently displayed pillars
-  std::vector<Pillar> pillars;
-
-  // 'animation' will act as an array of frames, thus creating an animation
-  std::vector<std::vector<Pillar>> animation;
-  int pillar_width;
-  bool is_running;
-  unsigned long last_draw_time;
+  void get_animation();
 };
 
 #endif
