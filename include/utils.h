@@ -5,16 +5,25 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <random>
 #include <vector>
 
 #include "raygui.h"
 #include "raylib.h"
 
+// Helper functions
+// --------------------------
+
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+
 // Global values
 // --------------------------
 
+#define SEARCH_ANIMATION_FPS 5
 #define ANIMATION_FPS 30
 
 // For more colors go to

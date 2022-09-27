@@ -6,7 +6,7 @@
 
 class Sorter : public AlgorithmInterface {
  public:
-  Sorter() { inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0); }
+  Sorter();
   ~Sorter() {}
 
   /**

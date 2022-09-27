@@ -2,7 +2,7 @@
 #define INTERFACE_H
 
 #include "algirithm_interface.h"
-#include "buttons.h"
+// #include "buttons.h"
 #include "graph.h"
 #include "searcher.h"
 #include "sorter.h"

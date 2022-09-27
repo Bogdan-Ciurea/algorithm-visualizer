@@ -21,7 +21,7 @@ jobs:
       run: mkdir build && cmake -S . -B build/ && make -C build/
     # This test will check if the coding standards for the cpp are met
     - name: cpp-style
-      run: clang-format --dry-run --Werror src/*.cpp
+      run: clang-format --dry-run --Werror src/*.cpp && clang-format --dry-run --Werror src/standalone-functions/*.cpp
     # This test will check if the coding standards for the header files are met
     - name: h-style
       run: clang-format --dry-run --Werror include/*.h && clang-format --dry-run --Werror include/standalone-functions/*.h

@@ -1,5 +1,17 @@
 #include "searcher.h"
 
+Searcher::Searcher() {
+  inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+
+  int number;
+  for (size_t i = 0; i < STARTING_PILLARS; i++) {
+    number = rand() % 100 + 1;
+    Pillar new_pill(number);
+    pillars.push_back(new_pill);
+  }
+  sort_pillars();
+}
+
 bool Searcher::draw() {
   // Build the header
   if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
@@ -17,7 +29,7 @@ bool Searcher::draw() {
 
   draw_header();
 
-  draw_pillars();
+  draw_pillars(pillars);
 
   return false;
 }
@@ -31,7 +43,7 @@ void Searcher::draw_header() {
   if (GuiDropdownBox(
           (Rectangle){(float)(60 + MeasureText("Searching Algorithms", 16)),
                       button_height / 2 - 20, 160, 40},
-          "LINEAR;BINARY;JUMP;INTERPOLATION;EXPONENTIAL", &dropdown_option,
+          "LINEAR;BINARY;JUMP;INTERPOLATION", &dropdown_option,
           dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;
 
@@ -44,13 +56,20 @@ void Searcher::draw_header() {
       running = true;
   } else {
     if (GuiButton(start_end_button_rect,
-                  GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop")))
+                  GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop"))) {
       running = false;
 
-    // Process the input
-    if (!valid_input || check_input()) {
-      draw_animation();
+      if (animation.size() != 0) pillars = animation.at(0);
     }
+
+    // Process the input
+    // If valid input is 'false' will result in calling check_input()
+    // Valid input will mean that the pillar's value is valid (not a string)
+    // but also that the pillar is in the array
+    if (valid_input || check_input())
+      draw_animation();
+    else
+      running = false;
   }
 
   // Draw the randomize/sort buttons
@@ -94,22 +113,115 @@ void Searcher::draw_header() {
 
   // Draw the "Valid input" label to indicate if the input is valid
   if (!valid_input) {
+    // TODO: Draw error message ("INVALID INPUT")
   }
 }
 
-void Searcher::draw_pillars() {}
+void Searcher::draw_pillars(std::vector<Pillar> state) {
+  float current_x = 2;
+  float pillar_width = (float)GetScreenWidth() / (float)state.size() - 3.0f;
+  float height_multiplier = (float)(GetScreenHeight() - button_height) / 100.0f;
 
-void Searcher::draw_animation() {}
+  for (auto pillar : state) {
+    pillar.draw(current_x,
+                GetScreenHeight() - height_multiplier * pillar._value,
+                pillar_width, height_multiplier * pillar._value);
+    current_x += pillar_width + 3;
+  }
+}
 
-void Searcher::sort_pillars() {}
+void Searcher::draw_animation() {
+  if (!animation.empty()) {
+    if (std::chrono::system_clock::now().time_since_epoch() /
+                std::chrono::milliseconds(1) -
+            last_draw_time >
+        1000 / SEARCH_ANIMATION_FPS) {
+      // Update the display time of the last frame
+      last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+                       std::chrono::milliseconds(1);
 
-void Searcher::shuffle_pillars() {}
+      // Display the state of the algorithm
+      draw_pillars(animation.at(0));
 
-void Searcher::add_pillar() {}
+      // Save the last frame with the sorted pillars
+      if (animation.size() == 1) {
+        pillars = animation.at(0);
+        std::cout << "Animation finished!\n";
+      }
 
-void Searcher::remove_pillar() {}
+      // Delete the first frame
+      animation.erase(animation.begin());
+    } else {
+      draw_pillars(animation.at(0));
+    }
+  } else {
+    valid_input = false;
+    running = false;
+  }
+}
+
+void Searcher::sort_pillars() {
+  std::sort(pillars.begin(), pillars.end(),
+            [](const Pillar& lhs, const Pillar& rhs) {
+              return lhs._value < rhs._value;
+            });
+}
+
+void Searcher::shuffle_pillars() {
+  for (auto& cur_pillar : pillars) cur_pillar._value = rand() % 100 + 1;
+}
+
+void Searcher::add_pillar() {
+  if (pillars.size() >= MAX_PILLARS) return;
+
+  int number = rand() % 100 + 1;
+  Pillar new_pill(number);
+  pillars.push_back(new_pill);
+
+  sort_pillars();
+}
+
+void Searcher::remove_pillar() {
+  if (pillars.size() <= MIN_PILLARS) return;
+
+  int pillar_index = rand() % pillars.size();
+  pillars.erase(pillars.begin() + pillar_index);
+}
 
 bool Searcher::check_input() {
+  valid_input = false;
+
+  value_searched = atoi(textBoxText);
+  // Check that the text is an integer
+  if (value_searched == 0) {
+    std::cout << "Input not an integer!\n";
+    return false;
+  }
+
+  switch (dropdown_option) {
+    case 0:
+      animation = search_linear_algo(pillars, value_searched);
+      break;
+
+    case 1:
+      animation = search_binary_algo(pillars, value_searched);
+      break;
+
+    case 2:
+      animation = search_jump_algo(pillars, value_searched);
+      break;
+
+    case 3:
+      animation = search_interpolation_algo(pillars, value_searched);
+      break;
+
+    default:
+      break;
+  }
+
+  last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+                   std::chrono::milliseconds(1);
+
   valid_input = true;
   return true;
 }

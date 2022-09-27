@@ -6,9 +6,7 @@
 
 class Searcher : public AlgorithmInterface {
  public:
-  Searcher() {
-    inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
-  }
+  Searcher();
   ~Searcher() {}
 
   bool draw();
@@ -26,7 +24,11 @@ class Searcher : public AlgorithmInterface {
   // Variables that represent the processed input
   int value_searched = -1;
 
+  unsigned long last_draw_time;
+
   std::vector<Pillar> pillars;
+  // 'animation' will act as an array of frames, thus creating an animation
+  std::vector<std::vector<Pillar>> animation;
 
   /**
    * @brief The main function that will process the input
@@ -38,7 +40,7 @@ class Searcher : public AlgorithmInterface {
    * @brief The function responsible for drawing the pillars
    *
    */
-  void draw_pillars();
+  void draw_pillars(std::vector<Pillar> state);
 
   /**
    * @brief The function that will draw the header and will take the input from

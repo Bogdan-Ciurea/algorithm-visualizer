@@ -1,5 +1,9 @@
 #include "sorter.h"
 
+Sorter::Sorter() {
+  inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+}
+
 bool Sorter::draw() {
   // Build the header
   if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;

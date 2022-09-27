@@ -1,6 +1,6 @@
 set (SOURCES
-    ../src/algorithm.cpp
-    ../src/buttons.cpp
+    ../src/standalone-functions/search-algorithms.cpp
+    ../src/standalone-functions/sorting-algorithms.cpp
     ../src/interface.cpp
     ../src/pillar.cpp
     ../src/sorter.cpp
