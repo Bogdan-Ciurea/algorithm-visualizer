@@ -24,7 +24,7 @@ The second one contains more algorithms that the first one and will incorporate 
 | Heap Sort | Binary Search | Floyd Warshall's algorithm  | Red Black Trees |
 | Selection Sort | Jump Search | BFS && DFS |  |
 | Merge Sort | Interpolation Search | A* |  |
-| Quick Sort | Exponential Search | Prim’s algorithm |  |
+| Quick Sort |  | Prim’s algorithm |  |
 | Bubble Sort |  | Kruskal’s algorithm |  |
 ||| Topological sorting ||
 

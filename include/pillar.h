@@ -12,6 +12,21 @@ class Pillar {
 
   void draw(int x, int y, int width, int height);
 
+  bool operator>(Pillar &pil) {
+    if (this->_value > pil._value) return true;
+    return false;
+  }
+
+  bool operator<(Pillar &pil) {
+    if (this->_value < pil._value) return true;
+    return false;
+  }
+
+  bool operator==(Pillar &pil) {
+    if (this->_value == pil._value) return true;
+    return false;
+  }
+
   int _value;
 
  private:

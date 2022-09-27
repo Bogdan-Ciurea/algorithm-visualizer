@@ -3,4 +3,16 @@
 
 #include "pillar.h"
 
+std::vector<std::vector<Pillar>> search_linear_algo(std::vector<Pillar> array,
+                                                    int target);
+
+std::vector<std::vector<Pillar>> search_binary_algo(std::vector<Pillar> array,
+                                                    int target);
+
+std::vector<std::vector<Pillar>> search_jump_algo(std::vector<Pillar> array,
+                                                  int target);
+
+std::vector<std::vector<Pillar>> search_interpolation_algo(
+    std::vector<Pillar> array, int target);
+
 #endif

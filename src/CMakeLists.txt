@@ -1,9 +1,12 @@
 set(SOURCES
-    algorithm.cpp
-    buttons.cpp
+    standalone-functions/search-algorithms.cpp
+    standalone-functions/sorting-algorithms.cpp
     interface.cpp
     pillar.cpp
     sorter.cpp
+    searcher.cpp
+    graph.cpp
+    trees.cpp
     raygui.cpp
     main.cpp
 )
