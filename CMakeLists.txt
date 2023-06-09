@@ -6,16 +6,14 @@
 # Set the minimum version of CMake that can be used
 # To find the cmake version run
 # $ cmake --version
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.11.3)
 
 # Set a default C++ compile flag
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
-set (CMAKE_C_STANDARD 99)
-set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_POSITION_INDEPENDENT_CODE ON)
+project(visualizer VERSION 0.1.0 LANGUAGES CXX)
 
-# Set the project name
-project(visualizer)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Add the headers in the /include directory
 include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
@@ -47,25 +45,16 @@ include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # -------------------
 # Libraries
-# Add Raylib
-include(FetchContent)
-FetchContent_Declare(raylib
-    GIT_REPOSITORY https://github.com/raysan5/raylib.git
-    GIT_TAG 4.0.0
-)
-FetchContent_MakeAvailable(raylib)
-
 # Add Google Tests
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG release-1.12.1
-)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+add_subdirectory(modules/googletest)
+include_directories({PROJECT_NAME} PUBLIC modules/googletest/googletest/include)
+link_libraries(gtest_main)
 
-include_directories(${PROJECT_NAME} PRIVATE ${raylib_SOURCE_DIR}/src/extras)
+# Add Raylib
+add_subdirectory(modules/raylib)
+include_directories(${PROJECT_NAME} PRIVATE modules/raylib/src)
 link_libraries(raylib)
+
 # -------------------
 
 # -------------------
