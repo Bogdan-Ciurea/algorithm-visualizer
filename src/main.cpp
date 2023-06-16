@@ -13,13 +13,13 @@ int main() {
   SetTargetFPS(60);  // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
 
-  // Set up the interface;
-  Interface current_interface;
-
   // Set the current font
   Font inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+  Font inter_light = LoadFontEx("assets/inter-light.ttf", 20, 0, 0);
 
-  GuiSetFont(inter_regular);
+  // Set up the interface;
+  MainInterface* current_interface =
+      new MainInterface(&inter_regular, &inter_light);
 
   // Main game loop
   while (!WindowShouldClose())  // Detect window close button or ESC key
@@ -32,7 +32,7 @@ int main() {
 
     ClearBackground(MY_BACKGROUND_COLOR);
 
-    current_interface.draw();
+    current_interface->draw();
 
     // TODO: If the window has a certain ration, the buttons will overlap
     // Try to resolve this using "void SetWindowSize(int width, int height);"
@@ -45,6 +45,9 @@ int main() {
   }
 
   UnloadFont(inter_regular);
+  UnloadFont(inter_light);
+
+  delete current_interface;
 
   // De-Initialization
   //--------------------------------------------------------------------------------------

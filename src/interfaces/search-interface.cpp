@@ -1,7 +1,8 @@
 #include "interfaces/search-interface.hpp"
 
-Searcher::Searcher() {
-  inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+SearchInterface::SearchInterface(Font* inter_regular, Font* inter_light) {
+  this->inter_regular = inter_regular;
+  this->inter_light = inter_light;
 
   int number;
   for (size_t i = 0; i < STARTING_PILLARS; i++) {
@@ -12,7 +13,7 @@ Searcher::Searcher() {
   sort_pillars();
 }
 
-bool Searcher::draw() {
+bool SearchInterface::draw() {
   // Build the header
   if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
   if (button_height > 130) button_height = 130;
@@ -29,14 +30,14 @@ bool Searcher::draw() {
 
   draw_header();
 
-  if (!running) draw_pillars(pillars);
+  if (!running) draw_pillars(&pillars);
 
   return false;
 }
 
-void Searcher::draw_header() {
+void SearchInterface::draw_header() {
   // Draw the "Search Algorithms" text
-  DrawTextEx(inter_regular, "Search Algorithms",
+  DrawTextEx(*inter_regular, "Search Algorithms",
              (Vector2){75, button_height / 2 - 10}, 20, 0, DARKGRAY);
 
   // Draw all the algorithm options
@@ -101,7 +102,7 @@ void Searcher::draw_header() {
   if (GuiButton(remove_rect, GuiIconText(RAYGUI_ICON_MINUS, "")) && !running)
     remove_pillar();
 
-  DrawTextEx(inter_regular, "Pillar count",
+  DrawTextEx(*inter_regular, "Pillar count",
              (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25},
              20, 0, GRAY);
 
@@ -117,13 +118,13 @@ void Searcher::draw_header() {
   }
 }
 
-void Searcher::draw_pillars(std::vector<Pillar> state) {
+void SearchInterface::draw_pillars(std::vector<Pillar>* state) {
   float current_x = 2;
-  float pillar_width = (float)GetScreenWidth() / (float)state.size() - 3.0f;
+  float pillar_width = (float)GetScreenWidth() / (float)state->size() - 3.0f;
   float height_multiplier =
       (float)(GetScreenHeight() - button_height - 10) / 100.0f;
 
-  for (auto pillar : state) {
+  for (auto pillar : *state) {
     pillar.draw(current_x,
                 GetScreenHeight() - height_multiplier * pillar._value,
                 pillar_width, height_multiplier * pillar._value);
@@ -131,7 +132,7 @@ void Searcher::draw_pillars(std::vector<Pillar> state) {
   }
 }
 
-void Searcher::draw_animation() {
+void SearchInterface::draw_animation() {
   if (!animation.empty()) {
     if (std::chrono::system_clock::now().time_since_epoch() /
                 std::chrono::milliseconds(1) -
@@ -142,7 +143,7 @@ void Searcher::draw_animation() {
                        std::chrono::milliseconds(1);
 
       // Display the state of the algorithm
-      draw_pillars(animation.at(0));
+      draw_pillars(&(animation.at(0)));
 
       // Save the last frame with the sorted pillars
       if (animation.size() == 1) {
@@ -153,7 +154,7 @@ void Searcher::draw_animation() {
       // Delete the first frame
       animation.erase(animation.begin());
     } else {
-      draw_pillars(animation.at(0));
+      draw_pillars(&(animation.at(0)));
     }
   } else {
     valid_input = false;
@@ -161,18 +162,18 @@ void Searcher::draw_animation() {
   }
 }
 
-void Searcher::sort_pillars() {
+void SearchInterface::sort_pillars() {
   std::sort(pillars.begin(), pillars.end(),
             [](const Pillar& lhs, const Pillar& rhs) {
               return lhs._value < rhs._value;
             });
 }
 
-void Searcher::shuffle_pillars() {
+void SearchInterface::shuffle_pillars() {
   for (auto& cur_pillar : pillars) cur_pillar._value = rand() % 100 + 1;
 }
 
-void Searcher::add_pillar() {
+void SearchInterface::add_pillar() {
   if (pillars.size() >= MAX_PILLARS) return;
 
   int number = rand() % 100 + 1;
@@ -182,20 +183,39 @@ void Searcher::add_pillar() {
   sort_pillars();
 }
 
-void Searcher::remove_pillar() {
+void SearchInterface::remove_pillar() {
   if (pillars.size() <= MIN_PILLARS) return;
 
   int pillar_index = rand() % pillars.size();
   pillars.erase(pillars.begin() + pillar_index);
 }
 
-bool Searcher::check_input() {
+bool SearchInterface::check_input() {
   valid_input = false;
 
   value_searched = atoi(textBoxText);
   // Check that the text is an integer
   if (value_searched == 0) {
     std::cout << "Input not an integer!\n";
+    return false;
+  }
+
+  if (value_searched < 0 || value_searched > 100) {
+    std::cout << "Input not in range!\n";
+    return false;
+  }
+
+  // Check that the value is in the array
+  bool found = false;
+  for (auto pillar : pillars) {
+    if (pillar._value == value_searched) {
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    std::cout << "Input not in array!\n";
     return false;
   }
 

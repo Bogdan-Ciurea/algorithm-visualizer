@@ -16,10 +16,10 @@
 #include "../standalone-functions/search-algorithms.h"
 #include "blank-interface.hpp"
 
-class Searcher : public AlgorithmInterface {
+class SearchInterface : public AlgorithmInterface {
  public:
-  Searcher();
-  ~Searcher() {}
+  SearchInterface(Font *inter_regular, Font *inter_light);
+  ~SearchInterface() {}
 
   bool draw();
 
@@ -52,7 +52,7 @@ class Searcher : public AlgorithmInterface {
    * @brief The function responsible for drawing the pillars
    *
    */
-  void draw_pillars(std::vector<Pillar> state);
+  void draw_pillars(std::vector<Pillar> *state);
 
   /**
    * @brief The function that will draw the header and will take the input from

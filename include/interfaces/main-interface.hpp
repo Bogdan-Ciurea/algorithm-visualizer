@@ -19,10 +19,13 @@
 #include "sorting-interface.hpp"
 #include "tree-interface.hpp"
 
-class Interface {
+class MainInterface {
  public:
-  Interface();
-  ~Interface();
+  MainInterface(Font *inter_regular, Font *inter_light) {
+    this->inter_regular = inter_regular;
+    this->inter_light = inter_light;
+  }
+  ~MainInterface(){};
 
   /**
    * @brief Will update the variables and draw everything on the screen
@@ -32,7 +35,7 @@ class Interface {
 
  private:
   AlgorithmInterface *current_interface = nullptr;
-  Font inter_regular, inter_light;
+  Font *inter_regular, *inter_light;
 };
 
 #endif  // MAIN_INTERFACE_HPP

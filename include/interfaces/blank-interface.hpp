@@ -32,7 +32,8 @@ class AlgorithmInterface {
   virtual void draw_header() {}
 
   bool running = false;
-  Font inter_regular;
+  Font *inter_regular;
+  Font *inter_light;
   int dropdown_option = 0;
   bool dropdown_enabled = false;
   float button_height = 100;

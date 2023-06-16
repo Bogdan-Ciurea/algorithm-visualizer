@@ -16,10 +16,13 @@
 #include "../standalone-functions/graph-algorithms.h"
 #include "blank-interface.hpp"
 
-class Graph : public AlgorithmInterface {
+class GraphInterface : public AlgorithmInterface {
  public:
-  Graph() { inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0); }
-  ~Graph() {}
+  GraphInterface(Font *inter_regular, Font *inter_light) {
+    this->inter_regular = inter_regular;
+    this->inter_light = inter_light;
+  }
+  ~GraphInterface() {}
 
   bool draw();
 

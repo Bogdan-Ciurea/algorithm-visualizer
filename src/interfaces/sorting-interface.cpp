@@ -1,7 +1,8 @@
 #include "interfaces/sorting-interface.hpp"
 
-Sorter::Sorter() {
-  inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
+SortInterface::SortInterface(Font *inter_regular, Font *inter_light) {
+  this->inter_regular = inter_regular;
+  this->inter_light = inter_light;
 
   int number;
   for (size_t i = 0; i < STARTING_PILLARS; i++) {
@@ -11,7 +12,7 @@ Sorter::Sorter() {
   }
 }
 
-bool Sorter::draw() {
+bool SortInterface::draw() {
   // Build the header
   if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
   if (button_height > 130) button_height = 130;
@@ -27,14 +28,14 @@ bool Sorter::draw() {
 
   draw_header();
 
-  if (!running) draw_pillars(pillars);
+  if (!running) draw_pillars(&pillars);
 
   return false;
 }
 
-void Sorter::draw_header() {
+void SortInterface::draw_header() {
   // Draw the "Sorting Algorithms" text
-  DrawTextEx(inter_regular, "Sorting Algorithms",
+  DrawTextEx(*inter_regular, "Sorting Algorithms",
              (Vector2){65, button_height / 2 - 10}, 20, 0, DARKGRAY);
 
   // Draw all the algorithm options
@@ -90,18 +91,18 @@ void Sorter::draw_header() {
   if (GuiButton(remove_rect, GuiIconText(RAYGUI_ICON_MINUS, "")) && !running)
     remove_pillar();
 
-  DrawTextEx(inter_regular, "Pillar count",
+  DrawTextEx(*inter_regular, "Pillar count",
              (Vector2){(float)(GetScreenWidth() - 363), button_height / 2 + 25},
              20, 0, GRAY);
 }
 
-void Sorter::draw_pillars(std::vector<Pillar> state) {
+void SortInterface::draw_pillars(std::vector<Pillar> *state) {
   float current_x = 2;
-  float pillar_width = (float)GetScreenWidth() / (float)state.size() - 3.0f;
+  float pillar_width = (float)GetScreenWidth() / (float)state->size() - 3.0f;
   float height_multiplier =
       (float)(GetScreenHeight() - button_height - 10) / 100.0f;
 
-  for (auto pillar : state) {
+  for (auto pillar : (*state)) {
     pillar.draw(current_x,
                 GetScreenHeight() - height_multiplier * pillar._value,
                 pillar_width, height_multiplier * pillar._value);
@@ -109,17 +110,17 @@ void Sorter::draw_pillars(std::vector<Pillar> state) {
   }
 }
 
-void Sorter::draw_animation() {
+void SortInterface::draw_animation() {
   if (std::chrono::system_clock::now().time_since_epoch() /
               std::chrono::milliseconds(1) -
           last_draw_time >
-      1000 / ANIMATION_FPS) {
+      1000 / SORT_ANIMATION_FPS) {
     // Update the display time of the last frame
     last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
                      std::chrono::milliseconds(1);
 
     // Display the state of the algorithm
-    draw_pillars(animation.at(0));
+    draw_pillars(&animation.at(0));
 
     // Save the last frame with the sorted pillars
     if (animation.size() == 1) {
@@ -132,16 +133,16 @@ void Sorter::draw_animation() {
     // Delete the first frame
     animation.erase(animation.begin());
   } else {
-    draw_pillars(animation.at(0));
+    draw_pillars(&animation.at(0));
   }
 }
 
-void Sorter::shuffle_pillars() {
-  for (auto& cur_pillar : pillars) cur_pillar._value = rand() % 100 + 1;
+void SortInterface::shuffle_pillars() {
+  for (auto &cur_pillar : pillars) cur_pillar._value = rand() % 100 + 1;
   sorted = false;
 }
 
-void Sorter::add_pillar() {
+void SortInterface::add_pillar() {
   if (pillars.size() >= MAX_PILLARS) return;
 
   int number = rand() % 100 + 1;
@@ -149,14 +150,14 @@ void Sorter::add_pillar() {
   pillars.push_back(new_pill);
 }
 
-void Sorter::remove_pillar() {
+void SortInterface::remove_pillar() {
   if (pillars.size() <= MIN_PILLARS) return;
 
   int pillar_index = rand() % pillars.size();
   pillars.erase(pillars.begin() + pillar_index);
 }
 
-void Sorter::get_animation() {
+void SortInterface::get_animation() {
   switch (dropdown_option) {
     case 0:
       animation = insertion_sort_algorithm(pillars);

@@ -16,10 +16,10 @@
 #include "../standalone-functions/sorting-algorithms.h"
 #include "blank-interface.hpp"
 
-class Sorter : public AlgorithmInterface {
+class SortInterface : public AlgorithmInterface {
  public:
-  Sorter();
-  ~Sorter() {}
+  SortInterface(Font *inter_regular, Font *inter_light);
+  ~SortInterface() {}
 
   /**
    * @brief Will draw everything to the screen
@@ -30,6 +30,7 @@ class Sorter : public AlgorithmInterface {
  private:
   bool sorted = false;
   unsigned long last_draw_time;
+
   std::vector<Pillar> pillars;
   // 'animation' will act as an array of frames, thus creating an animation
   std::vector<std::vector<Pillar>> animation;
@@ -44,7 +45,7 @@ class Sorter : public AlgorithmInterface {
    * @brief The function responsible for drawing the pillars
    *
    */
-  void draw_pillars(std::vector<Pillar> state);
+  void draw_pillars(std::vector<Pillar> *state);
 
   /**
    * @brief The function that will draw the header and will take the input from

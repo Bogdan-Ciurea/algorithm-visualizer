@@ -24,7 +24,9 @@
 // --------------------------
 
 #define SEARCH_ANIMATION_FPS 5
-#define ANIMATION_FPS 30
+#define SORT_ANIMATION_FPS 30
+#define GRAPH_ANIMATION_FPS 30
+#define TREES_ANIMATION_FPS 30
 
 // For more colors go to
 // https://coolors.co/palette/f94144-f3722c-f8961e-f9c74f-90be6d-43aa8b-577590
@@ -67,7 +69,7 @@ enum color_state { NORMAL, SELECTED, MOVED };
 
 // Used to represent the flow of the program
 
-// Graph and Trees Related
+// GraphInterface and TreesInterface Related
 // --------------------------
 enum graph_tree_input_options {
   ADD_NODE = 4,
@@ -88,7 +90,7 @@ enum graph_algorithm_option {
 };
 enum trees_type_option { BINARY_TREE, RED_BLACK_TREE };
 
-// Sorter and Searcher Related
+// SortInterface and SearchInterface Related
 // --------------------------
 #define MAX_PILLARS 100
 #define MIN_PILLARS 20
