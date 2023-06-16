@@ -1,9 +1,8 @@
 set (SOURCES
     ../src/standalone-functions/search-algorithms.cpp
     ../src/standalone-functions/sorting-algorithms.cpp
-    ../src/interface.cpp
-    ../src/pillar.cpp
-    ../src/sorter.cpp
+    ../src/interfaces/main-interface.cpp
+    ../src/pillar-objects.cpp
     ../src/raygui.cpp
     example_test.cpp
 )

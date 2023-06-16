@@ -1,7 +1,7 @@
 #ifndef SORTING_ALGORITHMS_H
 #define SORTING_ALGORITHMS_H
 
-#include "pillar.h"
+#include "../pillar-objects.hpp"
 
 std::vector<std::vector<Pillar>> insertion_sort_algorithm(
     std::vector<Pillar> array);

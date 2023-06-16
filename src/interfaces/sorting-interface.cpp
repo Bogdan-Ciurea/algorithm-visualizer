@@ -1,4 +1,4 @@
-#include "sorter.h"
+#include "interfaces/sorting-interface.hpp"
 
 Sorter::Sorter() {
   inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);

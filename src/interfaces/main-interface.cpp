@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "interfaces/main-interface.hpp"
 
 #include <iostream>
 
@@ -61,7 +61,7 @@ void Interface::draw() {
     DrawRectangle(button_width * 2 - 1, 0, 3, button_height, DARKGRAY);
     DrawRectangle(button_width * 3 - 1, 0, 3, button_height, DARKGRAY);
 
-    // Draw the text. unfortunately there is no better way of drawing centered
+    // Draw the text. unfortunately there is no better way of drawing centred
     // text so...
     DrawTextEx(
         inter_regular, "Welcome to my \"Algorithms Visualizer\"",

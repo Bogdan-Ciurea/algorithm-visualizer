@@ -1,8 +1,20 @@
-#ifndef SEARCHER_H
-#define SEARCHER_H
+/**
+ * @file search-interface.hpp
+ * @author Bogdan Ciurea
+ * @brief This file in responsible for defining the search interface that will
+ * be used in the main program and by the main-interface.hpp
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-#include "algirithm_interface.h"
-#include "standalone-functions/search-algorithms.h"
+#ifndef SEARCH_INTERFACE_HPP
+#define SEARCH_INTERFACE_HPP
+
+#include "../standalone-functions/search-algorithms.h"
+#include "blank-interface.hpp"
 
 class Searcher : public AlgorithmInterface {
  public:
@@ -80,4 +92,4 @@ class Searcher : public AlgorithmInterface {
   bool check_input();
 };
 
-#endif
+#endif  // SEARCH_INTERFACE_HPP

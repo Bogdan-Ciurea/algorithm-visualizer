@@ -1,4 +1,4 @@
-#include "trees.h"
+#include "interfaces/tree-interface.hpp"
 
 bool Trees::draw() {
   // Build the header

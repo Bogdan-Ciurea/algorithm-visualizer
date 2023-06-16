@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "interfaces/graph-interface.hpp"
 
 bool Graph::draw() {
   // Build the header

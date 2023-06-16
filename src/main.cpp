@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "interfaces/main-interface.hpp"
 
 int main() {
   // Initialization

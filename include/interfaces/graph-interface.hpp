@@ -1,8 +1,20 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+/**
+ * @file graph-interface.hpp
+ * @author Bogdan Ciurea
+ * @brief This file in responsible for defining the graph interface that will be
+ * used in the main program and by the main-interface.hpp
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-#include "algirithm_interface.h"
-#include "standalone-functions/graph-algorithms.h"
+#ifndef GRAPH_INTERFACE_HPP
+#define GRAPH_INTERFACE_HPP
+
+#include "../standalone-functions/graph-algorithms.h"
+#include "blank-interface.hpp"
 
 class Graph : public AlgorithmInterface {
  public:
@@ -29,4 +41,4 @@ class Graph : public AlgorithmInterface {
   bool import_graph();
 };
 
-#endif
+#endif  // GRAPH_INTERFACE_HPP

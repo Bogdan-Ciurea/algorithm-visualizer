@@ -1,6 +1,6 @@
 #ifndef GRAPH_ALGORITHMS_H
 #define GRAPH_ALGORITHMS_H
 
-#include "node.h"
+#include "../node-objects.hpp"
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -120,4 +120,4 @@ enum search_algorithm_options {
   EXPONENTIAL
 };
 
-#endif
+#endif  // UTILS_HPP

@@ -1,4 +1,4 @@
-#include "searcher.h"
+#include "interfaces/search-interface.hpp"
 
 Searcher::Searcher() {
   inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);

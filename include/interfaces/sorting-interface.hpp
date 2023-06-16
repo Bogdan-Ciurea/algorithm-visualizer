@@ -1,8 +1,20 @@
-#ifndef SORTER_H
-#define SORTER_H
+/**
+ * @file sorting-interface.hpp
+ * @author Bogdan Ciurea
+ * @brief This file in responsible for defining the sorting interface that will
+ * be used in the main program and by the main-interface.hpp
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-#include "algirithm_interface.h"
-#include "standalone-functions/sorting-algorithms.h"
+#ifndef SORTING_INTERFACE_HPP
+#define SORTING_INTERFACE_HPP
+
+#include "../standalone-functions/sorting-algorithms.h"
+#include "blank-interface.hpp"
 
 class Sorter : public AlgorithmInterface {
  public:
@@ -68,4 +80,4 @@ class Sorter : public AlgorithmInterface {
   void get_animation();
 };
 
-#endif
+#endif  // SORTING_INTERFACE_HPP

@@ -1,7 +1,7 @@
 #ifndef SEARCH_ALGORITHMS_H
 #define SEARCH_ALGORITHMS_H
 
-#include "pillar.h"
+#include "../pillar-objects.hpp"
 
 std::vector<std::vector<Pillar>> search_linear_algo(std::vector<Pillar> array,
                                                     int target);
