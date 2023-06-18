@@ -71,13 +71,6 @@ enum color_state { NORMAL, SELECTED, MOVED };
 
 // GraphInterface and TreesInterface Related
 // --------------------------
-enum graph_tree_input_options {
-  ADD_NODE = 4,
-  REMOVE,
-  ADD_EDGE,
-  SELECT_NODE,
-  CLEAR_BTN
-};
 enum graph_algorithm_option {
   DIJKSTRA,
   FLOYD_WARSHALL,
@@ -89,6 +82,9 @@ enum graph_algorithm_option {
   TOPOLOGICAL
 };
 enum trees_type_option { BINARY_TREE, RED_BLACK_TREE };
+
+#define NODE_RADIUS 20
+#define EDGE_THICKNESS 3
 
 // SortInterface and SearchInterface Related
 // --------------------------

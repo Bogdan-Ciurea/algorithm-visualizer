@@ -7,6 +7,7 @@ set(SOURCES
     interfaces/sorting-interface.cpp
     interfaces/tree-interface.cpp
     pillar-objects.cpp
+    node-objects.cpp
     raygui.cpp
     main.cpp
 )

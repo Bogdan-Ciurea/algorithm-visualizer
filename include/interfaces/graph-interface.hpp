@@ -16,19 +16,25 @@
 #include "../standalone-functions/graph-algorithms.hpp"
 #include "blank-interface.hpp"
 
+enum SelectableModes { ADD_NODE, ADD_EDGE, EDGE_TYPE, REMOVE };
+
 class GraphInterface : public AlgorithmInterface {
  public:
   GraphInterface(Font *inter_regular, Font *inter_light) {
     this->inter_regular = inter_regular;
     this->inter_light = inter_light;
   }
-  ~GraphInterface() {}
+  ~GraphInterface() {
+    for (auto node : node_list) delete node;
+    for (auto edge : edge_list) delete edge;
+  }
 
   bool draw();
 
  private:
   std::vector<std::vector<float>> adj_matrix;
-  std::vector<Node> node_list;
+  std::vector<Node *> node_list;
+  std::vector<Edge *> edge_list;
 
   bool directed = false;
   bool textBoxEditMode1 = false;
@@ -36,10 +42,31 @@ class GraphInterface : public AlgorithmInterface {
   bool textBoxEditMode2 = false;
   char textBoxText2[64] = "To";
 
-  void add_node();
-  void add_edge();
+  SelectableModes current_mode = ADD_NODE;
+  bool has_deleted = false;
 
-  void draw_header();
+  // needed for clicking
+  bool pressed = false;
+  Node *temp_clicked_node = nullptr;  // Used for the fist node of the edge
+
+  bool directed_edge = false;
+
+  Vector2 *get_click_location(float ignore_height = 100.0f);
+
+  void add_node(Vector2 *location);
+  void remove_node(Node *node);
+  int generate_node_id();
+
+  Node *get_node_by_position(Vector2 *location);
+
+  void add_edge(Node *n1, Node *n2);
+  void remove_edge(Edge *edge);
+
+  void change_edge_type();
+
+  void draw_main_header(float button_height);
+  void draw_secondary_header(float button_height);
+  void draw_elements();
 
   bool import_graph();
 };

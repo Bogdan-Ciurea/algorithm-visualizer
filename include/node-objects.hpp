@@ -17,18 +17,20 @@
 
 class Node {
  public:
-  Node(int value, int x, int y, int id = -1);
+  Node(float x, float y, int id = -1);
+  Node(Vector2 coord, int id = -1);
   ~Node() {}
 
-  bool draw(float r);
+  void draw(float r);
+  bool point_in_node(Vector2 *point);
 
-  bool is_selected(int x, int y);
+  void set_state(color_state);
+  void set_id(int new_id);
 
-  int value;
   int id;
+  Vector2 coord;
 
  private:
-  int coord_x, coord_y;
   float radius;
   Color color;
   color_state state;
@@ -37,19 +39,22 @@ class Node {
 class Edge {
  public:
   Edge(int weight, Node *n1, Node *n2, bool directed);
-  ~Edge();
-
-  void change_state(color_state);
+  ~Edge() {}
 
   void draw(float thickness);
 
+  bool point_on_edge(Vector2 *point);
+
+  void set_state(color_state);
+  void set_weight(int new_weight);
+  void set_directed(bool new_directed);
+
   int weight;
+  Node *node1, *node2;
 
  private:
   Color color;
   color_state state;
-  Node *node1;
-  Node *node2;
   bool directed;
 };
 

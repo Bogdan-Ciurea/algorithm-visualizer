@@ -15,12 +15,42 @@ bool GraphInterface::draw() {
   if (GuiButton(back_button_rect, GuiIconText(RAYGUI_ICON_ARROW_LEFT_FILL, "")))
     return true;
 
-  draw_header();
+  this->draw_main_header(button_height);
+  this->draw_secondary_header(button_height);
+  this->draw_elements();
 
+  Vector2 *click_position = this->get_click_location(button_height + 10);
+
+  if (click_position) switch (this->current_mode) {
+      case ADD_NODE:
+        add_node(click_position);
+        break;
+
+      case ADD_EDGE:
+        if (temp_clicked_node == nullptr) {
+          temp_clicked_node = get_node_by_position(click_position);
+          if (temp_clicked_node != nullptr)
+            temp_clicked_node->set_state(SELECTED);
+        } else {
+          Node *second_node = get_node_by_position(click_position);
+          if (second_node != nullptr) {
+            // We have both nodes
+            // We can add the edge
+            add_edge(temp_clicked_node, second_node);
+          }
+          temp_clicked_node->set_state(NORMAL);
+          temp_clicked_node = nullptr;
+        }
+
+      default:
+        break;
+    }
+
+  delete click_position;
   return false;
 }
 
-void GraphInterface::draw_header() {
+void GraphInterface::draw_main_header(float button_height) {
   // Draw the "GraphInterface Algorithms" text
   DrawTextEx(*inter_regular, "GraphInterface Algorithms",
              (Vector2){75, button_height / 2 - 10}, 20, 0, DARKGRAY);
@@ -70,4 +100,151 @@ void GraphInterface::draw_header() {
   }
 }
 
+void GraphInterface::draw_secondary_header(float button_height) {
+  // We will have 3 buttons under the header that will be:
+  // 1. Add node, 2. Add edge, 3. Delete node/edge 4. Directed/Undirected
+  // If current_mode is 1 we will draw the "Add node" button in a different
+  // color
+
+  Rectangle add_node_rect = (Rectangle){10, button_height + 10, 100, 40};
+  if (GuiButton(add_node_rect, GuiIconText(RAYGUI_ICON_PLUS, "Add node"))) {
+    current_mode = ADD_NODE;
+  }
+
+  // Draw the "Add edge" button
+  Rectangle add_edge_rect = (Rectangle){120, button_height + 10, 100, 40};
+  if (GuiButton(add_edge_rect, GuiIconText(RAYGUI_ICON_PLUS, "Add edge"))) {
+    current_mode = ADD_EDGE;
+  }
+
+  // Draw the "Delete node/edge" button
+  Rectangle delete_rect = (Rectangle){230, button_height + 10, 100, 40};
+  if (GuiButton(delete_rect, GuiIconText(RAYGUI_ICON_BIN, "Delete"))) {
+    current_mode = REMOVE;
+  }
+
+  // Draw the "Directed" button
+  Rectangle directed_rect = (Rectangle){340, button_height + 10, 100, 40};
+  if (GuiButton(directed_rect,
+                GuiIconText(directed_edge ? RAYGUI_ICON_MUTATE_FILL
+                                          : RAYGUI_ICON_CURSOR_SCALE_LEFT_FILL,
+                            directed_edge ? "Directed" : "Undirected"))) {
+    directed_edge = !directed_edge;
+    change_edge_type();
+  }
+}
+
+void GraphInterface::draw_elements() {
+  // Draw all the nodes
+  for (auto node : node_list) {
+    node->draw(NODE_RADIUS);
+  }
+
+  // Draw all the edges
+  for (auto edge : edge_list) {
+    edge->draw(EDGE_THICKNESS);
+  }
+}
+
 bool GraphInterface::import_graph() { return true; }
+
+Vector2 *GraphInterface::get_click_location(float ignore_height) {
+  if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !this->pressed) {
+    this->pressed = true;
+    const Vector2 mouse_position = GetMousePosition();
+
+    // Must be under the header
+    if (mouse_position.y > ignore_height) {
+      // Must check that the click is not in the secondary header
+      if (mouse_position.x < 450) {
+        if (mouse_position.y < ignore_height + 60) {
+          return nullptr;
+        } else {
+          return new Vector2{mouse_position.x, mouse_position.y};
+        }
+      } else {
+        return new Vector2{mouse_position.x, mouse_position.y};
+      }
+    }
+  }
+
+  if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) this->pressed = false;
+
+  // if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON && this->pressed == true)) {
+  //   this->pressed = false;
+  //   const Vector2 mouse_position = GetMousePosition();
+
+  //   // Must be under the header
+  //   if (mouse_position.y > ignore_height) {
+  //     // Must check that the click is not in the secondary header
+  //     if (mouse_position.x < 450) {
+  //       if (mouse_position.y < ignore_height + 60) {
+  //         return nullptr;
+  //       } else {
+  //         return new Vector2{mouse_position.x, mouse_position.y};
+  //       }
+  //     } else {
+  //       return new Vector2{mouse_position.x, mouse_position.y};
+  //     }
+  //   }
+  // }
+
+  return nullptr;
+}
+
+void GraphInterface::add_node(Vector2 *location) {
+  // Check if there is already a node in that location
+  // or if the location is too close to another node
+
+  // If there is no node in that location we can add it
+
+  if (location == nullptr) return;
+
+  for (auto node : node_list) {
+    // Calculate the distance between the two nodes
+    float distance = sqrt(pow(node->coord.x - location->x, 2) +
+                          pow(node->coord.y - location->y, 2));
+
+    if (NODE_RADIUS * 2.5 > distance) {
+      return;
+    }
+  }
+  node_list.push_back(
+      new Node(location->x, location->y, this->generate_node_id()));
+}
+
+int GraphInterface::generate_node_id() {
+  int id = 0;
+  for (auto node : node_list) {
+    if (node->id == id) {
+      id++;
+    } else {
+      return id;
+    }
+  }
+  return id;
+}
+
+Node *GraphInterface::get_node_by_position(Vector2 *location) {
+  for (auto &node : node_list) {
+    // Calculate the distance between the two nodes
+    float distance = sqrt(pow(node->coord.x - location->x, 2) +
+                          pow(node->coord.y - location->y, 2));
+
+    if (NODE_RADIUS >= distance) {
+      return node;
+    }
+  }
+
+  return nullptr;
+}
+
+void GraphInterface::add_edge(Node *n1, Node *n2) {
+  edge_list.push_back(new Edge(1, n1, n2, directed_edge));
+}
+
+void GraphInterface::change_edge_type() {
+  for (auto edge : edge_list) {
+    edge->set_directed(directed_edge);
+  }
+}
