@@ -1,7 +1,19 @@
-#ifndef ALGORITHM_INTERFACE_H
-#define ALGORITHM_INTERFACE_H
+/**
+ * @file blank-interface.hpp
+ * @author Bogdan Ciurea
+ * @brief This file is responsible for defining the class that will be
+ * inherited by all the interfaces
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-#include "utils.h"
+#ifndef BLANK_INTERFACE_HPP
+#define BLANK_INTERFACE_HPP
+
+#include "../utils.h"
 
 class AlgorithmInterface {
  public:
@@ -20,10 +32,11 @@ class AlgorithmInterface {
   virtual void draw_header() {}
 
   bool running = false;
-  Font inter_regular;
+  Font *inter_regular;
+  Font *inter_light;
   int dropdown_option = 0;
   bool dropdown_enabled = false;
   float button_height = 100;
 };
 
-#endif
+#endif  // BLANK_INTERFACE_HPP

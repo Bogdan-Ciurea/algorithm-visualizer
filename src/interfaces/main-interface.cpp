@@ -1,24 +1,13 @@
-#include "interface.h"
+#include "interfaces/main-interface.hpp"
 
 #include <iostream>
 
-Interface::Interface() {
-  inter_regular = LoadFontEx("assets/inter-regular.ttf", 20, 0, 0);
-  inter_light = LoadFontEx("assets/inter-light.ttf", 20, 0, 0);
-}
-
-Interface::~Interface() {
-  UnloadFont(inter_regular);
-  UnloadFont(inter_light);
-}
-
-void Interface::draw() {
+void MainInterface::draw() {
   if (current_interface != nullptr) {
     // Draw the current interface
     if (current_interface->draw()) {
       // If we want to return from the draw() function, we delete the current
       // interface to free the memory
-      UnloadFont(current_interface->inter_regular);
       delete current_interface;
       current_interface = nullptr;
     }
@@ -35,25 +24,29 @@ void Interface::draw() {
     // Check if the user selected the Sorting Algorithms
     if (GuiButtonWithColor((Rectangle){0, 0, button_width, button_height},
                            "Sorting Algorithms", SORTER_BACKGROUND_COLOR))
-      current_interface = new Sorter();
+      current_interface =
+          new SortInterface(this->inter_regular, this->inter_light);
 
     // Check if the user selected the Search Algorithms
     if (GuiButtonWithColor(
             (Rectangle){button_width, 0, button_width, button_height},
             "Search Algorithms", SEARCHER_BACKGROUND_COLOR))
-      current_interface = new Searcher();
+      current_interface =
+          new SearchInterface(this->inter_regular, this->inter_light);
 
-    // Check if the user selected the Graph Algorithms
+    // Check if the user selected the GraphInterface Algorithms
     if (GuiButtonWithColor(
             (Rectangle){button_width * 2, 0, button_width, button_height},
             "Graph Algorithms", GRAPH_BACKGROUND_COLOR))
-      current_interface = new Graph();
+      current_interface =
+          new GraphInterface(this->inter_regular, this->inter_light);
 
-    // Check if the user selected the Trees Algorithms
+    // Check if the user selected the TreesInterface Algorithms
     if (GuiButtonWithColor(
             (Rectangle){button_width * 3, 0, button_width, button_height},
             "Trees Algorithms", TREES_BACKGROUND_COLOR))
-      current_interface = new Trees();
+      current_interface =
+          new TreesInterface(this->inter_regular, this->inter_light);
 
     // Draw some margins between the buttons
     DrawRectangle(0, button_height, GetScreenWidth(), 3, DARKGRAY);
@@ -61,10 +54,10 @@ void Interface::draw() {
     DrawRectangle(button_width * 2 - 1, 0, 3, button_height, DARKGRAY);
     DrawRectangle(button_width * 3 - 1, 0, 3, button_height, DARKGRAY);
 
-    // Draw the text. unfortunately there is no better way of drawing centered
+    // Draw the text. unfortunately there is no better way of drawing centred
     // text so...
     DrawTextEx(
-        inter_regular, "Welcome to my \"Algorithms Visualizer\"",
+        *inter_regular, "Welcome to my \"Algorithms Visualizer\"",
         (Vector2){(float)((GetScreenWidth() -
                            MeasureText(
                                "Welcome to my \"Algorithms Visualizer\"", 20) *
@@ -72,14 +65,14 @@ void Interface::draw() {
                           2),
                   (float)((GetScreenHeight() + button_height) / 2 - 20)},
         20.0f, 0.0f, BLACK);
-    DrawTextEx(inter_regular, "personal project",
+    DrawTextEx(*inter_regular, "personal project",
                (Vector2){(float)((GetScreenWidth() -
                                   MeasureText("personal project", 20) * 0.8f) /
                                  2),
                          (float)((GetScreenHeight() + button_height) / 2)},
                20.0f, 0.0f, BLACK);
     DrawTextEx(
-        inter_light, "Made with love by Bogdan Ciurea",
+        *inter_light, "Made with love by Bogdan Ciurea",
         (Vector2){(float)((GetScreenWidth() -
                            MeasureText("Made with love by Bogdan Ciurea", 20) *
                                0.8f) /

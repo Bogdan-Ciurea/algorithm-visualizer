@@ -1,13 +1,25 @@
-#ifndef SEARCHER_H
-#define SEARCHER_H
+/**
+ * @file search-interface.hpp
+ * @author Bogdan Ciurea
+ * @brief This file in responsible for defining the search interface that will
+ * be used in the main program and by the main-interface.hpp
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-#include "algirithm_interface.h"
-#include "standalone-functions/search-algorithms.h"
+#ifndef SEARCH_INTERFACE_HPP
+#define SEARCH_INTERFACE_HPP
 
-class Searcher : public AlgorithmInterface {
+#include "../standalone-functions/search-algorithms.hpp"
+#include "blank-interface.hpp"
+
+class SearchInterface : public AlgorithmInterface {
  public:
-  Searcher();
-  ~Searcher() {}
+  SearchInterface(Font *inter_regular, Font *inter_light);
+  ~SearchInterface() {}
 
   bool draw();
 
@@ -40,7 +52,7 @@ class Searcher : public AlgorithmInterface {
    * @brief The function responsible for drawing the pillars
    *
    */
-  void draw_pillars(std::vector<Pillar> state);
+  void draw_pillars(std::vector<Pillar> *state);
 
   /**
    * @brief The function that will draw the header and will take the input from
@@ -80,4 +92,4 @@ class Searcher : public AlgorithmInterface {
   bool check_input();
 };
 
-#endif
+#endif  // SEARCH_INTERFACE_HPP

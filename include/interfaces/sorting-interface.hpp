@@ -1,13 +1,25 @@
-#ifndef SORTER_H
-#define SORTER_H
+/**
+ * @file sorting-interface.hpp
+ * @author Bogdan Ciurea
+ * @brief This file in responsible for defining the sorting interface that will
+ * be used in the main program and by the main-interface.hpp
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
 
-#include "algirithm_interface.h"
-#include "standalone-functions/sorting-algorithms.h"
+#ifndef SORTING_INTERFACE_HPP
+#define SORTING_INTERFACE_HPP
 
-class Sorter : public AlgorithmInterface {
+#include "../standalone-functions/sorting-algorithms.hpp"
+#include "blank-interface.hpp"
+
+class SortInterface : public AlgorithmInterface {
  public:
-  Sorter();
-  ~Sorter() {}
+  SortInterface(Font *inter_regular, Font *inter_light);
+  ~SortInterface() {}
 
   /**
    * @brief Will draw everything to the screen
@@ -18,6 +30,7 @@ class Sorter : public AlgorithmInterface {
  private:
   bool sorted = false;
   unsigned long last_draw_time;
+
   std::vector<Pillar> pillars;
   // 'animation' will act as an array of frames, thus creating an animation
   std::vector<std::vector<Pillar>> animation;
@@ -32,7 +45,7 @@ class Sorter : public AlgorithmInterface {
    * @brief The function responsible for drawing the pillars
    *
    */
-  void draw_pillars(std::vector<Pillar> state);
+  void draw_pillars(std::vector<Pillar> *state);
 
   /**
    * @brief The function that will draw the header and will take the input from
@@ -68,4 +81,4 @@ class Sorter : public AlgorithmInterface {
   void get_animation();
 };
 
-#endif
+#endif  // SORTING_INTERFACE_HPP

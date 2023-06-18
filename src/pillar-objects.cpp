@@ -1,4 +1,4 @@
-#include "pillar.h"
+#include "pillar-objects.hpp"
 
 Pillar::Pillar(int size) {
   _value = size;

@@ -1,6 +1,6 @@
-#include "graph.h"
+#include "interfaces/graph-interface.hpp"
 
-bool Graph::draw() {
+bool GraphInterface::draw() {
   // Build the header
   float button_height = 100;
   if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
@@ -20,15 +20,16 @@ bool Graph::draw() {
   return false;
 }
 
-void Graph::draw_header() {
-  // Draw the "Graph Algorithms" text
-  DrawTextEx(inter_regular, "Graph Algorithms",
+void GraphInterface::draw_header() {
+  // Draw the "GraphInterface Algorithms" text
+  DrawTextEx(*inter_regular, "GraphInterface Algorithms",
              (Vector2){75, button_height / 2 - 10}, 20, 0, DARKGRAY);
 
   // Draw all the algorithm options
   if (GuiDropdownBox(
-          (Rectangle){(float)(80 + MeasureText("Graph Algorithms", 16)),
-                      button_height / 2 - 20, 170, 40},
+          (Rectangle){
+              (float)(80 + MeasureText("GraphInterface Algorithms", 16)),
+              button_height / 2 - 20, 170, 40},
           "DIJKSTRA;FLOYD WARSHALL;BSF;DFS;A*;PRIM'S;KRUSKAL'S;TOPOLOGICAL",
           &dropdown_option, dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;
@@ -69,4 +70,4 @@ void Graph::draw_header() {
   }
 }
 
-bool Graph::import_graph() { return true; }
+bool GraphInterface::import_graph() { return true; }

@@ -1,5 +1,17 @@
-#ifndef PILLAR_H
-#define PILLAR_H
+/**
+ * @file pillar-objects.hpp
+ * @author Bogdan Ciurea
+ * @brief This file is responsible for defining the classes and their methods
+ * that are used in the sorting and searching interfaces.
+ * @version 0.1
+ * @date 2023-06-15
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
+
+#ifndef PILLAR_OBJECTS_HPP
+#define PILLAR_OBJECTS_HPP
 
 #include "utils.h"
 
@@ -34,4 +46,4 @@ class Pillar {
   color_state _state;
 };
 
-#endif
+#endif  // PILLAR_OBJECTS_HPP

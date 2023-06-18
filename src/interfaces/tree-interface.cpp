@@ -1,6 +1,6 @@
-#include "trees.h"
+#include "interfaces/tree-interface.hpp"
 
-bool Trees::draw() {
+bool TreesInterface::draw() {
   // Build the header
   if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
   if (button_height > 130) button_height = 130;
@@ -19,15 +19,16 @@ bool Trees::draw() {
   return false;
 }
 
-void Trees::draw_header() {
-  // Draw the "Trees Algorithms" text
-  DrawTextEx(inter_regular, "Trees Algorithms",
+void TreesInterface::draw_header() {
+  // Draw the "TreesInterface Algorithms" text
+  DrawTextEx(*inter_regular, "TreesInterface Algorithms",
              (Vector2){75, button_height / 2 - 10}, 20, 0, DARKGRAY);
 
   // Draw all the algorithm options
   if (GuiDropdownBox(
-          (Rectangle){(float)(80 + MeasureText("Trees Algorithms", 16)),
-                      button_height / 2 - 20, 135, 40},
+          (Rectangle){
+              (float)(80 + MeasureText("TreesInterface Algorithms", 16)),
+              button_height / 2 - 20, 135, 40},
           "BINARY;RED BLACK", &dropdown_option, dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;
 
@@ -65,6 +66,6 @@ void Trees::draw_header() {
     textBoxEditMode = !textBoxEditMode;
 }
 
-void Trees::delete_node() {}
+void TreesInterface::delete_node() {}
 
-void Trees::add_node() {}
+void TreesInterface::add_node() {}
