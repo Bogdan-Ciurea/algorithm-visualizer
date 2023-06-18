@@ -13,7 +13,7 @@
 #ifndef SORTING_INTERFACE_HPP
 #define SORTING_INTERFACE_HPP
 
-#include "../standalone-functions/sorting-algorithms.h"
+#include "../standalone-functions/sorting-algorithms.hpp"
 #include "blank-interface.hpp"
 
 class SortInterface : public AlgorithmInterface {

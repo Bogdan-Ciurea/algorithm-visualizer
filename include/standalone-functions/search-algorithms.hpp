@@ -1,5 +1,5 @@
-#ifndef SEARCH_ALGORITHMS_H
-#define SEARCH_ALGORITHMS_H
+#ifndef SEARCH_ALGORITHMS_HPP
+#define SEARCH_ALGORITHMS_HPP
 
 #include "../pillar-objects.hpp"
 
@@ -15,4 +15,4 @@ std::vector<std::vector<Pillar>> search_jump_algo(std::vector<Pillar> array,
 std::vector<std::vector<Pillar>> search_interpolation_algo(
     std::vector<Pillar> array, int target);
 
-#endif
+#endif  // SEARCH_ALGORITHMS_HPP

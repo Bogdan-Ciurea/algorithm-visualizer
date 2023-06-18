@@ -1,4 +1,4 @@
-#include "standalone-functions/search-algorithms.h"
+#include "standalone-functions/search-algorithms.hpp"
 
 std::vector<std::vector<Pillar>> draw_error_animation(
     std::vector<Pillar> array) {

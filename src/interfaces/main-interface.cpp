@@ -24,25 +24,29 @@ void MainInterface::draw() {
     // Check if the user selected the Sorting Algorithms
     if (GuiButtonWithColor((Rectangle){0, 0, button_width, button_height},
                            "Sorting Algorithms", SORTER_BACKGROUND_COLOR))
-      current_interface = new SortInterface(this->inter_regular, this->inter_light);
+      current_interface =
+          new SortInterface(this->inter_regular, this->inter_light);
 
     // Check if the user selected the Search Algorithms
     if (GuiButtonWithColor(
             (Rectangle){button_width, 0, button_width, button_height},
             "Search Algorithms", SEARCHER_BACKGROUND_COLOR))
-      current_interface = new SearchInterface(this->inter_regular, this->inter_light);
+      current_interface =
+          new SearchInterface(this->inter_regular, this->inter_light);
 
     // Check if the user selected the GraphInterface Algorithms
     if (GuiButtonWithColor(
             (Rectangle){button_width * 2, 0, button_width, button_height},
-            "GraphInterface Algorithms", GRAPH_BACKGROUND_COLOR))
-      current_interface = new GraphInterface(this->inter_regular, this->inter_light);
+            "Graph Algorithms", GRAPH_BACKGROUND_COLOR))
+      current_interface =
+          new GraphInterface(this->inter_regular, this->inter_light);
 
     // Check if the user selected the TreesInterface Algorithms
     if (GuiButtonWithColor(
             (Rectangle){button_width * 3, 0, button_width, button_height},
-            "TreesInterface Algorithms", TREES_BACKGROUND_COLOR))
-      current_interface = new TreesInterface(this->inter_regular, this->inter_light);
+            "Trees Algorithms", TREES_BACKGROUND_COLOR))
+      current_interface =
+          new TreesInterface(this->inter_regular, this->inter_light);
 
     // Draw some margins between the buttons
     DrawRectangle(0, button_height, GetScreenWidth(), 3, DARKGRAY);

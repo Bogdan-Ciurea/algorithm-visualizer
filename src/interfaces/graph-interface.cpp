@@ -27,8 +27,9 @@ void GraphInterface::draw_header() {
 
   // Draw all the algorithm options
   if (GuiDropdownBox(
-          (Rectangle){(float)(80 + MeasureText("GraphInterface Algorithms", 16)),
-                      button_height / 2 - 20, 170, 40},
+          (Rectangle){
+              (float)(80 + MeasureText("GraphInterface Algorithms", 16)),
+              button_height / 2 - 20, 170, 40},
           "DIJKSTRA;FLOYD WARSHALL;BSF;DFS;A*;PRIM'S;KRUSKAL'S;TOPOLOGICAL",
           &dropdown_option, dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;

@@ -1,14 +1,14 @@
-#include "standalone-functions/sorting-algorithms.h"
+#include "standalone-functions/sorting-algorithms.hpp"
 
 std::vector<std::vector<Pillar>> draw_result_animation(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> *array) {
   std::vector<std::vector<Pillar>> x;
 
   for (int i = 0; i < 3; i++) {
-    x.push_back(array);
+    x.push_back(*array);
     for (Pillar &pill : x.at(x.size() - 1)) pill.change_state(NORMAL);
 
-    x.push_back(array);
+    x.push_back(*array);
     for (Pillar &pill : x.at(x.size() - 1)) pill.change_state(MOVED);
   }
 
@@ -16,7 +16,7 @@ std::vector<std::vector<Pillar>> draw_result_animation(
 }
 
 std::vector<std::vector<Pillar>> insertion_sort_algorithm(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> &array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -46,7 +46,7 @@ std::vector<std::vector<Pillar>> insertion_sort_algorithm(
     animation.at(animation.size() - 1).at(j + 1).change_state(MOVED);
   }
 
-  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(array);
+  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());
 
   animation.push_back(array);
@@ -82,7 +82,7 @@ void heapify(std::vector<Pillar> &array,
 }
 
 std::vector<std::vector<Pillar>> heap_sort_algorithm(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> &array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -107,7 +107,7 @@ std::vector<std::vector<Pillar>> heap_sort_algorithm(
     animation.at(animation.size() - 1).at(i).change_state(SELECTED);
   }
 
-  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(array);
+  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());
 
   animation.push_back(array);
@@ -116,7 +116,7 @@ std::vector<std::vector<Pillar>> heap_sort_algorithm(
 }
 
 std::vector<std::vector<Pillar>> selection_sort_algorithm(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> &array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -151,7 +151,7 @@ std::vector<std::vector<Pillar>> selection_sort_algorithm(
     animation.at(animation.size() - 1).at(min_index).change_state(MOVED);
   }
 
-  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(array);
+  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());
 
   animation.push_back(array);
@@ -268,13 +268,13 @@ void merge_recursive(std::vector<Pillar> &array,
 }
 
 std::vector<std::vector<Pillar>> merge_sort_algorithm(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> &array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
   merge_recursive(array, animation, 0ul, array.size() - 1);
 
-  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(array);
+  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());
 
   animation.push_back(array);
@@ -326,13 +326,13 @@ void quick_recursive(std::vector<Pillar> &array,
 }
 
 std::vector<std::vector<Pillar>> quick_sort_algorithm(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> &array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
   quick_recursive(array, animation, 0, array.size() - 1);
 
-  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(array);
+  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());
 
   animation.push_back(array);
@@ -341,7 +341,7 @@ std::vector<std::vector<Pillar>> quick_sort_algorithm(
 }
 
 std::vector<std::vector<Pillar>> bubble_sort_algorithm(
-    std::vector<Pillar> array) {
+    std::vector<Pillar> &array) {
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
@@ -371,7 +371,7 @@ std::vector<std::vector<Pillar>> bubble_sort_algorithm(
     }
   }
 
-  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(array);
+  std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());
 
   animation.push_back(array);

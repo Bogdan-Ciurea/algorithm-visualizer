@@ -13,7 +13,7 @@
 #ifndef SEARCH_INTERFACE_HPP
 #define SEARCH_INTERFACE_HPP
 
-#include "../standalone-functions/search-algorithms.h"
+#include "../standalone-functions/search-algorithms.hpp"
 #include "blank-interface.hpp"
 
 class SearchInterface : public AlgorithmInterface {

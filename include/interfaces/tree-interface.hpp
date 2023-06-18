@@ -13,7 +13,7 @@
 #ifndef TREE_INTERFACE_HPP
 #define TREE_INTERFACE_HPP
 
-#include "../standalone-functions/trees-algorithms.h"
+#include "../standalone-functions/trees-algorithms.hpp"
 #include "blank-interface.hpp"
 
 class TreesInterface : public AlgorithmInterface {

@@ -26,8 +26,9 @@ void TreesInterface::draw_header() {
 
   // Draw all the algorithm options
   if (GuiDropdownBox(
-          (Rectangle){(float)(80 + MeasureText("TreesInterface Algorithms", 16)),
-                      button_height / 2 - 20, 135, 40},
+          (Rectangle){
+              (float)(80 + MeasureText("TreesInterface Algorithms", 16)),
+              button_height / 2 - 20, 135, 40},
           "BINARY;RED BLACK", &dropdown_option, dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;
 

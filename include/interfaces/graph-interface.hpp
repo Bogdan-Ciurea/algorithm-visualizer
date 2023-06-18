@@ -13,7 +13,7 @@
 #ifndef GRAPH_INTERFACE_HPP
 #define GRAPH_INTERFACE_HPP
 
-#include "../standalone-functions/graph-algorithms.h"
+#include "../standalone-functions/graph-algorithms.hpp"
 #include "blank-interface.hpp"
 
 class GraphInterface : public AlgorithmInterface {
