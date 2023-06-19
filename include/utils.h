@@ -19,6 +19,16 @@
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define VECTOR_ADD(v1, v2) \
+  Vector2 { v1.x + v2.x, v1.y + v2.y }
+
+// Macro for vector subtraction
+#define VECTOR_SUBTRACT(v1, v2) \
+  Vector2 { v1.x - v2.x, v1.y - v2.y }
+
+// Macro for vector multiplication
+#define VECTOR_MULT(v1, scalar) \
+  Vector2 { v1.x *scalar, v1.y *scalar }
 
 // Global values
 // --------------------------
@@ -85,6 +95,8 @@ enum trees_type_option { BINARY_TREE, RED_BLACK_TREE };
 
 #define NODE_RADIUS 20
 #define EDGE_THICKNESS 3
+#define ARROW_PERCENTAGE 0.1f
+#define ARROW_ANGLE 20
 
 // SortInterface and SearchInterface Related
 // --------------------------

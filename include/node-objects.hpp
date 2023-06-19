@@ -38,7 +38,7 @@ class Node {
 
 class Edge {
  public:
-  Edge(int weight, Node *n1, Node *n2, bool directed);
+  Edge(float weight, Node *n1, Node *n2, bool directed);
   ~Edge() {}
 
   void draw(float thickness);
@@ -49,13 +49,16 @@ class Edge {
   void set_weight(int new_weight);
   void set_directed(bool new_directed);
 
-  int weight;
+  float weight;
   Node *node1, *node2;
 
  private:
   Color color;
   color_state state;
+  Vector2 start_point, end_point;
   bool directed;
+
+  void calculate_start_end_points();
 };
 
 #endif  // NODE_OBJECTS_HPP

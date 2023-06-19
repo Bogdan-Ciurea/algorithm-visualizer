@@ -16,7 +16,7 @@ Node::Node(float x, float y, int id) {
   this->id = id;
   this->radius = 20;
   this->state = NORMAL;
-  this->color = NORMAL_COLOR;
+  this->color = BLACK;
 }
 
 Node::Node(Vector2 coord, int id) {
@@ -24,12 +24,12 @@ Node::Node(Vector2 coord, int id) {
   this->id = id;
   this->radius = 20;
   this->state = NORMAL;
-  this->color = NORMAL_COLOR;
+  this->color = BLACK;
 }
 
 void Node::draw(float r) {
   DrawCircleV(coord, r, color);
-  DrawText(std::to_string(id).c_str(), coord.x - 5, coord.y - 5, 10, BLACK);
+  DrawText(std::to_string(id).c_str(), coord.x - 5, coord.y - 5, 10, WHITE);
 }
 
 bool Node::point_in_node(Vector2 *point) {
@@ -51,13 +51,13 @@ void Node::set_state(color_state new_state) {
 
   switch (new_state) {
     case NORMAL:
-      this->color = NORMAL_COLOR;
+      this->color = BLACK;
       break;
     case SELECTED:
-      this->color = SELECTED_COLOR;
+      this->color = GREEN;
       break;
     case MOVED:
-      this->color = MOVED_COLOR;
+      this->color = RED;
       break;
     default:
       break;
@@ -66,39 +66,51 @@ void Node::set_state(color_state new_state) {
 
 void Node::set_id(int new_id) { this->id = new_id; }
 
-Edge::Edge(int weight, Node *n1, Node *n2, bool directed) {
+Edge::Edge(float weight, Node *n1, Node *n2, bool directed) {
   this->weight = weight;
   this->node1 = n1;
   this->node2 = n2;
   this->directed = directed;
   this->state = NORMAL;
-  this->color = NORMAL_COLOR;
+  this->color = BLACK;
+
+  this->calculate_start_end_points();
 }
 
 void Edge::draw(float thickness) {
-  if (!directed)
-    DrawLineEx(node1->coord, node2->coord, thickness, color);
-  else {
-    // Draw the line
-    DrawLineEx(node1->coord, node2->coord, thickness, color);
+  // We want to recalculate the start and end points of the line so that it
+  // doesn't intersect with the nodes
+
+  // Draw the line
+  DrawLineEx(start_point, end_point, thickness, color);
+  // Draw the weight of the edge
+  // DrawText(std::to_string((int)weight).c_str(),
+  //          (start_point.x + end_point.x) / 2,
+  //          (start_point.y + end_point.y) / 2, 10, RED);
+  if (directed) {
     // Draw the arrow. It had just two lines with an angle of 20 degrees
     // between them. The arrow is 50 pixels long.
+    // Read https://math.stackexchange.com/questions/1314006/drawing-an-arrow
     Vector2 x3 = {
-        node2->coord.x +
-            0.1f * ((node1->coord.x - node2->coord.x) * cos(20 * DEG2RAD) -
-                    (node1->coord.y - node2->coord.y) * sin(20 * DEG2RAD)),
-        node2->coord.y +
-            0.1f * ((node1->coord.x - node2->coord.x) * sin(20 * DEG2RAD) +
-                    (node1->coord.y - node2->coord.y) * cos(20 * DEG2RAD))};
+        end_point.x +
+            ARROW_PERCENTAGE *
+                ((start_point.x - end_point.x) * cos(ARROW_ANGLE * DEG2RAD) -
+                 (start_point.y - end_point.y) * sin(ARROW_ANGLE * DEG2RAD)),
+        end_point.y +
+            ARROW_PERCENTAGE *
+                ((start_point.x - end_point.x) * sin(ARROW_ANGLE * DEG2RAD) +
+                 (start_point.y - end_point.y) * cos(ARROW_ANGLE * DEG2RAD))};
     Vector2 x4 = {
-        node2->coord.x +
-            0.1f * ((node1->coord.x - node2->coord.x) * cos(-20 * DEG2RAD) -
-                    (node1->coord.y - node2->coord.y) * sin(-20 * DEG2RAD)),
-        node2->coord.y +
-            0.1f * ((node1->coord.x - node2->coord.x) * sin(-20 * DEG2RAD) +
-                    (node1->coord.y - node2->coord.y) * cos(-20 * DEG2RAD))};
-    DrawLineEx(node2->coord, x3, thickness, color);
-    DrawLineEx(node2->coord, x4, thickness, color);
+        end_point.x +
+            ARROW_PERCENTAGE *
+                ((start_point.x - end_point.x) * cos(-ARROW_ANGLE * DEG2RAD) -
+                 (start_point.y - end_point.y) * sin(-ARROW_ANGLE * DEG2RAD)),
+        end_point.y +
+            ARROW_PERCENTAGE *
+                ((start_point.x - end_point.x) * sin(-ARROW_ANGLE * DEG2RAD) +
+                 (start_point.y - end_point.y) * cos(-ARROW_ANGLE * DEG2RAD))};
+    DrawLineEx(end_point, x3, thickness, color);
+    DrawLineEx(end_point, x4, thickness, color);
   }
 }
 
@@ -130,13 +142,13 @@ void Edge::set_state(color_state new_state) {
 
   switch (new_state) {
     case NORMAL:
-      this->color = NORMAL_COLOR;
+      this->color = BLACK;
       break;
     case SELECTED:
-      this->color = SELECTED_COLOR;
+      this->color = RED;
       break;
     case MOVED:
-      this->color = MOVED_COLOR;
+      this->color = GREEN;
       break;
     default:
       break;
@@ -146,3 +158,19 @@ void Edge::set_state(color_state new_state) {
 void Edge::set_weight(int new_weight) { this->weight = new_weight; }
 
 void Edge::set_directed(bool new_directed) { this->directed = new_directed; }
+
+void Edge::calculate_start_end_points() {
+  // Calculate the distance between the two nodes
+  float distance = sqrt(pow(node1->coord.x - node2->coord.x, 2) +
+                        pow(node1->coord.y - node2->coord.y, 2));
+
+  // Calculate the start and end points of the line
+  this->start_point = {node1->coord.x + (NODE_RADIUS / distance) *
+                                            (node2->coord.x - node1->coord.x),
+                       node1->coord.y + (NODE_RADIUS / distance) *
+                                            (node2->coord.y - node1->coord.y)};
+  this->end_point = {node2->coord.x - (NODE_RADIUS / distance) *
+                                          (node2->coord.x - node1->coord.x),
+                     node2->coord.y - (NODE_RADIUS / distance) *
+                                          (node2->coord.y - node1->coord.y)};
+}

@@ -23,6 +23,7 @@ class GraphInterface : public AlgorithmInterface {
   GraphInterface(Font *inter_regular, Font *inter_light) {
     this->inter_regular = inter_regular;
     this->inter_light = inter_light;
+    this->directed_graph = false;
   }
   ~GraphInterface() {
     for (auto node : node_list) delete node;
@@ -36,7 +37,7 @@ class GraphInterface : public AlgorithmInterface {
   std::vector<Node *> node_list;
   std::vector<Edge *> edge_list;
 
-  bool directed = false;
+  bool directed_graph;
   bool textBoxEditMode1 = false;
   char textBoxText1[64] = "From";
   bool textBoxEditMode2 = false;
@@ -49,9 +50,13 @@ class GraphInterface : public AlgorithmInterface {
   bool pressed = false;
   Node *temp_clicked_node = nullptr;  // Used for the fist node of the edge
 
-  bool directed_edge = false;
+  void draw_main_header(float button_height);
+  void draw_secondary_header(float button_height);
+  void draw_elements();
 
   Vector2 *get_click_location(float ignore_height = 100.0f);
+
+  // bool import_graph();
 
   void add_node(Vector2 *location);
   void remove_node(Node *node);
@@ -64,11 +69,8 @@ class GraphInterface : public AlgorithmInterface {
 
   void change_edge_type();
 
-  void draw_main_header(float button_height);
-  void draw_secondary_header(float button_height);
-  void draw_elements();
-
-  bool import_graph();
+  std::vector<std::vector<float>> generate_adj_matrix();
+  void print_adj_matrix(std::vector<std::vector<float>>);
 };
 
 #endif  // GRAPH_INTERFACE_HPP
