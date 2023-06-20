@@ -174,3 +174,193 @@ void Edge::calculate_start_end_points() {
                      node2->coord.y - (NODE_RADIUS / distance) *
                                           (node2->coord.y - node1->coord.y)};
 }
+
+void Graph::add_node(Vector2 *point) {
+  // Check that we have a valid point
+  if (point == nullptr) {
+    return;
+  }
+
+  // Check if the node is not on top of another node
+  for (auto node : node_list) {
+    // Calculate the distance between the two nodes
+    float distance = sqrt(pow(node->coord.x - point->x, 2) +
+                          pow(node->coord.y - point->y, 2));
+
+    if (NODE_RADIUS * 2.5f > distance) {
+      return;
+    }
+  }
+
+  // Add the node to the list
+  node_list.push_back(new Node(point->x, point->y, this->generate_id()));
+}
+
+Node *Graph::get_node(int id) {
+  for (auto node : node_list) {
+    if (node->id == id) {
+      return node;
+    }
+  }
+
+  return nullptr;
+}
+
+int Graph::generate_id() {
+  int id = 0;
+
+  // Keep generating ids until we find one that is not used
+  while (true) {
+    bool found = false;
+    for (auto node : node_list) {
+      if (node->id == id) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      break;
+    }
+
+    id++;
+  }
+
+  return id;
+}
+
+void Graph::add_edge(Node *n1, Node *n2, float weight) {
+  // Check if the nodes are not the same
+  if (n1 == n2) {
+    return;
+  }
+
+  // Check if the nodes exist
+  bool n1_exists = false;
+  bool n2_exists = false;
+
+  for (auto node : node_list) {
+    if (node == n1) {
+      n1_exists = true;
+    }
+    if (node == n2) {
+      n2_exists = true;
+    }
+  }
+
+  if (!n1_exists || !n2_exists) {
+    return;
+  }
+
+  // Check if the edge already exists
+  for (auto edge : edge_list) {
+    if (edge->node1 == n1 && edge->node2 == n2) {
+      return;
+    }
+  }
+
+  // Add the edge to the list
+  edge_list.push_back(new Edge(weight, n1, n2, directed));
+}
+
+void Graph::draw(float node_radius, float edge_thickness) {
+  // Draw the edges
+  for (auto edge : edge_list) {
+    edge->draw(edge_thickness);
+  }
+
+  // Draw the nodes
+  for (auto node : node_list) {
+    node->draw(node_radius);
+  }
+}
+
+void Graph::remove_element(Vector2 *point) {
+  for (int i = 0; i < node_list.size(); i++) {
+    if (node_list[i]->point_in_node(point)) {
+      this->remove_node(node_list[i]);
+      return;
+    }
+  }
+
+  for (int i = 0; i < edge_list.size(); i++) {
+    if (edge_list[i]->point_on_edge(point)) {
+      this->remove_edge(edge_list[i]);
+      return;
+    }
+  }
+}
+
+void Graph::remove_node(Node *node) {
+  for (int i = 0; i < edge_list.size(); i++) {
+    if (edge_list[i]->node1 == node || edge_list[i]->node2 == node) {
+      remove_edge(edge_list[i]);
+      i--;
+    }
+  }
+
+  for (int i = 0; i < node_list.size(); i++) {
+    if (node_list[i] == node) {
+      node_list.erase(node_list.begin() + i);
+      break;
+    }
+  }
+
+  delete node;
+}
+
+void Graph::remove_edge(Edge *edge) {
+  for (int i = 0; i < edge_list.size(); i++) {
+    if (edge_list[i] == edge) {
+      edge_list.erase(edge_list.begin() + i);
+      break;
+    }
+  }
+
+  delete edge;
+}
+
+void Graph::set_directed(bool new_directed) {
+  this->directed = new_directed;
+
+  for (auto edge : edge_list) {
+    edge->set_directed(new_directed);
+  }
+}
+
+Node *Graph::get_node_in_proximity(Vector2 *point, float radius) {
+  for (auto node : node_list) {
+    if (node->point_in_node(point)) {
+      return node;
+    }
+
+    // Check if the point is in the proximity of the node
+    float distance = sqrt(pow(node->coord.x - point->x, 2) +
+                          pow(node->coord.y - point->y, 2));
+
+    if (distance <= radius) {
+      return node;
+    }
+  }
+
+  return nullptr;
+}
+
+Graph *Graph::get_graph_copy() {
+  Graph *new_graph = new Graph();
+  new_graph->set_directed(this->directed);
+
+  // Copy the nodes
+  for (auto node : node_list) {
+    new_graph->node_list.push_back(new Node(node->coord, node->id));
+  }
+
+  // Copy the edges
+  for (auto edge : edge_list) {
+    new_graph->edge_list.push_back(
+        new Edge(edge->weight, new_graph->node_list[edge->node1->id],
+                 new_graph->node_list[edge->node2->id], this->directed));
+  }
+
+  return new_graph;
+}

@@ -24,53 +24,45 @@ class GraphInterface : public AlgorithmInterface {
     this->inter_regular = inter_regular;
     this->inter_light = inter_light;
     this->directed_graph = false;
+    this->graph = new Graph();
   }
-  ~GraphInterface() {
-    for (auto node : node_list) delete node;
-    for (auto edge : edge_list) delete edge;
-  }
+  ~GraphInterface() { delete this->graph; }
 
   bool draw();
 
  private:
-  std::vector<std::vector<float>> adj_matrix;
-  std::vector<Node *> node_list;
-  std::vector<Edge *> edge_list;
+  Graph *graph = nullptr;
+
+  unsigned long last_draw_time;
 
   bool directed_graph;
   bool textBoxEditMode1 = false;
   char textBoxText1[64] = "From";
   bool textBoxEditMode2 = false;
   char textBoxText2[64] = "To";
+  bool check_input();
+  Node *from_node = nullptr;
+  Node *to_node = nullptr;
 
   SelectableModes current_mode = ADD_NODE;
-  bool has_deleted = false;
 
   // needed for clicking
   bool pressed = false;
   Node *temp_clicked_node = nullptr;  // Used for the fist node of the edge
 
+  // Drawing functions
   void draw_main_header(float button_height);
   void draw_secondary_header(float button_height);
-  void draw_elements();
 
+  void get_canvas_input();
+
+  // Clicking functions
   Vector2 *get_click_location(float ignore_height = 100.0f);
 
   // bool import_graph();
 
-  void add_node(Vector2 *location);
-  void remove_node(Node *node);
-  int generate_node_id();
-
-  Node *get_node_by_position(Vector2 *location);
-
-  void add_edge(Node *n1, Node *n2);
-  void remove_edge(Edge *edge);
-
-  void change_edge_type();
-
-  std::vector<std::vector<float>> generate_adj_matrix();
-  void print_adj_matrix(std::vector<std::vector<float>>);
+  // Algorithm related functions
+  void run_algorithm();
 };
 
 #endif  // GRAPH_INTERFACE_HPP

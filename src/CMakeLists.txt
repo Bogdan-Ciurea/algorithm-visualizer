@@ -1,6 +1,7 @@
 set(SOURCES
     standalone-functions/search-algorithms.cpp
     standalone-functions/sorting-algorithms.cpp
+    standalone-functions/graph-algorithms.cpp
     interfaces/graph-interface.cpp
     interfaces/main-interface.cpp
     interfaces/search-interface.cpp

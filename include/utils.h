@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <queue>
 #include <random>
 #include <vector>
 
@@ -29,6 +30,8 @@
 // Macro for vector multiplication
 #define VECTOR_MULT(v1, scalar) \
   Vector2 { v1.x *scalar, v1.y *scalar }
+
+#define VECTOR_DISTANCE(v1, v2) sqrt(pow(v1.x - v2.x, 2) + pow(v1.y - v2.y, 2))
 
 // Global values
 // --------------------------

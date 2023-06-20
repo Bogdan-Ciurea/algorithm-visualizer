@@ -3,4 +3,6 @@
 
 #include "../node-objects.hpp"
 
+std::vector<Graph *> dijkstra(Node *start, Node *end, Graph *graph);
+
 #endif  // GRAPH_ALGORITHMS_HPP

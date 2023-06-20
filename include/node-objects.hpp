@@ -61,4 +61,35 @@ class Edge {
   void calculate_start_end_points();
 };
 
+class Graph {
+ public:
+  Graph() {}
+  ~Graph() {
+    for (auto node : node_list) delete node;
+    for (auto edge : edge_list) delete edge;
+  }
+
+  void add_node(Vector2 *point);
+  Node *get_node(int id);
+  int generate_id();
+  void add_edge(Node *n1, Node *n2, float weight);
+
+  void draw(float node_radius, float edge_thickness);
+
+  void remove_element(Vector2 *point);
+  void remove_node(Node *node);
+  void remove_edge(Edge *edge);
+
+  void set_directed(bool new_directed);
+  Node *get_node_in_proximity(Vector2 *point, float radius);
+
+  Graph *get_graph_copy();
+
+  std::vector<Node *> node_list;
+  std::vector<Edge *> edge_list;
+
+ private:
+  bool directed;
+};
+
 #endif  // NODE_OBJECTS_HPP

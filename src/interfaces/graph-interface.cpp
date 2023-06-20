@@ -17,59 +17,15 @@ bool GraphInterface::draw() {
 
   this->draw_main_header(button_height);
   this->draw_secondary_header(button_height);
-  this->draw_elements();
+  this->graph->draw(NODE_RADIUS, EDGE_THICKNESS);
 
-  Vector2 *click_position = this->get_click_location(button_height + 10);
+  if (this->running) {
+    last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+                     std::chrono::milliseconds(1);
+    this->run_algorithm();
+  } else
+    this->get_canvas_input();
 
-  if (click_position) switch (this->current_mode) {
-      case ADD_NODE:
-        add_node(click_position);
-        break;
-
-      case ADD_EDGE: {
-        if (temp_clicked_node == nullptr) {
-          temp_clicked_node = get_node_by_position(click_position);
-          if (temp_clicked_node != nullptr)
-            temp_clicked_node->set_state(SELECTED);
-        } else {
-          Node *second_node = get_node_by_position(click_position);
-          if (second_node != nullptr) {
-            // We have both nodes
-            // We can add the edge
-            add_edge(temp_clicked_node, second_node);
-          }
-          temp_clicked_node->set_state(NORMAL);
-          temp_clicked_node = nullptr;
-        }
-        break;
-      }
-
-      case REMOVE: {
-        this->has_deleted = false;
-        for (int i = 0; i < node_list.size(); i++) {
-          if (node_list[i]->point_in_node(click_position)) {
-            this->remove_node(node_list[i]);
-            has_deleted = true;
-            break;
-          }
-        }
-
-        if (!this->has_deleted) {
-          for (int i = 0; i < edge_list.size(); i++) {
-            if (edge_list[i]->point_on_edge(click_position)) {
-              this->remove_edge(edge_list[i]);
-              break;
-            }
-          }
-        }
-
-        break;
-      }
-      default:
-        break;
-    }
-
-  delete click_position;
   return false;
 }
 
@@ -93,8 +49,8 @@ void GraphInterface::draw_main_header(float button_height) {
   if (!running) {
     if (GuiButton(start_end_button_rect,
                   GuiIconText(RAYGUI_ICON_PLAYER_PLAY, "Start"))) {
-      running = true;
-      print_adj_matrix(generate_adj_matrix());
+      if (check_input()) running = true;
+      // print_adj_matrix(generate_adj_matrix());
     }
   } else {
     if (GuiButton(start_end_button_rect,
@@ -112,13 +68,13 @@ void GraphInterface::draw_main_header(float button_height) {
   if (dropdown_option !=
       7) {  // We need two nodes only if we don't want the topological sorting
     // Draw the "from" input button
-    Rectangle input_rect1 = (Rectangle){(float)(GetScreenWidth() - 285),
+    Rectangle input_rect1 = (Rectangle){(float)(GetScreenWidth() - 400),
                                         button_height / 2 - 20, 100, 40};
     if (GuiTextBox(input_rect1, textBoxText1, 64, textBoxEditMode1))
       textBoxEditMode1 = !textBoxEditMode1;
 
     // Draw the "to" input button
-    Rectangle input_rect2 = (Rectangle){(float)(GetScreenWidth() - 400),
+    Rectangle input_rect2 = (Rectangle){(float)(GetScreenWidth() - 285),
                                         button_height / 2 - 20, 100, 40};
     if (GuiTextBox(input_rect2, textBoxText2, 64, textBoxEditMode2))
       textBoxEditMode2 = !textBoxEditMode2;
@@ -167,20 +123,66 @@ void GraphInterface::draw_secondary_header(float button_height) {
                                            : RAYGUI_ICON_CURSOR_SCALE_LEFT_FILL,
                             directed_graph ? "Directed" : "Undirected"))) {
     directed_graph = !directed_graph;
-    change_edge_type();
+    graph->set_directed(directed_graph);
   }
 }
 
-void GraphInterface::draw_elements() {
-  // Draw all the edges
-  for (auto edge : edge_list) {
-    edge->draw(EDGE_THICKNESS);
+bool GraphInterface::check_input() {
+  if (dropdown_option == 7) return true;
+
+  int from = atoi(textBoxText1);
+  int to = atoi(textBoxText2);
+
+  if (from < 0 || from >= graph->node_list.size() || to < 0 ||
+      to >= graph->node_list.size()) {
+    return false;
   }
 
-  // Draw all the nodes
-  for (auto node : node_list) {
-    node->draw(NODE_RADIUS);
-  }
+  this->from_node = graph->get_node(from);
+  this->to_node = graph->get_node(to);
+
+  return true;
+}
+
+void GraphInterface::get_canvas_input() {
+  Vector2 *click_position = this->get_click_location(button_height + 10);
+
+  if (click_position) switch (this->current_mode) {
+      case ADD_NODE:
+        this->graph->add_node(click_position);
+        break;
+
+      case ADD_EDGE: {
+        if (temp_clicked_node == nullptr) {
+          temp_clicked_node =
+              this->graph->get_node_in_proximity(click_position, NODE_RADIUS);
+          if (temp_clicked_node != nullptr)
+            temp_clicked_node->set_state(SELECTED);
+        } else {
+          Node *second_node =
+              this->graph->get_node_in_proximity(click_position, NODE_RADIUS);
+          if (second_node != nullptr) {
+            // We have both nodes
+            // We can add the edge
+            this->graph->add_edge(
+                temp_clicked_node, second_node,
+                VECTOR_DISTANCE(temp_clicked_node->coord, second_node->coord));
+          }
+          temp_clicked_node->set_state(NORMAL);
+          temp_clicked_node = nullptr;
+        }
+        break;
+      }
+
+      case REMOVE: {
+        this->graph->remove_element(click_position);
+        break;
+      }
+      default:
+        break;
+    }
+
+  if (click_position) delete click_position;
 }
 
 // bool GraphInterface::import_graph() { return true; }
@@ -210,131 +212,52 @@ Vector2 *GraphInterface::get_click_location(float ignore_height) {
   return nullptr;
 }
 
-void GraphInterface::add_node(Vector2 *location) {
-  // Check if there is already a node in that location
-  // or if the location is too close to another node
+void GraphInterface::run_algorithm() {
+  // if (std::chrono::system_clock::now().time_since_epoch() /
+  //             std::chrono::milliseconds(1) -
+  //         last_draw_time >
+  //     1000 / GRAPH_ANIMATION_FPS) {
+  //   // Update the display time of the last frame
+  //   last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+  //                    std::chrono::milliseconds(1);
 
-  // If there is no node in that location we can add it
+  switch (dropdown_option) {
+    case DIJKSTRA:
+      // dijkstra(this->from_node, this->to_node, &this->node_list,
+      //          &this->edge_list);
 
-  if (location == nullptr) return;
-
-  for (auto node : node_list) {
-    // Calculate the distance between the two nodes
-    float distance = sqrt(pow(node->coord.x - location->x, 2) +
-                          pow(node->coord.y - location->y, 2));
-
-    if (NODE_RADIUS * 2.5 > distance) {
-      return;
-    }
-  }
-  node_list.push_back(
-      new Node(location->x, location->y, this->generate_node_id()));
-}
-
-void GraphInterface::remove_node(Node *node) {
-  for (int i = 0; i < edge_list.size(); i++) {
-    if (edge_list[i]->node1 == node || edge_list[i]->node2 == node) {
-      remove_edge(edge_list[i]);
-      i--;
-    }
-  }
-
-  for (int i = 0; i < node_list.size(); i++) {
-    if (node_list[i] == node) {
-      node_list.erase(node_list.begin() + i);
       break;
-    }
-  }
 
-  delete node;
-}
-
-int GraphInterface::generate_node_id() {
-  int id = 0;
-  for (auto node : node_list) {
-    if (node->id == id) {
-      id++;
-    } else {
-      return id;
-    }
-  }
-  return id;
-}
-
-Node *GraphInterface::get_node_by_position(Vector2 *location) {
-  for (auto &node : node_list) {
-    // Calculate the distance between the two nodes
-    float distance = sqrt(pow(node->coord.x - location->x, 2) +
-                          pow(node->coord.y - location->y, 2));
-
-    if (NODE_RADIUS >= distance) {
-      return node;
-    }
-  }
-
-  return nullptr;
-}
-
-void GraphInterface::add_edge(Node *n1, Node *n2) {
-  // Calculate the distance between the two nodes
-  float weight = sqrt(pow(n1->coord.x - n2->coord.x, 2) +
-                      pow(n1->coord.y - n2->coord.y, 2));
-  edge_list.push_back(new Edge(weight, n1, n2, directed_graph));
-}
-
-void GraphInterface::remove_edge(Edge *edge) {
-  for (int i = 0; i < edge_list.size(); i++) {
-    if (edge_list[i] == edge) {
-      edge_list.erase(edge_list.begin() + i);
+    case FLOYD_WARSHALL:
+      /* code */
       break;
-    }
+
+    case BFS:
+      /* code */
+      break;
+
+    case DFS:
+      /* code */
+      break;
+
+    case AS:
+      /* code */
+      break;
+
+    case PRIMS:
+      /* code */
+      break;
+
+    case KRISKAL:
+      /* code */
+      break;
+
+    case TOPOLOGICAL:
+      /* code */
+      break;
+
+    default:
+      break;
   }
-
-  delete edge;
-}
-
-void GraphInterface::change_edge_type() {
-  for (auto edge : edge_list) {
-    edge->set_directed(directed_graph);
-  }
-}
-
-std::vector<std::vector<float>> GraphInterface::generate_adj_matrix() {
-  std::vector<std::vector<float>> adj_matrix;
-  adj_matrix.resize(node_list.size());
-  for (int i = 0; i < node_list.size(); i++) {
-    adj_matrix[i].resize(node_list.size());
-    for (int j = 0; j < node_list.size(); j++) {
-      adj_matrix[i][j] = 0;
-    }
-  }
-
-  // The edges are not ordered so we need to find the correct position in the
-  // matrix
-
-  for (auto edge : edge_list) {
-    int i = 0;
-    for (; i < node_list.size(); i++) {
-      if (node_list[i] == edge->node1) break;
-    }
-
-    int j = 0;
-    for (; j < node_list.size(); j++) {
-      if (node_list[j] == edge->node2) break;
-    }
-
-    adj_matrix[i][j] = edge->weight;
-    if (!this->directed_graph) adj_matrix[j][i] = edge->weight;
-  }
-
-  return adj_matrix;
-}
-
-void GraphInterface::print_adj_matrix(std::vector<std::vector<float>> matrix) {
-  for (int i = 0; i < node_list.size(); i++) {
-    for (int j = 0; j < node_list.size(); j++) {
-      std::cout << matrix[i][j] << " ";
-    }
-    std::cout << std::endl;
-  }
+  // }
 }
