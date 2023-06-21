@@ -14,7 +14,6 @@
 Node::Node(float x, float y, int id) {
   this->coord = {x, y};
   this->id = id;
-  this->radius = 20;
   this->state = NORMAL;
   this->color = BLACK;
 }
@@ -22,7 +21,6 @@ Node::Node(float x, float y, int id) {
 Node::Node(Vector2 coord, int id) {
   this->coord = coord;
   this->id = id;
-  this->radius = 20;
   this->state = NORMAL;
   this->color = BLACK;
 }

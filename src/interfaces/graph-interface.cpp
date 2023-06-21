@@ -57,7 +57,7 @@ void GraphInterface::draw_main_header(float button_height) {
     }
   } else {
     if (GuiButton(start_end_button_rect,
-                  GuiIconText(RAYGUI_ICON_PLAYER_STOP, "Stop")))
+                  GuiIconText(RAYGUI_ICON_PLAYER_PAUSE, "Pause")))
       running = false;
   }
 
@@ -222,7 +222,6 @@ void GraphInterface::run_algorithm() {
     switch (dropdown_option) {
       case DIJKSTRA:
         animation = dijkstra(this->from_node, this->to_node, this->graph);
-
         break;
 
       case FLOYD_WARSHALL:

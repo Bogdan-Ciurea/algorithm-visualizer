@@ -110,14 +110,24 @@ std::vector<Graph *> dijkstra(Node *start, Node *end, Graph *graph) {
   }
 
   // Append the path to the animation 3 times
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < path_animation.size(); j++) {
-      animation.push_back(path_animation[j]->get_graph_copy());
-    }
+  // for (int i = 0; i < 3; i++) {
+  //   for (int j = 0; j < path_animation.size(); j++) {
+  //     animation.push_back(path_animation[j]->get_graph_copy());
+  //   }
+  // }
+  for (int j = 0; j < path_animation.size(); j++) {
+    animation.push_back(path_animation[j]->get_graph_copy());
   }
 
-  // Leave the last frame for 2 more frames
   animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+  animation.push_back(graph->get_graph_copy());
+  animation.push_back(animation[animation.size() - 2]->get_graph_copy());
+  animation.push_back(graph->get_graph_copy());
+  animation.push_back(animation[animation.size() - 2]->get_graph_copy());
+  animation.push_back(graph->get_graph_copy());
+
+  // Leave the last frame for 2 more frames
+  animation.push_back(animation[animation.size() - 2]->get_graph_copy());
   animation.push_back(animation[animation.size() - 1]->get_graph_copy());
 
   return animation;
