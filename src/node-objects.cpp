@@ -27,6 +27,12 @@ Node::Node(Vector2 coord, int id) {
   this->color = BLACK;
 }
 
+Node *Node::get_node_copy() {
+  Node *new_node = new Node(this->coord, this->id);
+  new_node->set_state(this->state);
+  return new_node;
+}
+
 void Node::draw(float r) {
   DrawCircleV(coord, r, color);
   DrawText(std::to_string(id).c_str(), coord.x - 5, coord.y - 5, 10, WHITE);
@@ -59,6 +65,9 @@ void Node::set_state(color_state new_state) {
     case MOVED:
       this->color = RED;
       break;
+    case SEARCHING:
+      this->color = BLUE;
+      break;
     default:
       break;
   }
@@ -75,6 +84,14 @@ Edge::Edge(float weight, Node *n1, Node *n2, bool directed) {
   this->color = BLACK;
 
   this->calculate_start_end_points();
+}
+
+Edge *Edge::get_edge_copy() {
+  Edge *new_edge =
+      new Edge(this->weight, this->node1, this->node2, this->directed);
+  new_edge->set_state(this->state);
+
+  return new_edge;
 }
 
 void Edge::draw(float thickness) {
@@ -145,15 +162,20 @@ void Edge::set_state(color_state new_state) {
       this->color = BLACK;
       break;
     case SELECTED:
-      this->color = RED;
+      this->color = GREEN;
       break;
     case MOVED:
-      this->color = GREEN;
+      this->color = RED;
+      break;
+    case SEARCHING:
+      this->color = BLUE;
       break;
     default:
       break;
   }
 }
+
+color_state Edge::get_state() { return this->state; }
 
 void Edge::set_weight(int new_weight) { this->weight = new_weight; }
 
@@ -206,6 +228,26 @@ Node *Graph::get_node(int id) {
   return nullptr;
 }
 
+int Graph::get_node_index(int id) {
+  for (int i = 0; i < node_list.size(); i++) {
+    if (node_list[i]->id == id) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+int Graph::get_node_index(Node *node) {
+  for (int i = 0; i < node_list.size(); i++) {
+    if (node_list[i] == node) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 int Graph::generate_id() {
   int id = 0;
 
@@ -229,7 +271,25 @@ int Graph::generate_id() {
   return id;
 }
 
-void Graph::add_edge(Node *n1, Node *n2, float weight) {
+std::vector<Edge *> Graph::get_edges_from_node(Node *node) {
+  std::vector<Edge *> edges;
+
+  for (auto edge : edge_list) {
+    if (!directed) {
+      if (edge->node1 == node || edge->node2 == node) {
+        edges.push_back(edge);
+      }
+    } else {
+      if (edge->node1 == node) {
+        edges.push_back(edge);
+      }
+    }
+  }
+
+  return edges;
+}
+
+void Graph::add_edge(Node *n1, Node *n2, float weight, color_state state) {
   // Check if the nodes are not the same
   if (n1 == n2) {
     return;
@@ -260,7 +320,27 @@ void Graph::add_edge(Node *n1, Node *n2, float weight) {
   }
 
   // Add the edge to the list
-  edge_list.push_back(new Edge(weight, n1, n2, directed));
+  Edge *new_edge = new Edge(weight, n1, n2, directed);
+  new_edge->set_state(state);
+  edge_list.push_back(new_edge);
+}
+
+Edge *Graph::get_edge(Node *n1, Node *n2) {
+  if (n1 == n2) {
+    return nullptr;
+  }
+
+  if (n1 == nullptr || n2 == nullptr) {
+    return nullptr;
+  }
+
+  for (auto edge : edge_list) {
+    if (edge->node1 == n1 && edge->node2 == n2) {
+      return edge;
+    }
+  }
+
+  return nullptr;
 }
 
 void Graph::draw(float node_radius, float edge_thickness) {
@@ -352,14 +432,14 @@ Graph *Graph::get_graph_copy() {
 
   // Copy the nodes
   for (auto node : node_list) {
-    new_graph->node_list.push_back(new Node(node->coord, node->id));
+    new_graph->node_list.push_back(node->get_node_copy());
   }
 
   // Copy the edges
   for (auto edge : edge_list) {
-    new_graph->edge_list.push_back(
-        new Edge(edge->weight, new_graph->node_list[edge->node1->id],
-                 new_graph->node_list[edge->node2->id], this->directed));
+    new_graph->add_edge(new_graph->get_node(edge->node1->id),
+                        new_graph->get_node(edge->node2->id), edge->weight,
+                        edge->get_state());
   }
 
   return new_graph;

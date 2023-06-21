@@ -38,7 +38,7 @@
 
 #define SEARCH_ANIMATION_FPS 5
 #define SORT_ANIMATION_FPS 30
-#define GRAPH_ANIMATION_FPS 30
+#define GRAPH_ANIMATION_FPS 3
 #define TREES_ANIMATION_FPS 30
 
 // For more colors go to
@@ -78,7 +78,7 @@
   Color { 41, 50, 65, 100 }  // The color of an element's border
 
 // In order to animate everything we will need to have more states
-enum color_state { NORMAL, SELECTED, MOVED };
+enum color_state { NORMAL, SELECTED, MOVED, SEARCHING };
 
 // Used to represent the flow of the program
 

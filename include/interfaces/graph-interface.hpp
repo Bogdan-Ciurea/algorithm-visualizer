@@ -45,6 +45,7 @@ class GraphInterface : public AlgorithmInterface {
   Node *to_node = nullptr;
 
   SelectableModes current_mode = ADD_NODE;
+  std::vector<Graph *> animation = std::vector<Graph *>();
 
   // needed for clicking
   bool pressed = false;

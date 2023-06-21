@@ -15,16 +15,19 @@ bool GraphInterface::draw() {
   if (GuiButton(back_button_rect, GuiIconText(RAYGUI_ICON_ARROW_LEFT_FILL, "")))
     return true;
 
-  this->draw_main_header(button_height);
   this->draw_secondary_header(button_height);
-  this->graph->draw(NODE_RADIUS, EDGE_THICKNESS);
+  this->draw_main_header(button_height);
 
   if (this->running) {
-    last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
-                     std::chrono::milliseconds(1);
     this->run_algorithm();
-  } else
-    this->get_canvas_input();
+  } else {
+    if (this->animation.size() > 0) {
+      this->animation[0]->draw(NODE_RADIUS, EDGE_THICKNESS);
+    } else {
+      this->graph->draw(NODE_RADIUS, EDGE_THICKNESS);
+      this->get_canvas_input();
+    }
+  }
 
   return false;
 }
@@ -141,6 +144,8 @@ bool GraphInterface::check_input() {
   this->from_node = graph->get_node(from);
   this->to_node = graph->get_node(to);
 
+  if (this->from_node == nullptr || this->to_node == nullptr) return false;
+
   return true;
 }
 
@@ -213,51 +218,59 @@ Vector2 *GraphInterface::get_click_location(float ignore_height) {
 }
 
 void GraphInterface::run_algorithm() {
-  // if (std::chrono::system_clock::now().time_since_epoch() /
-  //             std::chrono::milliseconds(1) -
-  //         last_draw_time >
-  //     1000 / GRAPH_ANIMATION_FPS) {
-  //   // Update the display time of the last frame
-  //   last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
-  //                    std::chrono::milliseconds(1);
+  if (animation.size() == 0) {
+    switch (dropdown_option) {
+      case DIJKSTRA:
+        animation = dijkstra(this->from_node, this->to_node, this->graph);
 
-  switch (dropdown_option) {
-    case DIJKSTRA:
-      // dijkstra(this->from_node, this->to_node, &this->node_list,
-      //          &this->edge_list);
+        break;
 
-      break;
+      case FLOYD_WARSHALL:
+        /* code */
+        break;
 
-    case FLOYD_WARSHALL:
-      /* code */
-      break;
+      case BFS:
+        /* code */
+        break;
 
-    case BFS:
-      /* code */
-      break;
+      case DFS:
+        /* code */
+        break;
 
-    case DFS:
-      /* code */
-      break;
+      case AS:
+        /* code */
+        break;
 
-    case AS:
-      /* code */
-      break;
+      case PRIMS:
+        /* code */
+        break;
 
-    case PRIMS:
-      /* code */
-      break;
+      case KRISKAL:
+        /* code */
+        break;
 
-    case KRISKAL:
-      /* code */
-      break;
+      case TOPOLOGICAL:
+        /* code */
+        break;
 
-    case TOPOLOGICAL:
-      /* code */
-      break;
-
-    default:
-      break;
+      default:
+        break;
+    }  // Update the display time of the last frame
+    last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+                     std::chrono::milliseconds(1);
+  } else {
+    if (std::chrono::system_clock::now().time_since_epoch() /
+                std::chrono::milliseconds(1) -
+            last_draw_time >=
+        1000 / GRAPH_ANIMATION_FPS) {
+      animation[0]->draw(NODE_RADIUS, EDGE_THICKNESS);
+      delete animation[0];
+      animation.erase(animation.begin());
+      if (animation.size() == 0) running = false;
+      last_draw_time = std::chrono::system_clock::now().time_since_epoch() /
+                       std::chrono::milliseconds(1);
+    } else {
+      animation[0]->draw(NODE_RADIUS, EDGE_THICKNESS);
+    }
   }
-  // }
 }

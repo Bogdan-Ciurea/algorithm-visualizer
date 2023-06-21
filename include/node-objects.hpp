@@ -19,6 +19,7 @@ class Node {
  public:
   Node(float x, float y, int id = -1);
   Node(Vector2 coord, int id = -1);
+  Node *get_node_copy();
   ~Node() {}
 
   void draw(float r);
@@ -39,6 +40,7 @@ class Node {
 class Edge {
  public:
   Edge(float weight, Node *n1, Node *n2, bool directed);
+  Edge *get_edge_copy();
   ~Edge() {}
 
   void draw(float thickness);
@@ -46,6 +48,7 @@ class Edge {
   bool point_on_edge(Vector2 *point);
 
   void set_state(color_state);
+  color_state get_state();
   void set_weight(int new_weight);
   void set_directed(bool new_directed);
 
@@ -71,8 +74,13 @@ class Graph {
 
   void add_node(Vector2 *point);
   Node *get_node(int id);
+  int get_node_index(int id);
+  int get_node_index(Node *node);
   int generate_id();
-  void add_edge(Node *n1, Node *n2, float weight);
+  std::vector<Edge *> get_edges_from_node(Node *node);
+
+  void add_edge(Node *n1, Node *n2, float weight, color_state state = NORMAL);
+  Edge *get_edge(Node *n1, Node *n2);
 
   void draw(float node_radius, float edge_thickness);
 
