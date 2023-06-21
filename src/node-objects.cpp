@@ -289,6 +289,26 @@ std::vector<Edge *> Graph::get_edges_from_node(Node *node) {
   return edges;
 }
 
+std::vector<Node *> Graph::get_neighbours(Node *searched_node) {
+  std::vector<Node *> neighbours;
+
+  for (auto edge : edge_list) {
+    if (directed) {
+      if (edge->node1 == searched_node) {
+        neighbours.push_back(edge->node2);
+      }
+    } else {
+      if (edge->node1 == searched_node) {
+        neighbours.push_back(edge->node2);
+      } else if (edge->node2 == searched_node) {
+        neighbours.push_back(edge->node1);
+      }
+    }
+  }
+
+  return neighbours;
+}
+
 void Graph::add_edge(Node *n1, Node *n2, float weight, color_state state) {
   // Check if the nodes are not the same
   if (n1 == n2) {
@@ -335,8 +355,15 @@ Edge *Graph::get_edge(Node *n1, Node *n2) {
   }
 
   for (auto edge : edge_list) {
-    if (edge->node1 == n1 && edge->node2 == n2) {
-      return edge;
+    if (directed) {
+      if (edge->node1 == n1 && edge->node2 == n2) {
+        return edge;
+      }
+    } else {
+      if ((edge->node1 == n1 && edge->node2 == n2) ||
+          (edge->node1 == n2 && edge->node2 == n1)) {
+        return edge;
+      }
     }
   }
 

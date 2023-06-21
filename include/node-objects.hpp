@@ -78,6 +78,7 @@ class Graph {
   int get_node_index(Node *node);
   int generate_id();
   std::vector<Edge *> get_edges_from_node(Node *node);
+  std::vector<Node *> get_neighbours(Node *node);
 
   void add_edge(Node *n1, Node *n2, float weight, color_state state = NORMAL);
   Edge *get_edge(Node *n1, Node *n2);
