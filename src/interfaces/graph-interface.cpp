@@ -42,8 +42,8 @@ void GraphInterface::draw_main_header(float button_height) {
           (Rectangle){
               (float)(80 + MeasureText("GraphInterface Algorithms", 16)),
               button_height / 2 - 20, 170, 40},
-          "DIJKSTRA;FLOYD WARSHALL;BSF;DFS;A*;PRIM'S;KRUSKAL'S;TOPOLOGICAL",
-          &dropdown_option, dropdown_enabled && !running))
+          "DIJKSTRA;BSF;DFS;A*;PRIM'S;KRUSKAL'S;TOPOLOGICAL", &dropdown_option,
+          dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;
 
   // Draw the start/end button
@@ -224,20 +224,16 @@ void GraphInterface::run_algorithm() {
         animation = dijkstra(this->from_node, this->to_node, this->graph);
         break;
 
-      case FLOYD_WARSHALL:
-        /* code */
-        break;
-
       case BFS:
-        /* code */
+        animation = bsf(this->from_node, this->to_node, this->graph);
         break;
 
       case DFS:
-        /* code */
+        animation = dfs(this->from_node, this->to_node, this->graph);
         break;
 
       case AS:
-        /* code */
+        animation = as(this->from_node, this->to_node, this->graph);
         break;
 
       case PRIMS:

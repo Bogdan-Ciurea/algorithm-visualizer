@@ -86,7 +86,6 @@ enum color_state { NORMAL, SELECTED, MOVED, SEARCHING };
 // --------------------------
 enum graph_algorithm_option {
   DIJKSTRA,
-  FLOYD_WARSHALL,
   BFS,
   DFS,
   AS,
