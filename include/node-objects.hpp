@@ -175,6 +175,7 @@ class Graph {
    * @param point - The coordinates of the node.
    */
   void add_node(Vector2 *point);
+  void add_node(Vector2 *point, int id);
 
   /**
    * @brief Get the node object by it's id.
@@ -286,6 +287,14 @@ class Graph {
    */
   Node *get_node_in_proximity(Vector2 *point, float radius);
 
+  /**
+   * @brief Checks if the graph has a cycle.
+   *
+   * @return true  - If the graph has a cycle.
+   * @return false - If the graph does not have a cycle.
+   */
+  bool has_cycle();
+
   std::vector<Node *> node_list;
   std::vector<Edge *> edge_list;
 
@@ -297,6 +306,8 @@ class Graph {
    * @return int - The id.
    */
   int generate_id();
+
+  bool has_cycle_util(Node *node, std::vector<bool> &visited, Node *parent);
 };
 
 #endif  // NODE_OBJECTS_HPP

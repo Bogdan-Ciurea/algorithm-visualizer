@@ -42,7 +42,7 @@ void GraphInterface::draw_main_header(float button_height) {
           (Rectangle){
               (float)(80 + MeasureText("GraphInterface Algorithms", 16)),
               button_height / 2 - 20, 170, 40},
-          "DIJKSTRA;BSF;DFS;A*;PRIM'S;KRUSKAL'S;TOPOLOGICAL", &dropdown_option,
+          "DIJKSTRA;BSF;DFS;A*;KRUSKAL'S;TOPOLOGICAL", &dropdown_option,
           dropdown_enabled && !running))
     dropdown_enabled = !dropdown_enabled;
 
@@ -131,13 +131,13 @@ void GraphInterface::draw_secondary_header(float button_height) {
 }
 
 bool GraphInterface::check_input() {
-  if (dropdown_option == 7) return true;
+  if (dropdown_option == KRUSKAL || dropdown_option == TOPOLOGICAL) return true;
 
   int from = atoi(textBoxText1);
   int to = atoi(textBoxText2);
 
   if (from < 0 || from >= graph->node_list.size() || to < 0 ||
-      to >= graph->node_list.size()) {
+      to >= graph->node_list.size() || from == to) {
     return false;
   }
 
@@ -236,12 +236,8 @@ void GraphInterface::run_algorithm() {
         animation = as(this->from_node, this->to_node, this->graph);
         break;
 
-      case PRIMS:
-        /* code */
-        break;
-
-      case KRISKAL:
-        /* code */
+      case KRUSKAL:
+        animation = kruskal(this->from_node, this->to_node, this->graph);
         break;
 
       case TOPOLOGICAL:

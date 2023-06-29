@@ -22,12 +22,11 @@ The second one contains more algorithms that the first one and will incorporate 
 |Sorting | Search | GraphInterface | TreesInterface |
 |--|--|--|--|
 | Insertion Sort | Linear Search | Dijkstra's algorithm | Binary TreesInterface |
-| Heap Sort | Binary Search | Floyd Warshall's algorithm | Red Black TreesInterface |
-| Selection Sort | Jump Search | BFS && DFS | |
-| Merge Sort | Interpolation Search | A\* | |
-| Quick Sort | | Prim’s algorithm | |
-| Bubble Sort | | Kruskal’s algorithm | |
-||| Topological sorting ||
+| Heap Sort | Binary Search | BFS & DFS | Red Black TreesInterface |
+| Selection Sort | Jump Search | A\* | |
+| Merge Sort | Interpolation Search | Kruskal’s algorithm | |
+| Quick Sort | | Topological sorting | |
+| Bubble Sort | | | |
 
 ## Table of Contents
 

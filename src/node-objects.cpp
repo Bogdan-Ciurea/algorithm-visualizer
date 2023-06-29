@@ -216,6 +216,34 @@ void Graph::add_node(Vector2 *point) {
   node_list.push_back(new Node(point->x, point->y, this->generate_id()));
 }
 
+void Graph::add_node(Vector2 *point, int id) {
+  // Check that we have a valid point
+  if (point == nullptr) {
+    return;
+  }
+
+  // Check if the node is not on top of another node
+  for (auto node : node_list) {
+    // Calculate the distance between the two nodes
+    float distance = sqrt(pow(node->coord.x - point->x, 2) +
+                          pow(node->coord.y - point->y, 2));
+
+    if (NODE_RADIUS * 2.5f > distance) {
+      return;
+    }
+  }
+
+  // Check if the id is already used
+  for (auto node : node_list) {
+    if (node->id == id) {
+      return;
+    }
+  }
+
+  // Add the node to the list
+  node_list.push_back(new Node(point->x, point->y, id));
+}
+
 Node *Graph::get_node(int id) {
   for (auto node : node_list) {
     if (node->id == id) {
@@ -468,4 +496,35 @@ Graph *Graph::get_graph_copy() {
   }
 
   return new_graph;
+}
+
+bool Graph::has_cycle() {
+  std::vector<bool> visited(node_list.size(), false);
+
+  for (int i = 0; i < node_list.size(); i++) {
+    if (!visited[i]) {
+      if (has_cycle_util(node_list[i], visited, nullptr)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool Graph::has_cycle_util(Node *node, std::vector<bool> &visited,
+                           Node *parent) {
+  visited[get_node_index(node)] = true;
+
+  for (auto neighbour : get_neighbours(node)) {
+    if (!visited[get_node_index(neighbour)]) {
+      if (has_cycle_util(neighbour, visited, node)) {
+        return true;
+      }
+    } else if (neighbour != parent) {
+      return true;
+    }
+  }
+
+  return false;
 }

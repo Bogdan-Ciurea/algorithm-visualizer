@@ -54,6 +54,29 @@ void add_node_to_stack(Node *node, std::vector<Node *> &stack) {
   stack.push_back(node);
 }
 
+/**
+ * @brief This function checks if a mst graph has a cycle using the DFS
+ * algorithm.
+ *
+ * @param mst_edges      - The edges of the mst.
+ * @return true          - If the graph has a cycle.
+ * @return false         - If the graph does NOT have a cycle.
+ */
+bool has_cycle(std::vector<Edge *> *mst_edges) {
+  Graph *mst_graph = new Graph();
+
+  for (auto edge : *mst_edges) {
+    mst_graph->add_node(&edge->node1->coord, edge->node1->id);
+    mst_graph->add_node(&edge->node2->coord, edge->node2->id);
+    mst_graph->add_edge(mst_graph->get_node(edge->node1->id),
+                        mst_graph->get_node(edge->node2->id), edge->weight);
+  }
+
+  bool has_cycle = mst_graph->has_cycle();
+  delete mst_graph;
+  return has_cycle;
+}
+
 std::vector<Graph *> dijkstra(Node *start, Node *end, Graph *graph) {
   std::vector<Graph *> animation = {graph->get_graph_copy()};
 
@@ -560,6 +583,77 @@ std::vector<Graph *> as(Node *start, Node *end, Graph *graph) {
 
   // Leave the last frame for 2 more frames
   animation.push_back(animation[animation.size() - 2]->get_graph_copy());
+  animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+
+  return animation;
+}
+
+std::vector<Graph *> kruskal(Node *start, Node *end, Graph *graph) {
+  std::vector<Graph *> animation = {graph->get_graph_copy()};
+
+  auto temp_graph = graph->get_graph_copy();
+
+  std::vector<Edge *> *edges = &temp_graph->edge_list;
+  std::vector<Node *> *nodes = &temp_graph->node_list;
+  std::vector<Edge *> mst = std::vector<Edge *>();
+
+  // Sort the edges
+  std::sort(edges->begin(), edges->end(),
+            [](Edge *a, Edge *b) { return a->weight < b->weight; });
+
+  int last_frame = animation.size() - 1;
+
+  // Create the animation
+  for (auto edge : *edges) {
+    animation.push_back(animation[last_frame]->get_graph_copy());
+    last_frame = animation.size() - 1;
+    animation[last_frame]
+        ->get_edge(animation[last_frame]->get_node(edge->node1->id),
+                   animation[last_frame]->get_node(edge->node2->id))
+        ->set_state(SEARCHING);
+
+    mst.push_back(edge);
+
+    // Check if the edge creates a cycle
+    if (!has_cycle(&mst)) {
+      animation.push_back(animation[last_frame]->get_graph_copy());
+      animation[last_frame + 1]
+          ->get_edge(animation[last_frame + 1]->get_node(edge->node1->id),
+                     animation[last_frame + 1]->get_node(edge->node2->id))
+          ->set_state(SELECTED);
+      last_frame = animation.size() - 1;
+    } else {
+      // Remove the edge
+      mst.pop_back();
+
+      animation.push_back(animation[last_frame]->get_graph_copy());
+      animation[last_frame + 1]
+          ->get_edge(animation[last_frame + 1]->get_node(edge->node1->id),
+                     animation[last_frame + 1]->get_node(edge->node2->id))
+          ->set_state(MOVED);
+      animation.push_back(animation[last_frame - 1]->get_graph_copy());
+      last_frame = animation.size() - 1;
+    }
+  }
+
+  // Create the mst graph
+  Graph *mst_graph = new Graph();
+  for (auto node : graph->node_list) {
+    mst_graph->add_node(&node->coord);
+    mst_graph->get_node(node->id)->set_state(MOVED);
+  }
+  for (auto edge : mst) {
+    mst_graph->add_edge(mst_graph->get_node(edge->node1->id),
+                        mst_graph->get_node(edge->node2->id), edge->weight);
+    mst_graph
+        ->get_edge(mst_graph->get_node(edge->node1->id),
+                   mst_graph->get_node(edge->node2->id))
+        ->set_state(MOVED);
+  }
+
+  animation.push_back(mst_graph);
+  animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+  animation.push_back(animation[animation.size() - 1]->get_graph_copy());
   animation.push_back(animation[animation.size() - 1]->get_graph_copy());
 
   return animation;

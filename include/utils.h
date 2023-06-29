@@ -84,15 +84,7 @@ enum color_state { NORMAL, SELECTED, MOVED, SEARCHING };
 
 // GraphInterface and TreesInterface Related
 // --------------------------
-enum graph_algorithm_option {
-  DIJKSTRA,
-  BFS,
-  DFS,
-  AS,
-  PRIMS,
-  KRISKAL,
-  TOPOLOGICAL
-};
+enum graph_algorithm_option { DIJKSTRA, BFS, DFS, AS, KRUSKAL, TOPOLOGICAL };
 enum trees_type_option { BINARY_TREE, RED_BLACK_TREE };
 
 #define NODE_RADIUS 20
