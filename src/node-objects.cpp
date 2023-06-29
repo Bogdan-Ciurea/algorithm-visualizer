@@ -25,18 +25,18 @@ Node::Node(Vector2 coord, int id) {
   this->color = BLACK;
 }
 
-Node *Node::get_node_copy() {
+Node *Node::get_node_copy() const {
   Node *new_node = new Node(this->coord, this->id);
   new_node->set_state(this->state);
   return new_node;
 }
 
-void Node::draw(float r) {
+void Node::draw(float r) const {
   DrawCircleV(coord, r, color);
   DrawText(std::to_string(id).c_str(), coord.x - 5, coord.y - 5, 10, WHITE);
 }
 
-bool Node::point_in_node(Vector2 *point) {
+bool Node::point_in_node(Vector2 *point) const {
   // Calculate the distance between the point and the center of the node
   float distance =
       sqrt(pow(coord.x - point->x, 2) + pow(coord.y - point->y, 2));
@@ -84,7 +84,7 @@ Edge::Edge(float weight, Node *n1, Node *n2, bool directed) {
   this->calculate_start_end_points();
 }
 
-Edge *Edge::get_edge_copy() {
+Edge *Edge::get_edge_copy() const {
   Edge *new_edge =
       new Edge(this->weight, this->node1, this->node2, this->directed);
   new_edge->set_state(this->state);
@@ -92,7 +92,7 @@ Edge *Edge::get_edge_copy() {
   return new_edge;
 }
 
-void Edge::draw(float thickness) {
+void Edge::draw(float thickness) const {
   // We want to recalculate the start and end points of the line so that it
   // doesn't intersect with the nodes
 
@@ -129,7 +129,7 @@ void Edge::draw(float thickness) {
   }
 }
 
-bool Edge::point_on_edge(Vector2 *point) {
+bool Edge::point_on_edge(Vector2 *point) const {
   // Calculate the distance between the point and the line
   float distance =
       abs((node2->coord.y - node1->coord.y) * point->x -
@@ -173,7 +173,7 @@ void Edge::set_state(color_state new_state) {
   }
 }
 
-color_state Edge::get_state() { return this->state; }
+color_state Edge::get_state() const { return this->state; }
 
 void Edge::set_weight(int new_weight) { this->weight = new_weight; }
 
@@ -244,7 +244,7 @@ void Graph::add_node(Vector2 *point, int id) {
   node_list.push_back(new Node(point->x, point->y, id));
 }
 
-Node *Graph::get_node(int id) {
+Node *Graph::get_node(int id) const {
   for (auto node : node_list) {
     if (node->id == id) {
       return node;
@@ -254,7 +254,7 @@ Node *Graph::get_node(int id) {
   return nullptr;
 }
 
-int Graph::get_node_index(int id) {
+int Graph::get_node_index(int id) const {
   for (int i = 0; i < node_list.size(); i++) {
     if (node_list[i]->id == id) {
       return i;
@@ -264,7 +264,7 @@ int Graph::get_node_index(int id) {
   return -1;
 }
 
-int Graph::get_node_index(Node *node) {
+int Graph::get_node_index(Node *node) const {
   for (int i = 0; i < node_list.size(); i++) {
     if (node_list[i] == node) {
       return i;
@@ -297,7 +297,7 @@ int Graph::generate_id() {
   return id;
 }
 
-std::vector<Edge *> Graph::get_edges_from_node(Node *node) {
+std::vector<Edge *> Graph::get_edges_from_node(Node *node) const {
   std::vector<Edge *> edges;
 
   for (auto edge : edge_list) {
@@ -315,7 +315,7 @@ std::vector<Edge *> Graph::get_edges_from_node(Node *node) {
   return edges;
 }
 
-std::vector<Node *> Graph::get_neighbours(Node *searched_node) {
+std::vector<Node *> Graph::get_neighbours(Node *searched_node) const {
   std::vector<Node *> neighbours;
 
   for (auto edge : edge_list) {
@@ -371,7 +371,7 @@ void Graph::add_edge(Node *n1, Node *n2, float weight, color_state state) {
   edge_list.push_back(new_edge);
 }
 
-Edge *Graph::get_edge(Node *n1, Node *n2) {
+Edge *Graph::get_edge(Node *n1, Node *n2) const {
   if (n1 == n2) {
     return nullptr;
   }
@@ -396,7 +396,7 @@ Edge *Graph::get_edge(Node *n1, Node *n2) {
   return nullptr;
 }
 
-void Graph::draw(float node_radius, float edge_thickness) {
+void Graph::draw(float node_radius, float edge_thickness) const {
   // Draw the edges
   for (auto edge : edge_list) {
     edge->draw(edge_thickness);
@@ -461,7 +461,7 @@ void Graph::set_directed(bool new_directed) {
   }
 }
 
-Node *Graph::get_node_in_proximity(Vector2 *point, float radius) {
+Node *Graph::get_node_in_proximity(Vector2 *point, float radius) const {
   for (auto node : node_list) {
     if (node->point_in_node(point)) {
       return node;
@@ -479,7 +479,7 @@ Node *Graph::get_node_in_proximity(Vector2 *point, float radius) {
   return nullptr;
 }
 
-Graph *Graph::get_graph_copy() {
+Graph *Graph::get_graph_copy() const {
   Graph *new_graph = new Graph();
   new_graph->set_directed(this->directed);
 
@@ -498,7 +498,7 @@ Graph *Graph::get_graph_copy() {
   return new_graph;
 }
 
-bool Graph::has_cycle() {
+bool Graph::has_cycle() const {
   std::vector<bool> visited(node_list.size(), false);
 
   for (int i = 0; i < node_list.size(); i++) {
@@ -513,7 +513,7 @@ bool Graph::has_cycle() {
 }
 
 bool Graph::has_cycle_util(Node *node, std::vector<bool> &visited,
-                           Node *parent) {
+                           Node *parent) const {
   visited[get_node_index(node)] = true;
 
   for (auto neighbour : get_neighbours(node)) {

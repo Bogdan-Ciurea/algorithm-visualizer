@@ -55,10 +55,11 @@ std::vector<std::vector<Pillar>> insertion_sort_algorithm(
 }
 
 void heapify(std::vector<Pillar> &array,
-             std::vector<std::vector<Pillar>> &animation, int size, int root) {
-  int largest = root;
-  int left = 2 * root + 1;
-  int right = 2 * root + 2;
+             std::vector<std::vector<Pillar>> &animation, size_t size,
+             size_t root) {
+  size_t largest = root;
+  size_t const left = 2 * root + 1;
+  size_t const right = 2 * root + 2;
 
   if (left < size && array.at(left)._value > array.at(largest)._value) {
     largest = left;
@@ -86,11 +87,11 @@ std::vector<std::vector<Pillar>> heap_sort_algorithm(
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
-  for (int i = array.size() / 2 - 1; i >= 0; i--) {
-    heapify(array, animation, array.size(), i);
+  for (long i = (long)(array.size() / 2 - 1); i >= 0; i--) {
+    heapify(array, animation, array.size(), (size_t)i);
   }
 
-  for (int i = array.size() - 1; i >= 0; i--) {
+  for (long i = (long)(array.size() - 1); i >= 0; i--) {
     std::swap(array.at(0)._value, array.at(i)._value);
 
     // Add the frame to the animation
@@ -160,10 +161,10 @@ std::vector<std::vector<Pillar>> selection_sort_algorithm(
 }
 
 void merge_vectors(std::vector<Pillar> &array,
-                   std::vector<std::vector<Pillar>> &animation, int const left,
-                   int const mid, int const right) {
-  int const subArrayOne = mid - left + 1;
-  int const subArrayTwo = right - mid;
+                   std::vector<std::vector<Pillar>> &animation,
+                   size_t const left, size_t const mid, size_t const right) {
+  size_t const subArrayOne = mid - left + 1;
+  size_t const subArrayTwo = right - mid;
 
   // Create temp arrays of Pillar pointers
   int leftArray[subArrayOne];
@@ -187,7 +188,7 @@ void merge_vectors(std::vector<Pillar> &array,
     animation.at(animation.size() - 1).at(mid + 1 + i).change_state(SELECTED);
   }
 
-  int indexOfSubArrayOne = 0,     // Initial index of first sub-array
+  size_t indexOfSubArrayOne = 0,  // Initial index of first sub-array
       indexOfSubArrayTwo = 0,     // Initial index of second sub-array
       indexOfMergedArray = left;  // Initial index of merged array
 
@@ -258,10 +259,10 @@ void merge_vectors(std::vector<Pillar> &array,
 
 void merge_recursive(std::vector<Pillar> &array,
                      std::vector<std::vector<Pillar>> &animation,
-                     int const begin, int const end) {
+                     size_t const begin, size_t const end) {
   if (begin >= end) return;  // Returns recursively
 
-  int mid = begin + (end - begin) / 2;
+  size_t mid = begin + (end - begin) / 2;
   merge_recursive(array, animation, begin, mid);
   merge_recursive(array, animation, mid + 1, end);
   merge_vectors(array, animation, begin, mid, end);
@@ -330,7 +331,7 @@ std::vector<std::vector<Pillar>> quick_sort_algorithm(
   std::vector<std::vector<Pillar>> animation;
   animation.push_back(array);
 
-  quick_recursive(array, animation, 0, array.size() - 1);
+  quick_recursive(array, animation, 0, ((int)array.size()) - 1);
 
   std::vector<std::vector<Pillar>> temp_vec = draw_result_animation(&array);
   animation.insert(animation.end(), temp_vec.begin(), temp_vec.end());

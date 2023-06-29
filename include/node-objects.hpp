@@ -29,7 +29,7 @@ class Node {
    *
    * @return Node*
    */
-  Node *get_node_copy();
+  Node *get_node_copy() const;
   ~Node() {}
 
   /**
@@ -37,7 +37,7 @@ class Node {
    *
    * @param r - The radius of the node.
    */
-  void draw(float r);
+  void draw(float r) const;
   /**
    * @brief Check if a point is inside the node.
    *
@@ -45,7 +45,7 @@ class Node {
    * @return true  - If the point is inside the node.
    * @return false - If the point is NOT inside the node.
    */
-  bool point_in_node(Vector2 *point);
+  bool point_in_node(Vector2 *point) const;
 
   /**
    * @brief Set the state object.
@@ -89,7 +89,7 @@ class Edge {
    *
    * @return Edge*
    */
-  Edge *get_edge_copy();
+  Edge *get_edge_copy() const;
   ~Edge() {}
 
   /**
@@ -97,7 +97,7 @@ class Edge {
    *
    * @param thickness - The thickness of the edge.
    */
-  void draw(float thickness);
+  void draw(float thickness) const;
 
   /**
    * @brief Check if a point is on the edge.
@@ -106,7 +106,7 @@ class Edge {
    * @return true - If the point is on the edge.
    * @return false - If the point is NOT on the edge.
    */
-  bool point_on_edge(Vector2 *point);
+  bool point_on_edge(Vector2 *point) const;
 
   /**
    * @brief Set the state object.
@@ -120,7 +120,7 @@ class Edge {
    *
    * @return color_state - The state of the edge.
    */
-  color_state get_state();
+  color_state get_state() const;
 
   /**
    * @brief Set the weight object.
@@ -163,7 +163,7 @@ class Graph {
    *
    * @return Graph* - Pointer to the new graph.
    */
-  Graph *get_graph_copy();
+  Graph *get_graph_copy() const;
   ~Graph() {
     for (auto node : node_list) delete node;
     for (auto edge : edge_list) delete edge;
@@ -184,7 +184,7 @@ class Graph {
    * @return Node* - Pointer to the node.
    * @return nullptr - If the node does not exist.
    */
-  Node *get_node(int id);
+  Node *get_node(int id) const;
 
   /**
    * @brief Get the node index object.
@@ -193,7 +193,7 @@ class Graph {
    * @return int - The index of the node in the node_list.
    * @return -1 - If the node does not exist.
    */
-  int get_node_index(int id);
+  int get_node_index(int id) const;
 
   /**
    * @brief Get the node index object.
@@ -202,7 +202,7 @@ class Graph {
    * @return int - The index of the node in the node_list.
    * @return -1 - If the node does not exist.
    */
-  int get_node_index(Node *node);
+  int get_node_index(Node *node) const;
 
   /**
    * @brief Get the edges from node object.
@@ -210,7 +210,7 @@ class Graph {
    * @param node - Pointer to the node.
    * @return std::vector<Edge*> - Vector of pointers to the edges.
    */
-  std::vector<Edge *> get_edges_from_node(Node *node);
+  std::vector<Edge *> get_edges_from_node(Node *node) const;
 
   /**
    * @brief Get the neighbours object.
@@ -218,7 +218,7 @@ class Graph {
    * @param node - Pointer to the node.
    * @return std::vector<Node*> - Vector of pointers to the neighbours.
    */
-  std::vector<Node *> get_neighbours(Node *node);
+  std::vector<Node *> get_neighbours(Node *node) const;
 
   /**
    * @brief Add an edge to the graph.
@@ -238,7 +238,7 @@ class Graph {
    * @return Edge*   - Pointer to the edge.
    * @return nullptr - If the edge does not exist.
    */
-  Edge *get_edge(Node *n1, Node *n2);
+  Edge *get_edge(Node *n1, Node *n2) const;
 
   /**
    * @brief Get the edge index object.
@@ -246,7 +246,7 @@ class Graph {
    * @param node_radius    - The radius of the node.
    * @param edge_thickness - The thickness of the edge.
    */
-  void draw(float node_radius, float edge_thickness);
+  void draw(float node_radius, float edge_thickness) const;
 
   /**
    * @brief Remove an element from the graph.
@@ -285,7 +285,7 @@ class Graph {
    * @return Node*  - Pointer to the node.
    * @return nullptr - If the node does not exist.
    */
-  Node *get_node_in_proximity(Vector2 *point, float radius);
+  Node *get_node_in_proximity(Vector2 *point, float radius) const;
 
   /**
    * @brief Checks if the graph has a cycle.
@@ -293,7 +293,7 @@ class Graph {
    * @return true  - If the graph has a cycle.
    * @return false - If the graph does not have a cycle.
    */
-  bool has_cycle();
+  bool has_cycle() const;
 
   std::vector<Node *> node_list;
   std::vector<Edge *> edge_list;
@@ -307,7 +307,8 @@ class Graph {
    */
   int generate_id();
 
-  bool has_cycle_util(Node *node, std::vector<bool> &visited, Node *parent);
+  bool has_cycle_util(Node *node, std::vector<bool> &visited,
+                      Node *parent) const;
 };
 
 #endif  // NODE_OBJECTS_HPP

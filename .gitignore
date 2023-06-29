@@ -1,6 +1,11 @@
 /build
 /.vscode
-
+/CMakeFiles
+/CMakeScripts
+*.cmake
+*Cache*
+/Debug
+/visualizer.xcodeproj
 # Prerequisites
 *.d
 

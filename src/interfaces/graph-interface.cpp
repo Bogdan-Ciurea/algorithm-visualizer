@@ -254,8 +254,8 @@ void GraphInterface::run_algorithm() {
                 std::chrono::milliseconds(1) -
             last_draw_time >=
         1000 / GRAPH_ANIMATION_FPS) {
-      animation[0]->draw(NODE_RADIUS, EDGE_THICKNESS);
-      delete animation[0];
+      animation.at(0)->draw(NODE_RADIUS, EDGE_THICKNESS);
+      delete animation.at(0);
       animation.erase(animation.begin());
       if (animation.size() == 0) running = false;
       last_draw_time = std::chrono::system_clock::now().time_since_epoch() /

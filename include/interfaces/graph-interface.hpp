@@ -26,7 +26,15 @@ class GraphInterface : public AlgorithmInterface {
     this->directed_graph = false;
     this->graph = new Graph();
   }
-  ~GraphInterface() { delete this->graph; }
+  ~GraphInterface() {
+    delete this->graph;
+    if (animation.size()) {
+      for (auto &graph : animation) {
+        delete graph;
+      }
+      animation.clear();
+    }
+  }
 
   bool draw();
 

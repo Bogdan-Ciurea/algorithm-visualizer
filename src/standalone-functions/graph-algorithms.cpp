@@ -160,7 +160,7 @@ std::vector<Graph *> dijkstra(Node *start, Node *end, Graph *graph) {
       MOVED);
 
   // Create the path animation
-  for (int i = path.size() - 1; i > 0; i--) {
+  for (size_t i = path.size() - 1; i > 0; i--) {
     path_animation.push_back(path_animation[path_animation.size() - 1]
                                  ->get_graph_copy());  // Copy the last frame
     path_animation[path_animation.size() - 1]
@@ -293,7 +293,7 @@ std::vector<Graph *> bsf(Node *start, Node *end, Graph *graph) {
       MOVED);
 
   // Create the path animation
-  for (int i = path.size() - 1; i > 0; i--) {
+  for (size_t i = path.size() - 1; i > 0; i--) {
     path_animation.push_back(path_animation[path_animation.size() - 1]
                                  ->get_graph_copy());  // Copy the last frame
     path_animation[path_animation.size() - 1]
@@ -420,7 +420,7 @@ std::vector<Graph *> dfs(Node *start, Node *end, Graph *graph) {
       MOVED);
 
   // Create the path animation
-  for (int i = path.size() - 1; i > 0; i--) {
+  for (size_t i = path.size() - 1; i > 0; i--) {
     path_animation.push_back(path_animation[path_animation.size() - 1]
                                  ->get_graph_copy());  // Copy the last frame
     path_animation[path_animation.size() - 1]
@@ -547,7 +547,7 @@ std::vector<Graph *> as(Node *start, Node *end, Graph *graph) {
       MOVED);
 
   // Create the path animation
-  for (int i = path.size() - 1; i > 0; i--) {
+  for (size_t i = path.size() - 1; i > 0; i--) {
     path_animation.push_back(path_animation[path_animation.size() - 1]
                                  ->get_graph_copy());  // Copy the last frame
     path_animation[path_animation.size() - 1]
@@ -601,7 +601,7 @@ std::vector<Graph *> kruskal(Node *start, Node *end, Graph *graph) {
   std::sort(edges->begin(), edges->end(),
             [](Edge *a, Edge *b) { return a->weight < b->weight; });
 
-  int last_frame = animation.size() - 1;
+  size_t last_frame = animation.size() - 1;
 
   // Create the animation
   for (auto edge : *edges) {
