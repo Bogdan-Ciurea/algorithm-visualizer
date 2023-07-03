@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
-#include <queue>
 #include <random>
 #include <vector>
 
@@ -39,7 +38,6 @@
 #define SEARCH_ANIMATION_FPS 5
 #define SORT_ANIMATION_FPS 30
 #define GRAPH_ANIMATION_FPS 3
-#define TREES_ANIMATION_FPS 30
 
 // For more colors go to
 // https://coolors.co/palette/f94144-f3722c-f8961e-f9c74f-90be6d-43aa8b-577590
@@ -62,8 +60,6 @@
   Color { 243, 114, 44, 255 }
 #define GRAPH_BACKGROUND_COLOR \
   Color { 144, 190, 109, 255 }
-#define TREES_BACKGROUND_COLOR \
-  Color { 67, 170, 139, 255 }
 #define MY_BACKGROUND_COLOR \
   Color { 237, 242, 244, 255 }  // The color of the background
 
@@ -82,10 +78,9 @@ enum color_state { NORMAL, SELECTED, MOVED, SEARCHING };
 
 // Used to represent the flow of the program
 
-// GraphInterface and TreesInterface Related
+// GraphInterface Related
 // --------------------------
 enum graph_algorithm_option { DIJKSTRA, BFS, DFS, AS, KRUSKAL, TOPOLOGICAL };
-enum trees_type_option { BINARY_TREE, RED_BLACK_TREE };
 
 #define NODE_RADIUS 20
 #define EDGE_THICKNESS 3

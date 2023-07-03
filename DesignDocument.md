@@ -11,10 +11,9 @@ This file is responsible for better explaining the Low Level Design of this proj
 5.  [Pillar class](#pillar-class)
 6.  [Other Functions](#other-functions)
 7.  [GraphInterface class](#fraph-class)
-8.  [TreesInterface class](#trees-class)
-9.  [SortInterface class](#sorter-class)
-10. [Search class](#search-class)
-11. [MainInterface class](#interface-class)
+8.  [SortInterface class](#sorter-class)
+9.  [Search class](#search-class)
+10. [MainInterface class](#interface-class)
 
 ## Overview
 
@@ -27,9 +26,9 @@ The main components of this project are:
 - The main function, that will create an MainInterface object
 - The MainInterface object which will take care of:
   - drawing the main menu to the screen
-  - receiving the information from the user. This will decide which type of algorithm object (graph, trees etc.) to build and launch
+  - receiving the information from the user. This will decide which type of algorithm object (graph etc.) to build and launch
 - The GraphInterface Structure will contain 3 Classes (Node, Edge, GraphInterface) and more functions for animation. This Structure will take care of displaying the unique header and processing the information from the user
-- The TreesInterface, Sorting and Search Structures have the same description the the GraphInterface Structure one
+- The Sorting and Search Structures have the same description the the GraphInterface Structure one
 
 ## Utils.h
 
@@ -42,7 +41,7 @@ All the `enums` represent ether an element's color or the options that was selec
 
 ## Node Class
 
-The Node class will represent the nodes that will be used for the GraphInterface and TreesInterface related algorithms.
+The Node class will represent the nodes that will be used for the GraphInterface related algorithms.
 
 #### Node(int value, int coord_x, int coord_y, int id = -1);
 
@@ -77,7 +76,7 @@ This will change the state of the pillar. The states can be NORMAL, SELECTED or 
 
 There is a folder named `standalone-functions`. Here there will be the functions that will create the animation and will be responsible for the actual implementation of the algorithm.
 
-## GraphInterface, TreesInterface, SortInterface and Search Classes
+## GraphInterface, SortInterface and Search Classes
 
 The GraphInterface class will be responsible for receiving/processing the input from the user, storing the adjacency matrix (as a std::vector<std::vector\<float>>) and the list of Nodes (as a std::vector\<Node>).
 

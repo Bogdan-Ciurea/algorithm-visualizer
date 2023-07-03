@@ -6,7 +6,6 @@ set(SOURCES
     interfaces/main-interface.cpp
     interfaces/search-interface.cpp
     interfaces/sorting-interface.cpp
-    interfaces/tree-interface.cpp
     pillar-objects.cpp
     node-objects.cpp
     raygui.cpp

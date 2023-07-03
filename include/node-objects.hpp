@@ -2,7 +2,7 @@
  * @file node-objects.hpp
  * @author Bogdan Ciurea
  * @brief This file is responsible for defining the classes and their methods
- * that are used in the graph and tree interfaces.
+ * that are used in the graph interface.
  * @version 0.1
  * @date 2023-06-15
  *
@@ -16,7 +16,7 @@
 #include "utils.h"
 
 /**
- * @brief This class is used to represent a node in a graph or a tree.
+ * @brief This class is used to represent a node in a graph.
  *
  */
 class Node {
@@ -81,7 +81,7 @@ class Node {
 };
 
 /**
- * @brief This class is used to represent an edge in a graph or a tree.
+ * @brief This class is used to represent an edge in a graph.
  *
  */
 class Edge {

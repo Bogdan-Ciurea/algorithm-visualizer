@@ -16,7 +16,7 @@ void MainInterface::draw() {
 
     // Get the sizes for the header (which will contain the buttons for the
     // algorithms)
-    float button_width = GetScreenWidth() / 4;
+    float button_width = GetScreenWidth() / 3;
     float button_height = 100;
     if (GetScreenHeight() * 0.2 > 100) button_height = GetScreenHeight() * 0.2;
     if (button_height > 130) button_height = 130;
@@ -41,18 +41,10 @@ void MainInterface::draw() {
       current_interface =
           new GraphInterface(this->inter_regular, this->inter_light);
 
-    // Check if the user selected the TreesInterface Algorithms
-    if (GuiButtonWithColor(
-            (Rectangle){button_width * 3, 0, button_width, button_height},
-            "Trees Algorithms", TREES_BACKGROUND_COLOR))
-      current_interface =
-          new TreesInterface(this->inter_regular, this->inter_light);
-
     // Draw some margins between the buttons
     DrawRectangle(0, button_height, GetScreenWidth(), 3, DARKGRAY);
     DrawRectangle(button_width - 1, 0, 3, button_height, DARKGRAY);
     DrawRectangle(button_width * 2 - 1, 0, 3, button_height, DARKGRAY);
-    DrawRectangle(button_width * 3 - 1, 0, 3, button_height, DARKGRAY);
 
     // Draw the text. unfortunately there is no better way of drawing centred
     // text so...
