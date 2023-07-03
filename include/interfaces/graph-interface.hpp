@@ -16,32 +16,62 @@
 #include "../standalone-functions/graph-algorithms.hpp"
 #include "blank-interface.hpp"
 
+enum SelectableModes { ADD_NODE, ADD_EDGE, EDGE_TYPE, REMOVE };
+
 class GraphInterface : public AlgorithmInterface {
  public:
   GraphInterface(Font *inter_regular, Font *inter_light) {
     this->inter_regular = inter_regular;
     this->inter_light = inter_light;
+    this->directed_graph = false;
+    this->graph = new Graph();
   }
-  ~GraphInterface() {}
+  ~GraphInterface() {
+    delete this->graph;
+    if (animation.size()) {
+      for (auto &graph : animation) {
+        delete graph;
+      }
+      animation.clear();
+    }
+  }
 
   bool draw();
 
  private:
-  std::vector<std::vector<float>> adj_matrix;
-  std::vector<Node> node_list;
+  Graph *graph = nullptr;
 
-  bool directed = false;
+  unsigned long last_draw_time;
+
+  bool directed_graph;
   bool textBoxEditMode1 = false;
   char textBoxText1[64] = "From";
   bool textBoxEditMode2 = false;
   char textBoxText2[64] = "To";
+  bool check_input();
+  bool check_input_two_nodes();
+  bool check_input_one_node();
+  Node *from_node = nullptr;
+  Node *to_node = nullptr;
 
-  void add_node();
-  void add_edge();
+  SelectableModes current_mode = ADD_NODE;
+  std::vector<Graph *> animation = std::vector<Graph *>();
 
-  void draw_header();
+  // needed for clicking
+  bool pressed = false;
+  Node *temp_clicked_node = nullptr;  // Used for the fist node of the edge
 
-  bool import_graph();
+  // Drawing functions
+  void draw_main_header(float button_height);
+  void draw_secondary_header(float button_height);
+
+  void get_canvas_input();
+
+  // Clicking functions
+  Vector2 *get_click_location(float ignore_height = 100.0f);
+
+  // Algorithm related functions
+  void run_algorithm();
 };
 
 #endif  // GRAPH_INTERFACE_HPP

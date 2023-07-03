@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <queue>
 #include <random>
 #include <vector>
 
@@ -19,13 +20,25 @@
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define VECTOR_ADD(v1, v2) \
+  Vector2 { v1.x + v2.x, v1.y + v2.y }
+
+// Macro for vector subtraction
+#define VECTOR_SUBTRACT(v1, v2) \
+  Vector2 { v1.x - v2.x, v1.y - v2.y }
+
+// Macro for vector multiplication
+#define VECTOR_MULT(v1, scalar) \
+  Vector2 { v1.x *scalar, v1.y *scalar }
+
+#define VECTOR_DISTANCE(v1, v2) sqrt(pow(v1.x - v2.x, 2) + pow(v1.y - v2.y, 2))
 
 // Global values
 // --------------------------
 
 #define SEARCH_ANIMATION_FPS 5
 #define SORT_ANIMATION_FPS 30
-#define GRAPH_ANIMATION_FPS 30
+#define GRAPH_ANIMATION_FPS 3
 #define TREES_ANIMATION_FPS 30
 
 // For more colors go to
@@ -65,30 +78,19 @@
   Color { 41, 50, 65, 100 }  // The color of an element's border
 
 // In order to animate everything we will need to have more states
-enum color_state { NORMAL, SELECTED, MOVED };
+enum color_state { NORMAL, SELECTED, MOVED, SEARCHING };
 
 // Used to represent the flow of the program
 
 // GraphInterface and TreesInterface Related
 // --------------------------
-enum graph_tree_input_options {
-  ADD_NODE = 4,
-  REMOVE,
-  ADD_EDGE,
-  SELECT_NODE,
-  CLEAR_BTN
-};
-enum graph_algorithm_option {
-  DIJKSTRA,
-  FLOYD_WARSHALL,
-  BFS,
-  DFS,
-  AS,
-  PRIMS,
-  KRISKAL,
-  TOPOLOGICAL
-};
+enum graph_algorithm_option { DIJKSTRA, BFS, DFS, AS, KRUSKAL, TOPOLOGICAL };
 enum trees_type_option { BINARY_TREE, RED_BLACK_TREE };
+
+#define NODE_RADIUS 20
+#define EDGE_THICKNESS 3
+#define ARROW_PERCENTAGE 0.1f
+#define ARROW_ANGLE 20
 
 // SortInterface and SearchInterface Related
 // --------------------------

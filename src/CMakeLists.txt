@@ -1,12 +1,14 @@
 set(SOURCES
     standalone-functions/search-algorithms.cpp
     standalone-functions/sorting-algorithms.cpp
+    standalone-functions/graph-algorithms.cpp
     interfaces/graph-interface.cpp
     interfaces/main-interface.cpp
     interfaces/search-interface.cpp
     interfaces/sorting-interface.cpp
     interfaces/tree-interface.cpp
     pillar-objects.cpp
+    node-objects.cpp
     raygui.cpp
     main.cpp
 )

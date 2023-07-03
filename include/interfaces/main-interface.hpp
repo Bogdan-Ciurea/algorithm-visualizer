@@ -25,7 +25,9 @@ class MainInterface {
     this->inter_regular = inter_regular;
     this->inter_light = inter_light;
   }
-  ~MainInterface(){};
+  ~MainInterface() {
+    if (current_interface != nullptr) delete current_interface;
+  };
 
   /**
    * @brief Will update the variables and draw everything on the screen

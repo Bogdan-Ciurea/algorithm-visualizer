@@ -22,7 +22,7 @@ class Pillar {
 
   void change_state(color_state);
 
-  void draw(int x, int y, int width, int height);
+  void draw(int x, int y, int width, int height) const;
 
   bool operator>(Pillar &pil) {
     if (this->_value > pil._value) return true;

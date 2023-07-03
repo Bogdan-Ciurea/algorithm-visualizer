@@ -16,7 +16,7 @@ std::vector<std::vector<Pillar>> draw_error_animation(
 }
 
 std::vector<std::vector<Pillar>> draw_success_animation(
-    std::vector<Pillar> array, int target) {
+    std::vector<Pillar> array, size_t target) {
   std::vector<std::vector<Pillar>> x;
 
   for (int i = 0; i < 3; i++) {
@@ -65,9 +65,7 @@ std::vector<std::vector<Pillar>> search_binary_algo(std::vector<Pillar> array,
 
   animation.push_back(array);
   bool was_found = false;
-  int mid;
-  int low = 0;
-  int high = array.size() - 1;
+  size_t mid, low = 0, high = array.size() - 1;
 
   while (low <= high) {
     mid = (low + high) / 2;
@@ -154,10 +152,10 @@ std::vector<std::vector<Pillar>> search_interpolation_algo(
   animation.push_back(array);
   bool was_found = false;
 
-  int low = 0;
-  int high = array.size() - 1;
-  int mid;
-  int index = -1;
+  size_t low = 0;
+  size_t high = array.size() - 1;
+  size_t mid;
+  size_t index = -1;
 
   while (low <= high) {
     mid = low + (((double)(high - low) /
