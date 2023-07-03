@@ -19,14 +19,14 @@ For more details that also cover code, please read the the [Design Document](Des
 Keep in mind that the project has two versions.
 The first one contains a visualizer of some of the most important sorting algorithms and did not have all the features of a fully fleshed program.
 The second one contains more algorithms that the first one and will incorporate algorithms from 4 fields.
-|Sorting | Search | GraphInterface | TreesInterface |
+|Sorting | Search | GraphInterface |
 |--|--|--|--|
-| Insertion Sort | Linear Search | Dijkstra's algorithm | Binary TreesInterface |
-| Heap Sort | Binary Search | BFS & DFS | Red Black TreesInterface |
-| Selection Sort | Jump Search | A\* | |
-| Merge Sort | Interpolation Search | Kruskal’s algorithm | |
-| Quick Sort | | Topological sorting | |
-| Bubble Sort | | | |
+| Insertion Sort | Linear Search | Dijkstra's algorithm |
+| Heap Sort | Binary Search | BFS & DFS |
+| Selection Sort | Jump Search | A\* |
+| Merge Sort | Interpolation Search | Kruskal’s algorithm |
+| Quick Sort | | Topological sorting |
+| Bubble Sort | | |
 
 ## Table of Contents
 
@@ -50,7 +50,7 @@ CMake will automatically download Raylib from GitHub when building the project.
 
 After running the compiler and launching project (as mentioned above) you should be ready to visualize the algorithms.
 The project has a main interface, from where you will be able to select from 4 different options:
-`Sorting Algorithms`, `Search Algorithms`, `GraphInterface Algorithms` and `TreesInterface Algorithms`.
+`Sorting Algorithms`, `Search Algorithms`, and `GraphInterface Algorithms`.
 
 ### Sorting Algorithms
 
@@ -85,20 +85,6 @@ This page will have the following features:
 - the main drawing canvas (under the header), in which everything will be animated
 
 Keep in mind that, even if some algorithms don't work with some graphs (i.e.: Dijkstra with a graph that has a negative weight edge), my implementation will allow such cases to exist in order to better understand the error. A warning will appear wo that the user is informed about this fact.
-
-### TreesInterface Algorithms
-
-As presented above, the `GraphInterface Algorithms` page will contain 2 different modes of operation (with binary trees and with red-black trees).
-This page will have the following features:
-
-- an `add node` mode , that will allow you do add a node on the tree (the value of the node will be selected in a special place in the header);
-- a `remove node` mode, that will allow the use to remove a node from the tree
-- a `remove button`, That will allow you to remove any edges or nodes. Note that if you delete a node, all edges that come out of or point to that node will also be deleted;
-- a `back button`, that will take you back to the main menu;
-- a `drop-down menu`, from which you can select the desired type of tree;
-- the main drawing canvas (under the header), in everything will be animated
-
-The main objective of all of these operations is to, most importantly, work as expected, but also be animated so that they are as easy to understand as possible.
 
 ## Structure of code
 

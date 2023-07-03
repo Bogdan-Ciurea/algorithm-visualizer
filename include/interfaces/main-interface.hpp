@@ -17,7 +17,6 @@
 #include "graph-interface.hpp"
 #include "search-interface.hpp"
 #include "sorting-interface.hpp"
-#include "tree-interface.hpp"
 
 class MainInterface {
  public:
