@@ -51,7 +51,7 @@ std::vector<Graph *> as(Node *start, Node *end, Graph *graph);
  * @param graph - The graph to be used.
  * @return std::vector<Graph *> - The animation vector.
  */
-std::vector<Graph *> kruskal(Node *start, Node *end, Graph *graph);
+std::vector<Graph *> kruskal(Graph *graph);
 
 /**
  * @brief This function implements the topological algorithm.
@@ -61,6 +61,6 @@ std::vector<Graph *> kruskal(Node *start, Node *end, Graph *graph);
  * @param graph - The graph to be used.
  * @return std::vector<Graph *> - The animation vector.
  */
-std::vector<Graph *> topological(Node *start, Node *end, Graph *graph);
+std::vector<Graph *> topological(Node *start, Graph *graph);
 
 #endif  // GRAPH_ALGORITHMS_HPP

@@ -112,10 +112,12 @@ void GraphInterface::draw_secondary_header(float button_height) {
   // Draw the "Delete node/edge" button
   Rectangle delete_rect = (Rectangle){230, button_height + 10, 100, 40};
   if (GuiButton(delete_rect, GuiIconText(RAYGUI_ICON_BIN, "Delete"))) {
-    current_mode = REMOVE;
-    if (temp_clicked_node != nullptr) {
-      temp_clicked_node->set_state(NORMAL);
-      temp_clicked_node = nullptr;
+    if (!dropdown_enabled) {
+      current_mode = REMOVE;
+      if (temp_clicked_node != nullptr) {
+        temp_clicked_node->set_state(NORMAL);
+        temp_clicked_node = nullptr;
+      }
     }
   }
 
@@ -125,14 +127,44 @@ void GraphInterface::draw_secondary_header(float button_height) {
                 GuiIconText(directed_graph ? RAYGUI_ICON_MUTATE_FILL
                                            : RAYGUI_ICON_CURSOR_SCALE_LEFT_FILL,
                             directed_graph ? "Directed" : "Undirected"))) {
-    directed_graph = !directed_graph;
-    graph->set_directed(directed_graph);
+    if (!dropdown_enabled) {
+      directed_graph = !directed_graph;
+      graph->set_directed(directed_graph);
+    }
   }
 }
 
 bool GraphInterface::check_input() {
-  if (dropdown_option == KRUSKAL || dropdown_option == TOPOLOGICAL) return true;
+  switch (dropdown_option) {
+    case DIJKSTRA:
+    case BFS:
+    case DFS:
+    case AS:
+      return check_input_two_nodes();
+    case TOPOLOGICAL:
+      return check_input_one_node() && directed_graph && !graph->has_cycle();
+    case KRUSKAL:
+      return true;
+    default:
+      return false;
+  }
+}
 
+bool GraphInterface::check_input_one_node() {
+  int from = atoi(textBoxText1);
+
+  if (from < 0 || from >= graph->node_list.size()) {
+    return false;
+  }
+
+  this->from_node = graph->get_node(from);
+
+  if (this->from_node == nullptr) return false;
+
+  return true;
+}
+
+bool GraphInterface::check_input_two_nodes() {
   int from = atoi(textBoxText1);
   int to = atoi(textBoxText2);
 
@@ -190,8 +222,6 @@ void GraphInterface::get_canvas_input() {
   if (click_position) delete click_position;
 }
 
-// bool GraphInterface::import_graph() { return true; }
-
 Vector2 *GraphInterface::get_click_location(float ignore_height) {
   if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !this->pressed) {
     this->pressed = true;
@@ -237,11 +267,11 @@ void GraphInterface::run_algorithm() {
         break;
 
       case KRUSKAL:
-        animation = kruskal(this->from_node, this->to_node, this->graph);
+        animation = kruskal(this->graph);
         break;
 
       case TOPOLOGICAL:
-        /* code */
+        animation = topological(this->from_node, this->graph);
         break;
 
       default:

@@ -24,6 +24,17 @@ class Node {
   // Constructors
   Node(float x, float y, int id = -1);
   Node(Vector2 coord, int id = -1);
+  // Copy constructor
+  Node(const Node &node);
+
+  Node &operator=(const Node &node) {
+    this->id = node.id;
+    this->coord = node.coord;
+    this->color = node.color;
+    this->state = node.state;
+    return *this;
+  }
+
   /**
    * @brief Get the node copy object.
    *
@@ -84,6 +95,20 @@ class Edge {
    * @param directed - Whether the edge is directed or not.
    */
   Edge(float weight, Node *n1, Node *n2, bool directed);
+
+  // Copy constructor
+  Edge(const Edge &edge);
+
+  Edge &operator=(const Edge &edge) {
+    this->weight = edge.weight;
+    this->node1 = edge.node1;
+    this->node2 = edge.node2;
+    this->color = edge.color;
+    this->state = edge.state;
+    this->directed = edge.directed;
+    return *this;
+  }
+
   /**
    * @brief Get the edge copy object.
    *
@@ -158,6 +183,33 @@ class Graph {
  public:
   // Constructors
   Graph() {}
+  Graph(const Graph &graph) {
+    this->directed = graph.directed;
+    for (auto *node : graph.node_list) {
+      this->node_list.push_back(node->get_node_copy());
+    }
+    for (auto *edge : graph.edge_list) {
+      Edge *new_edge = edge->get_edge_copy();
+      new_edge->node1 = this->get_node(edge->node1->id);
+      new_edge->node2 = this->get_node(edge->node2->id);
+      this->edge_list.push_back(new_edge);
+    }
+  }
+
+  Graph &operator=(const Graph &graph) {
+    this->directed = graph.directed;
+    for (auto *node : graph.node_list) {
+      this->node_list.push_back(node->get_node_copy());
+    }
+    for (auto *edge : graph.edge_list) {
+      Edge *new_edge = edge->get_edge_copy();
+      new_edge->node1 = this->get_node(edge->node1->id);
+      new_edge->node2 = this->get_node(edge->node2->id);
+      this->edge_list.push_back(new_edge);
+    }
+    return *this;
+  }
+
   /**
    * @brief Get a copy of the graph.
    *
@@ -165,8 +217,8 @@ class Graph {
    */
   Graph *get_graph_copy() const;
   ~Graph() {
-    for (auto node : node_list) delete node;
-    for (auto edge : edge_list) delete edge;
+    for (auto &node : node_list) delete node;
+    for (auto &edge : edge_list) delete edge;
   }
 
   /**
@@ -219,6 +271,14 @@ class Graph {
    * @return std::vector<Node*> - Vector of pointers to the neighbours.
    */
   std::vector<Node *> get_neighbours(Node *node) const;
+
+  /**
+   * @brief Get the outgoing nodes object
+   *
+   * @param searched_node  - Pointer to the node.
+   * @return std::vector<Node *>  - Vector of pointers to the outgoing nodes.
+   */
+  std::vector<Node *> get_outgoing_nodes(Node *searched_node) const;
 
   /**
    * @brief Add an edge to the graph.

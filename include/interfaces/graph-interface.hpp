@@ -49,6 +49,8 @@ class GraphInterface : public AlgorithmInterface {
   bool textBoxEditMode2 = false;
   char textBoxText2[64] = "To";
   bool check_input();
+  bool check_input_two_nodes();
+  bool check_input_one_node();
   Node *from_node = nullptr;
   Node *to_node = nullptr;
 
@@ -67,8 +69,6 @@ class GraphInterface : public AlgorithmInterface {
 
   // Clicking functions
   Vector2 *get_click_location(float ignore_height = 100.0f);
-
-  // bool import_graph();
 
   // Algorithm related functions
   void run_algorithm();

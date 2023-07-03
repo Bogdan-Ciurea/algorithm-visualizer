@@ -25,6 +25,13 @@ Node::Node(Vector2 coord, int id) {
   this->color = BLACK;
 }
 
+Node::Node(const Node &node) {
+  this->coord = node.coord;
+  this->id = node.id;
+  this->state = node.state;
+  this->color = node.color;
+}
+
 Node *Node::get_node_copy() const {
   Node *new_node = new Node(this->coord, this->id);
   new_node->set_state(this->state);
@@ -82,6 +89,17 @@ Edge::Edge(float weight, Node *n1, Node *n2, bool directed) {
   this->color = BLACK;
 
   this->calculate_start_end_points();
+}
+
+Edge::Edge(const Edge &edge) {
+  this->weight = edge.weight;
+  this->node1 = edge.node1;
+  this->node2 = edge.node2;
+  this->directed = edge.directed;
+  this->state = edge.state;
+  this->color = edge.color;
+  this->start_point = edge.start_point;
+  this->end_point = edge.end_point;
 }
 
 Edge *Edge::get_edge_copy() const {
@@ -328,6 +346,24 @@ std::vector<Node *> Graph::get_neighbours(Node *searched_node) const {
         neighbours.push_back(edge->node2);
       } else if (edge->node2 == searched_node) {
         neighbours.push_back(edge->node1);
+      }
+    }
+  }
+
+  return neighbours;
+}
+
+std::vector<Node *> Graph::get_outgoing_nodes(Node *searched_node) const {
+  std::vector<Node *> neighbours;
+
+  for (auto edge : edge_list) {
+    if (directed) {
+      if (edge->node1 == searched_node) {
+        neighbours.push_back(edge->node2);
+      }
+    } else {
+      if (edge->node1 == searched_node || edge->node2 == searched_node) {
+        neighbours.push_back(edge->node2);
       }
     }
   }

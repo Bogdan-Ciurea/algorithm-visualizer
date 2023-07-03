@@ -77,6 +77,21 @@ bool has_cycle(std::vector<Edge *> *mst_edges) {
   return has_cycle;
 }
 
+/**
+ * @brief This function checks if a node has incoming nodes.
+ *
+ * @param node   - The node to be checked.
+ * @param edges  - The edges of the graph.
+ * @return true  - If the node has incoming nodes.
+ * @return false - If the node does NOT have incoming nodes.
+ */
+bool has_incoming_nodes(Node *node, std::vector<Edge *> *edges) {
+  for (auto edge : *edges) {
+    if (edge->node2 == node) return true;
+  }
+  return false;
+}
+
 std::vector<Graph *> dijkstra(Node *start, Node *end, Graph *graph) {
   std::vector<Graph *> animation = {graph->get_graph_copy()};
 
@@ -588,7 +603,7 @@ std::vector<Graph *> as(Node *start, Node *end, Graph *graph) {
   return animation;
 }
 
-std::vector<Graph *> kruskal(Node *start, Node *end, Graph *graph) {
+std::vector<Graph *> kruskal(Graph *graph) {
   std::vector<Graph *> animation = {graph->get_graph_copy()};
 
   auto temp_graph = graph->get_graph_copy();
@@ -652,6 +667,59 @@ std::vector<Graph *> kruskal(Node *start, Node *end, Graph *graph) {
   }
 
   animation.push_back(mst_graph);
+  animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+  animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+  animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+
+  return animation;
+}
+
+std::vector<Graph *> topological(Node *start, Graph *graph) {
+  std::vector<Graph *> animation = {graph->get_graph_copy()};
+
+  Graph temp_graph = *graph;
+  std::vector<Node *> list = std::vector<Node *>();
+  std::vector<Node *> stack = std::vector<Node *>();
+
+  // Create the stack with the nodes that have no incoming edges
+  for (auto node : graph->node_list) {
+    if (!has_incoming_nodes(node, &graph->edge_list)) {
+      stack.push_back(node);
+    }
+  }
+
+  while (!stack.empty()) {
+    Node *current_node = stack.back();
+    stack.pop_back();
+
+    list.push_back(current_node);
+
+    animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+    animation[animation.size() - 1]
+        ->get_node(current_node->id)
+        ->set_state(SELECTED);
+
+    for (auto edge : temp_graph.get_edges_from_node(current_node)) {
+      animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+      animation[animation.size() - 1]
+          ->get_edge(animation[animation.size() - 1]->get_node(edge->node1->id),
+                     animation[animation.size() - 1]->get_node(edge->node2->id))
+          ->set_state(SELECTED);
+
+      temp_graph.remove_edge(edge);
+
+      if (!has_incoming_nodes(edge->node2, &temp_graph.edge_list)) {
+        stack.push_back(edge->node2);
+      }
+    }
+  }
+
+  // Create the animation
+  for (auto node : list) {
+    animation.push_back(animation[animation.size() - 1]->get_graph_copy());
+    animation[animation.size() - 1]->get_node(node->id)->set_state(MOVED);
+  }
+
   animation.push_back(animation[animation.size() - 1]->get_graph_copy());
   animation.push_back(animation[animation.size() - 1]->get_graph_copy());
   animation.push_back(animation[animation.size() - 1]->get_graph_copy());
